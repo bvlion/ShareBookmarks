@@ -5,33 +5,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/menu_update"
+            android:icon="@drawable/ic_menu_update"
+            android:title="@string/menu_update" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/menu_app_rating"
+            android:icon="@drawable/ic_menu_app_rating"
+            android:title="@string/menu_app_rating" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/menu_contact"
+            android:icon="@drawable/ic_menu_contact"
+            android:title="@string/menu_contact" />
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/menu_oss_license"
+            android:icon="@drawable/ic_menu_oss_license"
+            android:title="@string/menu_oss_license" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/menu_operation_setting">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:id="@+id/menu_backup_restore_timing"
+                android:icon="@drawable/ic_menu_backup_restore_timing"
+                android:title="@string/menu_backup_restore_timing" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:id="@+id/menu_status_bar"
+                android:icon="@drawable/ic_menu_status_bar"
+                android:title="@string/menu_status_bar" />
+            <item
+                android:id="@+id/menu_close_application"
+                android:icon="@drawable/ic_menu_close_application"
+                android:title="@string/menu_close_application" />
         </menu>
     </item>
 
