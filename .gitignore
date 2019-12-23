@@ -11,3 +11,5 @@
 .externalNativeBuild
 .cxx
 google-services.json
+/google-play-service.json
+vendor/bundle

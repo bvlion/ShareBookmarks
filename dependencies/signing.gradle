@@ -1,0 +1,4 @@
+signingConfigs {
+  staging { }
+  release { }
+}

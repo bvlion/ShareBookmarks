@@ -6,13 +6,16 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
+    apply from: '../dependencies/signing.gradle', to: android
 
     defaultConfig {
+        def globalConfiguration = rootProject.extensions.getByName("ext")
+
         applicationId "net.ambitious.android.sharebookmarks"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode globalConfiguration["appVersionCode"]
+        versionName globalConfiguration["appVersionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -21,24 +24,6 @@ android {
                         "room.incremental":"true",
                         "room.expandProjection":"true"]
             }
-        }
-    }
-
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-    signingConfigs {
-        staging {
-            storeFile rootProject.file("staging.keystore")
-            storePassword properties.getProperty("STAGING_KEYSTORE_PASSWORD")
-            keyAlias "sharebookmarks-staging"
-            keyPassword properties.getProperty("STAGING_STORE_PASSWORD")
-        }
-        release {
-            storeFile rootProject.file("release.keystore")
-            storePassword properties.getProperty("KEYSTORE_PASSWORD")
-            keyAlias "sharebookmarks"
-            keyPassword properties.getProperty("STORE_PASSWORD")
         }
     }
 

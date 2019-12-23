@@ -20,14 +20,14 @@
             android:id="@+id/menu_oss_license"
             android:icon="@drawable/ic_menu_oss_license"
             android:title="@string/menu_oss_license" />
+        <item
+          android:id="@+id/menu_backup_restore_timing"
+          android:icon="@drawable/ic_menu_backup_restore_timing"
+          android:title="@string/menu_backup_restore_timing" />
     </group>
 
     <item android:title="@string/menu_operation_setting">
         <menu>
-            <item
-                android:id="@+id/menu_backup_restore_timing"
-                android:icon="@drawable/ic_menu_backup_restore_timing"
-                android:title="@string/menu_backup_restore_timing" />
             <item
                 android:id="@+id/menu_status_bar"
                 android:icon="@drawable/ic_menu_status_bar"
