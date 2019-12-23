@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Build apk
           command: |
-            ./gradlew :testStagingUnitTest
+            ./gradlew testStagingUnitTest
             ./gradlew :app:assembleStaging
             ./gradlew :app:assembleRelease
 
