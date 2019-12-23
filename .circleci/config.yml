@@ -59,13 +59,35 @@ jobs:
       - run:
           name: Build apk
           command: |
+            ./gradlew :testStagingUnitTest
             ./gradlew :app:assembleStaging
             ./gradlew :app:assembleRelease
+
+      - store_test_results:
+          path: app/build/reports/tests/testStagingUnitTest
 
       - persist_to_workspace:
           root: .
           paths:
             - .
+
+
+  deploy-staging:
+    docker:
+      - image: circleci/ruby:2.5.1
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Upload
+          command: |
+            curl \
+              -F "token=$DEPLOYGATE_TOKEN" \
+              -F "file=@app/build/outputs/apk/staging/app-staging.apk" \
+              -F "message=`git log -1`" \
+              https://deploygate.com/api/users/bvlion/apps
 
 
   deploy-production:
@@ -95,13 +117,15 @@ jobs:
 workflows:
   version: 2
   build_and_deploy:
-    jobs: # まずは test をしたいけど、書いてないので後で入れる。
+    jobs:
       - settings:
           filters:
             tags:
               only: /.*/
             branches:
-              only: master
+              only:
+                - master
+                - /fix.*/
       - build:
           requires:
             - settings
@@ -109,7 +133,17 @@ workflows:
             tags:
               only: /.*/
             branches:
-              only: master # この下に staging は deploygate にあげるのを入れる。
+              only:
+                - master
+                - /fix.*/
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            tags:
+              ignore: /v.*/
+            branches:
+              only: master
       - deploy-production:
           requires:
             - build
