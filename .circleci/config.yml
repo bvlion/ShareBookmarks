@@ -23,10 +23,10 @@ jobs:
       - run:
           name: decrypt files
           command: |
-            openssl aes-256-cbc -k $STAGING_DECRYPT_KEY -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json
-            openssl aes-256-cbc -k $RELEASE_DECRYPT_KEY -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json
-            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle
-            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in encrypt-google-play-service.json -out google-play-service.json
+            openssl aes-256-cbc -k $STAGING_DECRYPT_KEY -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json -md md5
+            openssl aes-256-cbc -k $RELEASE_DECRYPT_KEY -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json -md md5
+            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle -md md5
+            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in encrypt-google-play-service.json -out google-play-service.json -md md5
 
       - persist_to_workspace:
           root: .
