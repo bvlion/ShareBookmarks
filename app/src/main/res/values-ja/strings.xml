@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ブックマーク共有</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">User image</string>
+    <string name="action_settings">設定</string>
+
+    <string name="menu_update">データ更新</string>
+    <string name="menu_app_rating">アプリを評価</string>
+    <string name="menu_contact">お問い合わせ</string>
+    <string name="menu_oss_license">OSS ライセンス</string>
+    <string name="menu_operation_setting">設定</string>
+    <string name="menu_backup_restore_timing">バックアップ・復元タイミング</string>
+    <string name="menu_status_bar">ステータスバー表示</string>
+    <string name="menu_close_application">ブラウザ等起動時にアプリ終了</string>
+</resources>

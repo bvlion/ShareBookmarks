@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ShareBookmarks</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">User image</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_update">Data Update</string>
+    <string name="menu_app_rating">App rating</string>
+    <string name="menu_contact">Contact Us</string>
+    <string name="menu_oss_license">OSS license</string>
+    <string name="menu_operation_setting">Setting</string>
+    <string name="menu_backup_restore_timing">Backup / restore timing</string>
+    <string name="menu_status_bar">Display in status bar</string>
+    <string name="menu_close_application">Close application when starting browser</string>
 </resources>

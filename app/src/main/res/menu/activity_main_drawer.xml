@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_update"
+            android:icon="@drawable/ic_menu_update"
+            android:title="@string/menu_update" />
+        <item
+            android:id="@+id/menu_app_rating"
+            android:icon="@drawable/ic_menu_app_rating"
+            android:title="@string/menu_app_rating" />
+        <item
+            android:id="@+id/menu_contact"
+            android:icon="@drawable/ic_menu_contact"
+            android:title="@string/menu_contact" />
+        <item
+            android:id="@+id/menu_oss_license"
+            android:icon="@drawable/ic_menu_oss_license"
+            android:title="@string/menu_oss_license" />
+        <item
+          android:id="@+id/menu_backup_restore_timing"
+          android:icon="@drawable/ic_menu_backup_restore_timing"
+          android:title="@string/menu_backup_restore_timing" />
+    </group>
+
+    <item android:title="@string/menu_operation_setting">
+        <menu>
+            <item
+                android:id="@+id/menu_status_bar"
+                android:icon="@drawable/ic_menu_status_bar"
+                android:title="@string/menu_status_bar" />
+            <item
+                android:id="@+id/menu_close_application"
+                android:icon="@drawable/ic_menu_close_application"
+                android:title="@string/menu_close_application" />
+        </menu>
+    </item>
+
+</menu>

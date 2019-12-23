@@ -1,0 +1,154 @@
+version: 2
+
+jobs:
+  settings:
+    docker:
+      - image: circleci/ruby:2.5.1
+
+    steps:
+      - checkout
+
+      - run:
+          name: set version
+          command: ruby create-version.rb "$VERSION_CODES_URL"
+
+      - run:
+          name: Error Check
+          command: |
+            if [ -f exit_message ]; then
+              echo `cat exit_message`
+              circleci step halt
+            fi
+
+      - run:
+          name: decrypt files
+          command: |
+            openssl aes-256-cbc -k $STAGING_DECRYPT_KEY -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json
+            openssl aes-256-cbc -k $RELEASE_DECRYPT_KEY -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json
+            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle
+            openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in encrypt-google-play-service.json -out google-play-service.json
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
+  build:
+    docker:
+      - image: circleci/android:api-29
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
+      - run:
+          name: gradle dependencies
+          command: ./gradlew androidDependencies
+
+      - save_cache:
+          paths: ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
+      - run:
+          name: Build apk
+          command: |
+            ./gradlew :testStagingUnitTest
+            ./gradlew :app:assembleStaging
+            ./gradlew :app:assembleRelease
+
+      - store_test_results:
+          path: app/build/reports/tests/testStagingUnitTest
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
+  deploy-staging:
+    docker:
+      - image: circleci/ruby:2.5.1
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Upload
+          command: |
+            curl \
+              -F "token=$DEPLOYGATE_TOKEN" \
+              -F "file=@app/build/outputs/apk/staging/app-staging.apk" \
+              -F "message=`git log -1`" \
+              https://deploygate.com/api/users/bvlion/apps
+
+
+  deploy-production:
+    docker:
+      - image: circleci/ruby:2.5.1
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: bundler
+          command: bundle install
+
+      - restore_cache:
+          key: gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: up play store
+          command: bundle exec fastlane play_store
+
+      - save_cache:
+          key: gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths: vendor/bundle
+
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - settings:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
+                - /fix.*/
+      - build:
+          requires:
+            - settings
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
+                - /fix.*/
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            tags:
+              ignore: /v.*/
+            branches:
+              only: master
+      - deploy-production:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              ignore: /.*/

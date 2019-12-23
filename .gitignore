@@ -2,9 +2,14 @@
 .gradle
 /local.properties
 /.idea
+!.idea/codeStyles
+!.idea/inspectionProfiles
+!.idea/vcs.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 google-services.json
+/google-play-service.json
+vendor/bundle
