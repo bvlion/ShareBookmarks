@@ -67,7 +67,7 @@ jobs:
           path: app/build/reports/tests/testStagingUnitTest
           destination: reports
       - store_test_results:
-          path: app/build/test-results/tests
+          path: app/build/test-results
 
       - persist_to_workspace:
           root: .
