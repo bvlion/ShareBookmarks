@@ -5,10 +5,9 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     apply from: '../dependencies/signing.gradle', to: android
+    def globalConfiguration = rootProject.extensions.getByName("ext")
 
     defaultConfig {
-        def globalConfiguration = rootProject.extensions.getByName("ext")
-
         applicationId "net.ambitious.android.sharebookmarks"
         minSdkVersion 21
         targetSdkVersion 29
@@ -33,17 +32,20 @@ android {
             debuggable true
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
+            buildConfigField "String", "AD_MOB_BANNER_KEY", "\"" + globalConfiguration["adMobBannerKey"] + "\""
         }
         staging {
             debuggable true
             applicationIdSuffix ".staging"
             versionNameSuffix "-staging"
             signingConfig signingConfigs.staging
+            buildConfigField "String", "AD_MOB_BANNER_KEY", "\"" + globalConfiguration["adMobBannerKey"] + "\""
         }
         release {
             debuggable false
             minifyEnabled true
             signingConfig signingConfigs.release
+            buildConfigField "String", "AD_MOB_BANNER_KEY", "\"" + globalConfiguration["adMobBannerKey"] + "\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

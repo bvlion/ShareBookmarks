@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import androidx.core.view.GravityCompat
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
     val navView: NavigationView = findViewById(R.id.nav_view)
-    val navController = findNavController(R.id.nav_host_fragment)
+    val navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
     appBarConfiguration = AppBarConfiguration(
         setOf(R.id.nav_home, R.id.nav_gallery),
         drawerLayout

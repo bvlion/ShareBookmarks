@@ -10,7 +10,7 @@ jobs:
 
       - run:
           name: set version
-          command: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY"
+          command: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY"
 
       - run:
           name: Error Check

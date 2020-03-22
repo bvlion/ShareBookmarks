@@ -25,12 +25,15 @@ File.open("dependencies/ext.gradle", mode = "w") {|f|
   f.write("  adMobCode = '")
   f.write(ARGV[1])
   f.write("'\n")
+  f.write("  adMobBannerKey = '")
+  f.write(ARGV[2])
+  f.write("'\n")
   f.write("}")
 }
 
-File.open("fastlane/metadata/android/en-US/changelogs/" + json["code"] + ".txt", mode = "w") {|f|
+File.open("fastlane/metadata/android/en-US/changelogs/" + json["code"].to_s + ".txt", mode = "w") {|f|
   f.write(json["english"])
 }
-File.open("fastlane/metadata/android/ja-JP/changelogs/" + json["code"] + ".txt", mode = "w") {|f|
+File.open("fastlane/metadata/android/ja-JP/changelogs/" + json["code"].to_s + ".txt", mode = "w") {|f|
   f.write(json["japanese"])
 }
