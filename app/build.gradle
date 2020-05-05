@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -63,18 +65,20 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-ui:$navigation_version"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
     implementation "androidx.room:room-runtime:$room_version"
-    implementation "com.google.firebase:firebase-analytics:$analytics_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
-    implementation 'com.google.android.gms:play-services-ads:19.0.1'
+    implementation "com.google.android.gms:play-services-ads:$ads_version"
+    implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
+    implementation "com.google.firebase:firebase-analytics:$analytics_version"
+    implementation "com.google.firebase:firebase-config:$remote_config_version"
 
     testImplementation 'junit:junit:4.12'
 

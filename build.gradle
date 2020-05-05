@@ -1,21 +1,26 @@
 apply from: 'dependencies/ext.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.3.71'
-    ext.navigation_version = '2.2.1'
-    ext.room_version = '2.2.4'
-    ext.analytics_version = '17.2.3'
+    ext.kotlin_version = '1.3.72'
+    ext.navigation_version = '2.2.2'
+    ext.room_version = '2.2.5'
+    ext.analytics_version = '17.4.0'
+    ext.crashlytics_version = '17.0.0'
+    ext.ads_version = '19.1.0'
+    ext.remote_config_version = '19.1.4'
+
     repositories {
         google()
         jcenter()
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
     }
 }
 
@@ -23,7 +28,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
