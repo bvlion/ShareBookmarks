@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks
+package net.ambitious.android.sharebookmarks.activity
 
 import android.os.Bundle
 import androidx.navigation.findNavController
@@ -8,31 +8,35 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
+import net.ambitious.android.sharebookmarks.BaseActivity
+import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    AnalyticsUtils.logStartActivity(firebaseAnalytics, "MainActivity")
+
     setContentView(R.layout.activity_main)
     val toolbar: Toolbar = findViewById(R.id.toolbar)
     setSupportActionBar(toolbar)
-
-    MobileAds.initialize(this) {}
 
     val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
     val navView: NavigationView = findViewById(R.id.nav_view)
     val navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
     appBarConfiguration = AppBarConfiguration(
-        setOf(R.id.nav_home, R.id.nav_gallery),
+        setOf(
+          R.id.nav_home,
+          R.id.nav_gallery
+        ),
         drawerLayout
     )
     setupActionBarWithNavController(navController, appBarConfiguration)
