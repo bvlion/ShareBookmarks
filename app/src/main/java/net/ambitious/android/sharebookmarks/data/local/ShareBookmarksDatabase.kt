@@ -47,7 +47,6 @@ abstract class ShareBookmarksDatabase : RoomDatabase() {
             }
         }
 
-
         private fun buildInstance(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
