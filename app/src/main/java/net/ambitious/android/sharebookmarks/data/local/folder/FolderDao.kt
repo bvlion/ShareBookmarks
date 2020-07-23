@@ -6,9 +6,9 @@ import androidx.room.Insert
 
 @Dao
 interface FolderDao {
-    @Insert
-    fun insertAll(vararg folders: Folder)
+  @Insert
+  fun insertAll(vararg folders: Folder)
 
-    @Delete
-    fun delete(folder: Folder)
+  @Delete
+  fun delete(folder: Folder)
 }

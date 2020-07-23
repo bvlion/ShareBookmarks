@@ -6,9 +6,9 @@ import androidx.room.Insert
 
 @Dao
 interface LinkDao {
-    @Insert
-    fun insertAll(vararg links: Link)
+  @Insert
+  fun insertAll(vararg links: Link)
 
-    @Delete
-    fun delete(link: Link)
+  @Delete
+  fun delete(link: Link)
 }
