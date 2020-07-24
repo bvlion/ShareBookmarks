@@ -13,4 +13,15 @@
     <string name="menu_backup_restore_timing">バックアップ・復元タイミング</string>
     <string name="menu_status_bar">ステータスバー表示</string>
     <string name="menu_close_application">ブラウザ等起動時にアプリ終了</string>
+
+    <string name="popup_folder_delete">フォルダを削除</string>
+    <string name="popup_folder_edit">フォルダ名を編集</string>
+    <string name="popup_folder_move">フォルダを移動</string>
+    <string name="popup_folder_share">フォルダを共有</string>
+    <string name="popup_item_delete">ブックマークを削除</string>
+    <string name="popup_item_edit">ブックマークを編集</string>
+    <string name="popup_item_move">ブックマークを移動</string>
+    <string name="popup_item_share">ブックマークを共有</string>
+    <string name="popup_item_thumbnail_update">サムネイルを更新</string>
+    <string name="popup_item_create_shortcut">ショートカットを作成</string>
 </resources>

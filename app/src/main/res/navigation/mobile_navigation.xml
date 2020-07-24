@@ -11,9 +11,4 @@
         android:label="@string/menu_contact"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="net.ambitious.android.sharebookmarks.ui.gallery.GalleryFragment"
-        android:label="@string/menu_oss_license"
-        tools:layout="@layout/fragment_gallery" />
 </navigation>

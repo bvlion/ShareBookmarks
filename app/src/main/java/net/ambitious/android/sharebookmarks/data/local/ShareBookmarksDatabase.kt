@@ -4,15 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import net.ambitious.android.sharebookmarks.data.local.folder.Folder
-import net.ambitious.android.sharebookmarks.data.local.folder.FolderDao
-import net.ambitious.android.sharebookmarks.data.local.link.Link
-import net.ambitious.android.sharebookmarks.data.local.link.LinkDao
+import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 
 @Database(
     entities = [
-      Folder::class,
-      Link::class
+      Item::class
     ],
     version = 1
 )
@@ -47,6 +44,5 @@ abstract class ShareBookmarksDatabase : RoomDatabase() {
       ).build()
   }
 
-  abstract fun folderDao(): FolderDao
-  abstract fun linkDao(): LinkDao
+  abstract fun itemDao(): ItemDao
 }

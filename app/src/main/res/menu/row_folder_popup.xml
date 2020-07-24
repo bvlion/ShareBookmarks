@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/row_edit"
+    android:title="@string/popup_folder_edit" />
+  <item
+    android:id="@+id/row_delete"
+    android:title="@string/popup_folder_delete" />
+  <item
+    android:id="@+id/row_move"
+    android:title="@string/popup_folder_move" />
+  <item
+    android:id="@+id/row_share"
+    android:title="@string/popup_folder_share" />
+
+</menu>

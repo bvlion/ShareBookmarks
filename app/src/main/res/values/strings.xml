@@ -13,4 +13,15 @@
     <string name="menu_backup_restore_timing">Backup / restore timing</string>
     <string name="menu_status_bar">Display in status bar</string>
     <string name="menu_close_application">Close application when starting browser</string>
+
+    <string name="popup_folder_delete">Delete a folder</string>
+    <string name="popup_folder_edit">Edit folder name</string>.
+    <string name="popup_folder_move">Move a folder</string>.
+    <string name="popup_folder_share">Share a folder</string>.
+    <string name="popup_item_delete">Delete a bookmark</string>.
+    <string name="popup_item_edit">Edit bookmarks</string>.
+    <string name="popup_item_move">Move the bookmark</string>.
+    <string name="popup_item_share">Share a bookmark</string>.
+    <string name="popup_item_thumbnail_update">Update the thumbnails</string>.
+    <string name="popup_item_create_shortcut">Create a shortcut</string>.
 </resources>
