@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/space_normal">
+
+    <TextView
+      android:id="@+id/inquiry_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="TODO" />
+
+    <EditText
+      android:id="@+id/inquiry_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_small"
+      android:gravity="top"
+      android:minLines="5" />
+
+    <TextView
+      android:id="@+id/inquiry_desc"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_small"
+      android:text="TODO"
+      android:textSize="12sp" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/send_button"
+      style="@style/Widget.MaterialComponents.Button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_normal"
+      android:text="TODO"
+      android:textAllCaps="false"
+      app:cornerRadius="@dimen/space_very_small" />
+
+  </LinearLayout>
+
+</ScrollView>
