@@ -1,6 +1,8 @@
 package net.ambitious.android.sharebookmarks.util
 
 object Const {
+  const val STORE_URL = "net.ambitious.android.sharebookmarks"
+
   enum class OwnerType(val value: Int) {
     OWNER(0),
     EDITABLE(1),

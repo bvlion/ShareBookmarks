@@ -20,7 +20,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
       LayoutInflater.from(parent.context)
-          .inflate(R.layout.item_folder_row, parent, false)
+          .inflate(R.layout.item_row, parent, false)
   )
 
   override fun getItemCount() = _items.size

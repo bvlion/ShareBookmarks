@@ -1,6 +1,8 @@
 package net.ambitious.android.sharebookmarks.activity
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
+import net.ambitious.android.sharebookmarks.util.Const
 
 class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
@@ -63,7 +66,25 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
             putExtra("title", getString(R.string.menu_oss_license))
           }
       )
+      R.id.menu_contact -> startActivity(Intent(this@MainActivity, InquiryActivity::class.java))
+      R.id.menu_app_rating -> try {
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=${Const.STORE_URL}")
+            )
+        )
+      } catch (_: ActivityNotFoundException) {
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=${Const.STORE_URL}")
+            )
+        )
+      }
     }
     drawer_layout.closeDrawer(GravityCompat.START)
   }
+
+  override fun isBackShowOnly() = false
 }
