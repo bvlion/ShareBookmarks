@@ -8,11 +8,11 @@ import androidx.room.Query
 @Dao
 interface ItemDao {
   @Insert
-  fun insertAll(vararg items: Item)
+  suspend fun insertAll(vararg items: Item)
 
   @Delete
-  fun delete(item: Item)
+  suspend fun delete(item: Item)
 
   @Query("SELECT * FROM items WHERE parent_id = :parentId ORDER BY `order`")
-  fun getItems(parentId: Long): List<Item>
+  suspend fun getItems(parentId: Long): List<Item>
 }

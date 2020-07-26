@@ -18,27 +18,9 @@ abstract class ShareBookmarksDatabase : RoomDatabase() {
 
     private const val DB_NAME = "ShareBookmarks.db"
 
-    private var instance: ShareBookmarksDatabase? = null
-
-    private val lock = Any()
-
-    fun initialize(context: Context) =
-      synchronized(lock) {
-        instance =
-          buildInstance(
-              context
-          )
-      }
-
-    fun getInstance(context: Context): ShareBookmarksDatabase =
-      instance ?: synchronized(lock) {
-        buildInstance(context)
-            .also { instance = it }
-      }
-
-    private fun buildInstance(context: Context) =
+    fun createInstance(context: Context) =
       Room.databaseBuilder(
-          context.applicationContext,
+          context,
           ShareBookmarksDatabase::class.java,
           DB_NAME
       ).build()

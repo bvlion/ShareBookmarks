@@ -83,10 +83,14 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:$analytics_version"
     implementation "com.google.firebase:firebase-config:$remote_config_version"
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     testImplementation 'junit:junit:4.12'
 
     testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "org.koin:koin-test:$koin_version"
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

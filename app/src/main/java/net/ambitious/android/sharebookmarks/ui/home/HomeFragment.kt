@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.items_recycler_view
 import kotlinx.android.synthetic.main.fragment_home.items_refresh
 import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.data.ShareBookmarksModelFactory
 import net.ambitious.android.sharebookmarks.ui.home.ItemListAdapter.OnItemClickListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), OnItemClickListener {
 
-  private lateinit var homeViewModel: HomeViewModel
+  private val homeViewModel by viewModel<HomeViewModel>()
   private lateinit var adapter: ItemListAdapter
 
   private var parentId: Long = 0
@@ -27,17 +26,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? = inflater.inflate(R.layout.fragment_home, container, false).apply {
-    ViewModelProvider(
-        this@HomeFragment,
-        ShareBookmarksModelFactory.getInstance(context)
-    ).get(HomeViewModel::class.java)
-        .also { homeViewModel = it }.items.observe(
-            viewLifecycleOwner,
-            Observer {
-              adapter.setItems(it)
-              adapter.notifyDataSetChanged()
-              items_refresh.isRefreshing = false
-            })
+    homeViewModel.items.observe(
+        viewLifecycleOwner,
+        Observer {
+          adapter.setItems(it)
+          adapter.notifyDataSetChanged()
+          items_refresh.isRefreshing = false
+        })
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
