@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.toolbar
+import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils

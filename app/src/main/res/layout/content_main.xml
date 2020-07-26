@@ -60,13 +60,13 @@
     android:id="@+id/admob_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     app:layout_behavior="@string/bottom_sheet_behavior">
-
     <fragment
+      android:name="net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment"
       android:id="@+id/admob_fragment"
-      android:layout_width="match_parent"
-      android:layout_height="30dp"
+      android:layout_width="320dp"
+      android:layout_height="50dp"
       android:layout_gravity="center_horizontal" />
-
   </LinearLayout>
 </LinearLayout>
