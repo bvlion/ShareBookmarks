@@ -5,15 +5,26 @@
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">設定</string>
 
+    <!-- 左メニュー -->
+    <string name="menu_how_to_use">使い方</string>
+    <string name="menu_login">ログイン</string>
+    <string name="menu_logout">ログアウト</string>
     <string name="menu_update">データ更新</string>
+    <string name="menu_operation_billing">応援</string>
+    <string name="menu_billing">アプリ課金</string>
     <string name="menu_app_rating">アプリを評価</string>
+    <string name="menu_operation_others">その他</string>
     <string name="menu_contact">お問い合わせ</string>
     <string name="menu_oss_license">OSS ライセンス</string>
-    <string name="menu_operation_setting">設定</string>
-    <string name="menu_backup_restore_timing">バックアップ・復元タイミング</string>
-    <string name="menu_status_bar">ステータスバー表示</string>
-    <string name="menu_close_application">ブラウザ等起動時にアプリ終了</string>
+    <string name="menu_settings">設定</string>
 
+    <!-- 右メニュー -->
+    <string name="menu_folder_add">フォルダ追加</string>
+    <string name="menu_item_add">ブックマーク追加</string>
+    <string name="menu_sort">並び替え</string>
+    <string name="menu_image_reacquisition">画像再取得</string>
+
+    <!-- ポップアップ -->
     <string name="popup_folder_delete">フォルダを削除</string>
     <string name="popup_folder_edit">フォルダ名を編集</string>
     <string name="popup_folder_move">フォルダを移動</string>
@@ -24,4 +35,13 @@
     <string name="popup_item_share">ブックマークを共有</string>
     <string name="popup_item_thumbnail_update">サムネイルを更新</string>
     <string name="popup_item_create_shortcut">ショートカットを作成</string>
+
+    <!-- 設定 -->
+    <string name="setting_user_name">左メニューに表示するユーザー名</string>
+    <string name="setting_user_mail">メールアドレスの表示</string>
+    <string name="setting_backup_restore_timing">バックアップ・復元タイミング</string>
+    <string name="setting_backup_restore_timing_summary">ON の場合は起動・終了時、および左メニューの「データ更新」よりサーバーと連携します。手動のみで通信量を減らす場合は OFF にします。</string>
+    <string name="setting_close_application">ブラウザ等起動時にアプリ終了</string>
+    <string name="setting_close_application_summary">ブラウザ等が起動した後にこのアプリに戻りたい場合は OFF にします。</string>
+    <string name="setting_start_folder">初期表示フォルダ</string>
 </resources>

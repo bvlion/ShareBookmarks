@@ -20,7 +20,6 @@ open class BaseActivity : AppCompatActivity() {
     if (isBackShowOnly()) {
       supportActionBar?.apply {
         setDisplayHomeAsUpEnabled(true)
-        setTitle(R.string.menu_contact)
       }
     }
   }

@@ -82,6 +82,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
             )
         )
       }
+      R.id.menu_settings -> startActivity(Intent(this@MainActivity, SettingActivity::class.java))
     }
     drawer_layout.closeDrawer(GravityCompat.START)
   }

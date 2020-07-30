@@ -5,37 +5,49 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/menu_update"
-            android:icon="@drawable/ic_menu_update"
-            android:title="@string/menu_update" />
+          android:id="@+id/menu_how_to_use"
+          android:icon="@drawable/ic_how_to_use"
+          android:title="@string/menu_how_to_use" />
         <item
-            android:id="@+id/menu_app_rating"
-            android:icon="@drawable/ic_menu_app_rating"
-            android:title="@string/menu_app_rating" />
+          android:id="@+id/menu_login"
+          android:icon="@drawable/ic_login"
+          android:title="@string/menu_login" />
         <item
-            android:id="@+id/menu_contact"
-            android:icon="@drawable/ic_menu_contact"
-            android:title="@string/menu_contact" />
+          android:id="@+id/menu_logout"
+          android:icon="@drawable/ic_logout"
+          android:title="@string/menu_logout" />
         <item
-            android:id="@+id/menu_oss_license"
-            android:icon="@drawable/ic_menu_oss_license"
-            android:title="@string/menu_oss_license" />
-        <item
-          android:id="@+id/menu_backup_restore_timing"
-          android:icon="@drawable/ic_menu_backup_restore_timing"
-          android:title="@string/menu_backup_restore_timing" />
+          android:id="@+id/menu_update"
+          android:icon="@drawable/ic_menu_update"
+          android:title="@string/menu_update" />
     </group>
-
-    <item android:title="@string/menu_operation_setting">
+    <item android:title="@string/menu_operation_billing">
         <menu>
             <item
-                android:id="@+id/menu_status_bar"
-                android:icon="@drawable/ic_menu_status_bar"
-                android:title="@string/menu_status_bar" />
+              android:id="@+id/menu_billing"
+              android:icon="@drawable/ic_billing"
+              android:title="@string/menu_billing" />
             <item
-                android:id="@+id/menu_close_application"
-                android:icon="@drawable/ic_menu_close_application"
-                android:title="@string/menu_close_application" />
+              android:id="@+id/menu_app_rating"
+              android:icon="@drawable/ic_menu_app_rating"
+              android:title="@string/menu_app_rating" />
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_operation_others">
+        <menu>
+            <item
+              android:id="@+id/menu_settings"
+              android:icon="@drawable/ic_setting"
+              android:title="@string/menu_settings" />
+            <item
+              android:id="@+id/menu_contact"
+              android:icon="@drawable/ic_menu_contact"
+              android:title="@string/menu_contact" />
+            <item
+              android:id="@+id/menu_oss_license"
+              android:icon="@drawable/ic_menu_oss_license"
+              android:title="@string/menu_oss_license" />
         </menu>
     </item>
 

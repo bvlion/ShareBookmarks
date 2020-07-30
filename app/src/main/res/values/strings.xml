@@ -5,23 +5,43 @@
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_update">Data Update</string>
-    <string name="menu_app_rating">App rating</string>
-    <string name="menu_contact">Contact Us</string>
+    <!-- 左メニュー -->
+    <string name="menu_how_to_use">How to use</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_update">Update data</string>
+    <string name="menu_operation_billing">Support</string>
+    <string name="menu_billing">App billing</string>
+    <string name="menu_app_rating">Rating your app</string>
+    <string name="menu_operation_others">Other</string>
+    <string name="menu_contact">Contact us</string>
     <string name="menu_oss_license">OSS license</string>
-    <string name="menu_operation_setting">Setting</string>
-    <string name="menu_backup_restore_timing">Backup / restore timing</string>
-    <string name="menu_status_bar">Display in status bar</string>
-    <string name="menu_close_application">Close application when starting browser</string>
+    <string name="menu_settings">Settings</string>
 
-    <string name="popup_folder_delete">Delete a folder</string>
-    <string name="popup_folder_edit">Edit folder name</string>.
-    <string name="popup_folder_move">Move a folder</string>.
-    <string name="popup_folder_share">Share a folder</string>.
-    <string name="popup_item_delete">Delete a bookmark</string>.
-    <string name="popup_item_edit">Edit bookmarks</string>.
-    <string name="popup_item_move">Move the bookmark</string>.
-    <string name="popup_item_share">Share a bookmark</string>.
-    <string name="popup_item_thumbnail_update">Update the thumbnails</string>.
-    <string name="popup_item_create_shortcut">Create a shortcut</string>.
+    <!-- 右メニュー -->
+    <string name="menu_folder_add">Add folder</string>
+    <string name="menu_item_add">Add bookmarks</string>
+    <string name="menu_sort">Sort</string>
+    <string name="menu_image_reacquisition">Image retrieval</string>
+
+    <!-- ポップアップ -->
+    <string name="popup_folder_delete">Delete folder</string>
+    <string name="popup_folder_edit">Edit folder name</string>
+    <string name="popup_folder_move">Move folder</string>
+    <string name="popup_folder_share">Share folder</string>
+    <string name="popup_item_delete">Delete bookmark</string>
+    <string name="popup_item_edit">Edit bookmarks</string>
+    <string name="popup_item_move">Move bookmark</string>
+    <string name="popup_item_share">Share bookmark</string>
+    <string name="popup_item_thumbnail_update">Update thumbnails</string>
+    <string name="popup_item_create_shortcut">Create shortcut</string>
+
+    <!-- 設定 -->
+    <string name="setting_user_name">User name to display in the left menu</string>
+    <string name="setting_user_mail">Displaying an email address</string>
+    <string name="setting_backup_restore_timing">Backup and restore timing</string>
+    <string name="setting_backup_restore_timing_summary">When it is ON, it is linked to the server at the time of start-up and shutdown, or from the \"Data Update\" menu on the left. If you want to reduce the amount of communication by manual operation only, turn it off. </string>
+    <string name="setting_close_application">Quit the application when starting up a browser, etc.</string>
+    <string name="setting_close_application_summary">If you want to return to this app after the browser or other devices have been launched, turn it off. </string>
+    <string name="setting_start_folder">Initial display folder</string>
 </resources>

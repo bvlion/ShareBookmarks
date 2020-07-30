@@ -5,12 +5,12 @@ import net.ambitious.android.sharebookmarks.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 
-class InquiryActivity : BaseActivity() {
+class SettingActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    AnalyticsUtils.logStartActivity(firebaseAnalytics, "InquiryActivity")
+    AnalyticsUtils.logStartActivity(firebaseAnalytics, "SettingActivity")
 
-    setContentView(R.layout.activity_inquiry)
-    setTitle(R.string.menu_contact)
+    setContentView(R.layout.activity_setting)
+    setTitle(R.string.menu_settings)
   }
 }

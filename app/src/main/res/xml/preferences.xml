@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <EditTextPreference
+      android:key="user_name"
+      android:title="@string/setting_user_name"
+      android:dialogTitle="@string/setting_user_name"
+      app:useSimpleSummaryProvider="true" />
+    <SwitchPreferenceCompat
+      android:key="show_mail_address"
+      android:title="@string/setting_user_mail" />
+    <SwitchPreferenceCompat
+      android:key="backup_restore"
+      android:title="@string/setting_backup_restore_timing"
+      android:summary="@string/setting_backup_restore_timing_summary" />
+    <SwitchPreferenceCompat
+      android:key="close_app"
+      android:title="@string/setting_close_application"
+      android:summary="@string/setting_close_application_summary" />
+    <ListPreference
+      android:key="start_folder"
+      android:title="@string/setting_start_folder"
+      app:useSimpleSummaryProvider="true"
+      android:entries="@array/first_folder_labels"
+      android:entryValues="@array/first_folder_values"
+      android:dialogTitle="@string/setting_start_folder" />
+</androidx.preference.PreferenceScreen>
