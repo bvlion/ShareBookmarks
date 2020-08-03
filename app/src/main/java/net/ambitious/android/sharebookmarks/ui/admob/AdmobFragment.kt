@@ -1,6 +1,7 @@
 package net.ambitious.android.sharebookmarks.ui.admob
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,17 +29,47 @@ class AdmobFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     admobView = AdView(context).apply {
-      adSize = AdSize.BANNER
+      adSize = getAdaptiveAdSize()
       adUnitId = BuildConfig.AD_MOB_BANNER_KEY
     }
     admobContainer?.addView(admobView)
     admobView?.loadAd(AdRequest.Builder().build())
   }
 
+  private fun getAdaptiveAdSize(): AdSize {
+    val display = activity?.windowManager?.defaultDisplay
+    val outMetrics = DisplayMetrics()
+    display?.getMetrics(outMetrics)
+
+    val density = outMetrics.density
+
+    var adWidthPixels = admobContainer?.width?.toFloat()
+    if (adWidthPixels == 0f) {
+      adWidthPixels = outMetrics.widthPixels.toFloat()
+    }
+
+    val adWidth = (adWidthPixels?.div(density))?.toInt()
+    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+        context,
+        adWidth ?: return AdSize.BANNER
+    )
+  }
+
+  override fun onPause() {
+    admobView?.pause()
+    super.onPause()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    admobView?.resume()
+  }
+
   override fun onDestroy() {
     admobContainer?.let {
-      admobView.run {
+      admobView?.run {
         it.removeView(this)
+        destroy()
       }
     }
     admobContainer = null

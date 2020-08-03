@@ -7,7 +7,7 @@
 
     <!-- 左メニュー -->
     <string name="menu_how_to_use">How to use</string>
-    <string name="menu_login">Login</string>
+    <string name="menu_login">Google Login</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_update">Update data</string>
     <string name="menu_operation_billing">Support</string>
