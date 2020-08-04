@@ -14,3 +14,4 @@ google-services.json
 /google-play-service.json
 vendor/bundle
 app/schemas
+dependencies/signing.gradle

@@ -36,6 +36,7 @@ android {
             debuggable true
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
+            signingConfig signingConfigs.debug
             buildConfigField "String", "AD_MOB_BANNER_KEY", "\"" + globalConfiguration["adMobBannerKey"] + "\""
         }
         staging {
@@ -87,6 +88,8 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-androidx-fragment:$koin_version"
     implementation 'androidx.preference:preference:1.1.1'
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
+    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
 
     testImplementation 'junit:junit:4.12'
 
