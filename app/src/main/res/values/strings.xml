@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ShareBookmarks</string>
-    <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">Settings</string>
@@ -44,4 +43,10 @@
     <string name="setting_close_application">Quit the application when starting up a browser, etc.</string>
     <string name="setting_close_application_summary">If you want to return to this app after the browser or other devices have been launched, turn it off. </string>
     <string name="setting_start_folder">Initial display folder</string>
+
+    <!-- ダイアログ・スナックバー -->
+    <string name="sign_in_failure">Failed to retrieve your Google Account information.</string>
+    <string name="sign_in_success">You have signed in with %s.</string>
+    <string name="sign_out_confirm">Do you want to log out?</string>
+    <string name="sign_out_complete">Logged out.</string>
 </resources>

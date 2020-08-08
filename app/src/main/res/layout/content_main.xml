@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    tools:context=".activity.MainActivity">
+    tools:context=".ui.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"

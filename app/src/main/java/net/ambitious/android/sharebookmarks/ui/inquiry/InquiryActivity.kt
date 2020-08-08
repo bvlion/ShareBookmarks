@@ -1,14 +1,13 @@
-package net.ambitious.android.sharebookmarks.activity
+package net.ambitious.android.sharebookmarks.ui.inquiry
 
 import android.os.Bundle
 import net.ambitious.android.sharebookmarks.BaseActivity
 import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 
 class InquiryActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    AnalyticsUtils.logStartActivity(firebaseAnalytics, "InquiryActivity")
+    analyticsUtils.logStartActivity("InquiryActivity")
 
     setContentView(R.layout.activity_inquiry)
     setTitle(R.string.menu_contact)

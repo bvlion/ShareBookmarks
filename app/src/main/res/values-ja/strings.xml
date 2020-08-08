@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ブックマーク共有</string>
-    <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">設定</string>
@@ -44,4 +43,10 @@
     <string name="setting_close_application">ブラウザ等起動時にアプリ終了</string>
     <string name="setting_close_application_summary">ブラウザ等が起動した後にこのアプリに戻りたい場合は OFF にします。</string>
     <string name="setting_start_folder">初期表示フォルダ</string>
+
+    <!-- ダイアログ・スナックバー -->
+    <string name="sign_in_failure">Google アカウント情報の取得に失敗しました。</string>
+    <string name="sign_in_success">%s さんでログインしました。</string>
+    <string name="sign_out_confirm">ログアウトしますか？</string>
+    <string name="sign_out_complete">ログアウトしました。</string>
 </resources>

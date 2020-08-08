@@ -9,8 +9,8 @@ buildscript {
     ext.ads_version = '19.3.0'
     ext.remote_config_version = '19.2.0'
     ext.koin_version = '2.1.6'
-    ext.firebase_auth_version = '19.3.2'
-    ext.play_services_auth_version = '18.1.0'
+    ext.firebase_ui_auth_version = '6.2.0'
+    ext.glide_version = '4.11.0'
 
     repositories {
         google()

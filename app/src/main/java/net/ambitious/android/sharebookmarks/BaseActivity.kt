@@ -4,21 +4,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.RemoteConfigUtils
+import org.koin.android.ext.android.inject
 
 open class BaseActivity : AppCompatActivity() {
-  protected lateinit var firebaseAnalytics: FirebaseAnalytics
+  protected val analyticsUtils: AnalyticsUtils by inject()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    firebaseAnalytics = FirebaseAnalytics.getInstance(this)
     RemoteConfigUtils.fetch()
 
 //    setTheme(R.style.AppTheme_NoActionBar)
 
     if (isBackShowOnly()) {
-      supportActionBar?.apply {
+      supportActionBar?.run {
         setDisplayHomeAsUpEnabled(true)
       }
     }
