@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -152,6 +153,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
     header.findViewById<TextView>(R.id.user_name).text =
       preferences.userName ?: getString(R.string.app_name)
     header.findViewById<TextView>(R.id.user_mail).text = preferences.userEmail
+    header.findViewById<TextView>(R.id.user_name).visibility = if (preferences.showMailAddress) {
+      View.VISIBLE
+    } else {
+      View.GONE
+    }
   }
 
   private fun errorSnackbar() = showSnackbar(getString(R.string.sign_in_failure))

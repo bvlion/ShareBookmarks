@@ -11,7 +11,7 @@
       android:key="show_mail_address"
       android:title="@string/setting_user_mail" />
     <SwitchPreferenceCompat
-      android:key="backup_restore"
+      android:key="backup_restore_auto"
       android:title="@string/setting_backup_restore_timing"
       android:summary="@string/setting_backup_restore_timing_summary" />
     <SwitchPreferenceCompat
