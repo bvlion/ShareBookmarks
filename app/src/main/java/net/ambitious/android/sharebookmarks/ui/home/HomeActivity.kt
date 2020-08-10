@@ -75,18 +75,20 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == SIGN_IN_REQUEST_CODE) {
-      if (resultCode == RESULT_OK) {
-        FirebaseAuth.getInstance().currentUser?.let {
-          preferences.userName = it.displayName
-          preferences.userEmail = it.email
-          preferences.userIcon = it.photoUrl?.toString()
-          setNavigation()
-          showSnackbar(String.format(getString(R.string.sign_in_success), preferences.userName))
-        } ?: errorSnackbar()
-      } else {
-        errorSnackbar()
-      }
+    when (requestCode) {
+      SIGN_IN_REQUEST_CODE ->
+        if (resultCode == RESULT_OK) {
+          FirebaseAuth.getInstance().currentUser?.let {
+            preferences.userName = it.displayName
+            preferences.userEmail = it.email
+            preferences.userIcon = it.photoUrl?.toString()
+            setNavigation()
+            showSnackbar(String.format(getString(R.string.sign_in_success), preferences.userName))
+          } ?: errorSnackbar()
+        } else {
+          errorSnackbar()
+        }
+      SETTING_REQUEST_CODE -> setNavigation()
     }
   }
 
@@ -135,7 +137,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
             )
         )
       }
-      R.id.menu_settings -> startActivity(Intent(this@HomeActivity, SettingActivity::class.java))
+      R.id.menu_settings -> startActivityForResult(
+          Intent(
+              this@HomeActivity,
+              SettingActivity::class.java
+          ), SETTING_REQUEST_CODE
+      )
     }
     drawer_layout.closeDrawer(GravityCompat.START)
   }
@@ -153,7 +160,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
     header.findViewById<TextView>(R.id.user_name).text =
       preferences.userName ?: getString(R.string.app_name)
     header.findViewById<TextView>(R.id.user_mail).text = preferences.userEmail
-    header.findViewById<TextView>(R.id.user_name).visibility = if (preferences.showMailAddress) {
+    header.findViewById<TextView>(R.id.user_mail).visibility = if (preferences.showMailAddress) {
       View.VISIBLE
     } else {
       View.GONE
@@ -170,5 +177,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
   companion object {
     const val SIGN_IN_REQUEST_CODE = 1001
+    const val SETTING_REQUEST_CODE = 1002
   }
 }

@@ -1,12 +1,18 @@
 package net.ambitious.android.sharebookmarks.util
 
 import android.content.Context
+import android.text.TextUtils
+import androidx.preference.PreferenceManager
 
 object PreferencesUtils {
 
   class Data(private val pref: Preference) {
     var userName: String?
-      get() = pref.getString(USER_NAME)
+      get() = if (TextUtils.isEmpty(pref.getString(SETTING_USER_NAME))) {
+        pref.getString(USER_NAME)
+      } else {
+        pref.getString(SETTING_USER_NAME)
+      }
       set(value) = pref.save(USER_NAME, value)
 
     var userEmail: String?
@@ -36,19 +42,17 @@ object PreferencesUtils {
 
   class Preference(private val context: Context) {
     fun save(saveKey: String, saveValue: String?) =
-      context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).edit()
+      PreferenceManager.getDefaultSharedPreferences(context).edit()
           .putString(saveKey, saveValue).apply()
 
     fun notSave() = Unit
 
     fun getString(saveKey: String) =
-      context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).getString(saveKey, null)
+      PreferenceManager.getDefaultSharedPreferences(context).getString(saveKey, null)
 
     fun getBoolean(saveKey: String) =
-      context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).getBoolean(saveKey, false)
+      PreferenceManager.getDefaultSharedPreferences(context).getBoolean(saveKey, false)
   }
-
-  private const val PREFERENCE_NAME = "sharebookmarks_preferences"
 
   // Google 情報
   private const val USER_NAME = "user_name"
@@ -56,6 +60,7 @@ object PreferencesUtils {
   private const val USER_ICON = "user_icon"
 
   // 設定
+  private const val SETTING_USER_NAME = "setting_user_name"
   private const val SHOW_MAIL_ADDRESS = "show_mail_address"
   private const val BACKUP_RESTORE_AUTO = "backup_restore_auto"
   private const val CLOSE_APP = "close_app"

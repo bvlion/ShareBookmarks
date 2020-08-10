@@ -3,13 +3,14 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
     <EditTextPreference
-      android:key="user_name"
+      android:key="setting_user_name"
       android:title="@string/setting_user_name"
       android:dialogTitle="@string/setting_user_name"
       app:useSimpleSummaryProvider="true" />
     <SwitchPreferenceCompat
       android:key="show_mail_address"
-      android:title="@string/setting_user_mail" />
+      android:title="@string/setting_user_mail"
+      android:defaultValue="true" />
     <SwitchPreferenceCompat
       android:key="backup_restore_auto"
       android:title="@string/setting_backup_restore_timing"
