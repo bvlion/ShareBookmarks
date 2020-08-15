@@ -3,4 +3,7 @@ ext {
   appVersionName = '1.0.0'
   adMobCode = 'ca-app-pub-3940256099942544~3347511713'
   adMobBannerKey = 'ca-app-pub-3940256099942544/4177191030'
+  inquiryUrl = ''
+  stagingDomain = ''
+  releaseDomain = ''
 }

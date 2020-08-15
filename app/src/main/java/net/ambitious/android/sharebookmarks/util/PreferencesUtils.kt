@@ -23,6 +23,10 @@ object PreferencesUtils {
       get() = pref.getString(USER_ICON)
       set(value) = pref.save(USER_ICON, value)
 
+    var userBearer: String?
+      get() = pref.getString(USER_BEARER)
+      set(value) = pref.save(USER_BEARER, value)
+
     var showMailAddress: Boolean
       get() = pref.getBoolean(SHOW_MAIL_ADDRESS)
       set(_) = pref.notSave()
@@ -58,6 +62,7 @@ object PreferencesUtils {
   private const val USER_NAME = "user_name"
   private const val USER_EMAIL = "user_email"
   private const val USER_ICON = "user_icon"
+  private const val USER_BEARER = "user_bearer"
 
   // 設定
   private const val SETTING_USER_NAME = "setting_user_name"

@@ -2,19 +2,17 @@ package net.ambitious.android.sharebookmarks.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
+import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 
-class HomeViewModel(private val itemDao: ItemDao) : ViewModel() {
+class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
   private val _items = MutableLiveData<List<Item>>()
   val items: LiveData<List<Item>>
     get() = _items
 
   fun getItems(parentId: Long) {
-//    viewModelScope.launch {
+//    launch {
 //      _items.postValue(itemDao.getItems(parentId))
 //    }
 

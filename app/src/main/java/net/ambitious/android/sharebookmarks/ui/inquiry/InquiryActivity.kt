@@ -1,7 +1,7 @@
 package net.ambitious.android.sharebookmarks.ui.inquiry
 
 import android.os.Bundle
-import net.ambitious.android.sharebookmarks.BaseActivity
+import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 
 class InquiryActivity : BaseActivity() {

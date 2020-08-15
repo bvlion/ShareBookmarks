@@ -6,7 +6,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.ambitious.android.sharebookmarks.data.local.ShareBookmarksDatabase
+import net.ambitious.android.sharebookmarks.data.remote.ShareBookmarksApi
 import net.ambitious.android.sharebookmarks.ui.home.HomeViewModel
+import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import net.ambitious.android.sharebookmarks.util.RemoteConfigUtils
@@ -29,12 +31,17 @@ class ShareBookmarksApplication : Application() {
 
     startKoin {
       androidContext(this@ShareBookmarksApplication)
-      modules(viewModelModule, databaseModule, preferencesModule, analyticsModule)
+      modules(viewModelModule, databaseModule, apiModule, preferencesModule, analyticsModule)
     }
   }
 
   private val viewModelModule = module {
-    viewModel { HomeViewModel(get()) }
+    viewModel {
+      HomeViewModel(get())
+    }
+    viewModel {
+      InquiryViewModel(androidContext(), get())
+    }
   }
 
   private val databaseModule = module {
@@ -44,6 +51,16 @@ class ShareBookmarksApplication : Application() {
 
     factory {
       get<ShareBookmarksDatabase>().itemDao()
+    }
+  }
+
+  private val apiModule = module {
+    single {
+      ShareBookmarksApi.createInstance(get())
+    }
+
+    factory {
+      get<ShareBookmarksApi>().create4Inquiry()
     }
   }
 

@@ -49,4 +49,15 @@
     <string name="sign_in_success">%s さんでログインしました。</string>
     <string name="sign_out_confirm">ログアウトしますか？</string>
     <string name="sign_out_complete">ログアウトしました。</string>
+
+    <!-- お問い合わせ -->
+    <string name="inquiry_top_message">メールアドレスとお問い合わせ内容をご入力ください。</string>
+    <string name="inquiry_top_bottom">頂いたご意見は必ず確認いたしますが、全てにお返事はできないこともございます。\n何卒ご了承下さい。\n\n受け付け後、受付確認メールを送信しています。\n「」よりメールを受信できるよう設定をお願いいたします。</string>
+    <string name="email_hint">メールアドレス</string>
+    <string name="email_validation">メールアドレス形式で入力してください。</string>
+    <string name="inquiry_hint">お問い合わせ内容</string>
+    <string name="inquiry_validation">お問い合わせ内容を入力してください。</string>
+    <string name="send_button">送信する</string>
+    <string name="send_complete">お問い合わせを受け付けました。</string>
+    <string name="send_error">送信できませんでした。</string>
 </resources>

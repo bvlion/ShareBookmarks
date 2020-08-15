@@ -1,7 +1,7 @@
 package net.ambitious.android.sharebookmarks.ui.setting
 
 import android.os.Bundle
-import net.ambitious.android.sharebookmarks.BaseActivity
+import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 
 class SettingActivity : BaseActivity() {
@@ -11,9 +11,5 @@ class SettingActivity : BaseActivity() {
 
     setContentView(R.layout.activity_setting)
     setTitle(R.string.menu_settings)
-  }
-
-  override fun finish() {
-    super.finish()
   }
 }

@@ -25,7 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.toolbar
-import net.ambitious.android.sharebookmarks.BaseActivity
+import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity

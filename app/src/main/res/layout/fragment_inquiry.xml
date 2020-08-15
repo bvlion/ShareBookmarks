@@ -1,48 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <LinearLayout
+  <data>
+    <variable
+      name="listener"
+      type="net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel.OnClickListener" />
+    <variable
+      name="vm"
+      type="net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel" />
+  </data>
+
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/space_normal">
+    android:layout_height="wrap_content">
 
-    <TextView
-      android:id="@+id/inquiry_title"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="TODO" />
+      android:orientation="vertical"
+      android:padding="@dimen/space_normal">
 
-    <EditText
-      android:id="@+id/inquiry_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space_small"
-      android:gravity="top"
-      android:minLines="5" />
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inquiry_top_message" />
 
-    <TextView
-      android:id="@+id/inquiry_desc"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space_small"
-      android:text="TODO"
-      android:textSize="12sp" />
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inquiry_mail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small"
+        android:hint="@string/email_hint"
+        app:errorText="@{vm.mailAddressError}"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/send_button"
-      style="@style/Widget.MaterialComponents.Button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space_normal"
-      android:text="TODO"
-      android:textAllCaps="false"
-      app:cornerRadius="@dimen/space_very_small" />
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inquiry_mail"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:enabled="@{vm.isMailEnabled}"
+          android:text="@{vm.mailAddress}" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-  </LinearLayout>
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inquiry_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small"
+        android:hint="@string/inquiry_hint"
+        app:errorText="@{vm.inquiryError}"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-</ScrollView>
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inquiry_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="top"
+          android:inputType="textCapSentences|textMultiLine"
+          android:text="@{vm.inquiry}"
+          android:lines="5" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:text="@string/inquiry_top_bottom"
+        android:textSize="12sp" />
+
+      <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:text="@string/send_button"
+        android:textAllCaps="false"
+        android:enabled="@{vm.isSendButtonEnabled}"
+        android:clickable="@{vm.isSendButtonEnabled}"
+        android:onClick="@{() -> listener.onSendClick()}"
+        app:cornerRadius="@dimen/space_very_small" />
+
+    </LinearLayout>
+
+  </ScrollView>
+</layout>

@@ -28,6 +28,15 @@ File.open("dependencies/ext.gradle", mode = "w") {|f|
   f.write("  adMobBannerKey = '")
   f.write(ARGV[2])
   f.write("'\n")
+  f.write("  inquiryUrl = '")
+  f.write(ARGV[3])
+  f.write("'\n")
+  f.write("  stagingDomain = '")
+  f.write(ARGV[4])
+  f.write("'\n")
+  f.write("  releaseDomain = '")
+  f.write(ARGV[5])
+  f.write("'\n")
   f.write("}")
 }
 

@@ -1,9 +1,8 @@
-package net.ambitious.android.sharebookmarks
+package net.ambitious.android.sharebookmarks.ui
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.analytics.FirebaseAnalytics
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.RemoteConfigUtils
 import org.koin.android.ext.android.inject
