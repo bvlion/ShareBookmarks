@@ -60,4 +60,23 @@
     <string name="send_button">Send</string>
     <string name="send_complete">Inquiries are now accepted.</string>
     <string name="send_error">Could not send it.</string>
+
+    <!-- 新規作成・更新 -->
+    <string name="dialog_item_add_title">Add a bookmark</string>.
+    <string name="dialog_item_update_title">Update your bookmark</string>.
+    <string name="dialog_folder_add_title">Add a folder</string>.
+    <string name="dialog_folder_update_title">Update the folder name</string>.
+    <string name="dialog_folder_hint">Folder name</string>
+    <string name="dialog_item_hint">Title</string>
+    <string name="dialog_url_hint">URL</string>
+    <string name="dialog_folder_error">Enter a folder name. </string>.
+    <string name="dialog_item_error">Enter a title. </string>.
+    <string name="dialog_url_error">Enter the URL correctly. </string>.
+    <string name="dialog_cancel_button">Cancel</string>
+    <string name="dialog_add_button">Add</string>
+    <string name="dialog_update_button">Update</string>
+    <string name="snackbar_target_folder">folder name</string>
+    <string name="snackbar_target_item">bookmarks</string>
+    <string name="snackbar_update_message">Updated %s.</string>
+    <string name="snackbar_create_message">Added %s.</string>
 </resources>

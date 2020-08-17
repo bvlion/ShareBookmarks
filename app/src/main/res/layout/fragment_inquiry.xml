@@ -40,7 +40,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:enabled="@{vm.isMailEnabled}"
-          android:text="@{vm.mailAddress}" />
+          android:text="@{vm.mailAddress}"
+          android:inputType="textEmailAddress" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout

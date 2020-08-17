@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -27,13 +28,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
 import net.ambitious.android.sharebookmarks.util.Const
+import net.ambitious.android.sharebookmarks.util.Const.ItemType
+import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
+import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 
-class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
+class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
+    ItemEditDialogFragment.OnClickListener {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
   private val preferences: PreferencesUtils.Data by inject()
@@ -60,6 +66,16 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.menu_folder_add, R.id.menu_item_add ->
+        onCreateClick(
+            if (item.itemId == R.id.menu_folder_add) {
+              FOLDER
+            } else {
+              ITEM
+            }
+        )
+    }
     return super.onOptionsItemSelected(item)
   }
 
@@ -148,6 +164,45 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener {
   }
 
   override fun isBackShowOnly() = false
+
+  override fun onEdited(itemId: Long, itemName: String, itemUrl: String?) {
+    supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        ?.childFragmentManager?.fragments?.get(0)?.let {
+          (it as HomeFragment).updateItem(itemId, itemName, itemUrl)
+        }
+    showSnackbar(
+        if (itemId > 0) {
+          getString(R.string.snackbar_update_message)
+        } else {
+          getString(R.string.snackbar_create_message)
+        }.format(
+            if (TextUtils.isEmpty(itemUrl)) {
+              getString(R.string.snackbar_target_folder)
+            } else {
+              getString(R.string.snackbar_target_item)
+            }
+        )
+    )
+  }
+
+  fun onEdit(item: Item) {
+    ItemEditDialogFragment.newInstance(
+        item.id!!,
+        if (TextUtils.isEmpty(item.url)) {
+          FOLDER
+        } else {
+          ITEM
+        },
+        item.name,
+        item.url
+    )
+        .show(supportFragmentManager, ItemEditDialogFragment.TAG)
+  }
+
+  private fun onCreateClick(type: ItemType) {
+    ItemEditDialogFragment.newInstance(0, type, null, null)
+        .show(supportFragmentManager, ItemEditDialogFragment.TAG)
+  }
 
   private fun setNavigation() {
     nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userName == null

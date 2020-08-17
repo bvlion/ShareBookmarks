@@ -1,6 +1,7 @@
 package net.ambitious.android.sharebookmarks.ui.home
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,10 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     (holder as ItemViewHolder).apply {
-      _items[position].let {
-        titleTextView.text = it.name
-        if (it.url == null) {
-          when (it.ownerType) {
+      _items[position].let { item ->
+        titleTextView.text = item.name
+        if (item.url == null) {
+          when (item.ownerType) {
             Const.OwnerType.OWNER.value -> setCompoundDrawablesWithIntrinsicBounds(
                 titleTextView,
                 R.drawable.ic_item_folder
@@ -40,7 +41,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                   titleTextView,
                   R.drawable.ic_item_folder_shared
               )
-            else -> throw RuntimeException("Cannot parse owner type of ${it.ownerType}")
+            else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
           }
         } else {
           // TODO サムネイルを読み込む処理
@@ -53,39 +54,43 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
         menuImage.setOnClickListener { v ->
           PopupMenu(context, v).apply {
             menuInflater.inflate(
-                if (it.url == null) {
+                if (item.url == null) {
                   R.menu.row_folder_popup
                 } else {
                   R.menu.row_item_popup
                 }, menu
             )
-            setOnMenuItemClickListener { item ->
-              when (item.itemId) {
-                R.id.row_delete -> listener.onDeleteClick()
-                R.id.row_edit -> listener.onEditClick()
-                R.id.row_move -> listener.onMoveClick()
-                R.id.row_share -> listener.onShareClick()
-                R.id.row_create_shortcut -> listener.onCreateShortcut()
-                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick()
+            setOnMenuItemClickListener { menu ->
+              when (menu.itemId) {
+                R.id.row_delete -> listener.onDeleteClick(item.id!!)
+                R.id.row_edit -> listener.onEditClick(item)
+                R.id.row_move -> listener.onMoveClick(item.id!!)
+                R.id.row_share -> listener.onShareClick(item.id!!)
+                R.id.row_create_shortcut -> listener.onCreateShortcut(item.id!!)
+                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(item.id!!)
               }
               return@setOnMenuItemClickListener true
             }
           }.show()
         }
 
-        rowItem.setOnClickListener { listener.onRowClick() }
+        if (TextUtils.isEmpty(item.url)) {
+          rowItem.setOnClickListener { listener.onRowClick(item.id, null) }
+        } else {
+          rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
+        }
       }
     }
   }
 
   interface OnItemClickListener {
-    fun onRowClick()
-    fun onDeleteClick()
-    fun onEditClick()
-    fun onMoveClick()
-    fun onShareClick()
-    fun onCreateShortcut()
-    fun onThumbnailUpdateClick()
+    fun onRowClick(item: Long?, url: String?)
+    fun onDeleteClick(itemId: Long)
+    fun onEditClick(item: Item)
+    fun onMoveClick(itemId: Long)
+    fun onShareClick(itemId: Long)
+    fun onCreateShortcut(itemId: Long)
+    fun onThumbnailUpdateClick(itemId: Long)
   }
 
   fun setItems(items: List<Item>) {

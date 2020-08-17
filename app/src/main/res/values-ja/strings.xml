@@ -60,4 +60,23 @@
     <string name="send_button">送信する</string>
     <string name="send_complete">お問い合わせを受け付けました。</string>
     <string name="send_error">送信できませんでした。</string>
+
+    <!-- 新規作成・更新 -->
+    <string name="dialog_item_add_title">ブックマークの追加</string>
+    <string name="dialog_item_update_title">ブックマークの更新</string>
+    <string name="dialog_folder_add_title">フォルダの追加</string>
+    <string name="dialog_folder_update_title">フォルダ名の更新</string>
+    <string name="dialog_folder_hint">フォルダ名</string>
+    <string name="dialog_item_hint">タイトル</string>
+    <string name="dialog_url_hint">URL</string>
+    <string name="dialog_folder_error">フォルダ名を入力してください。</string>
+    <string name="dialog_item_error">タイトルを入力してください。</string>
+    <string name="dialog_url_error">URLを正しく入力してください。</string>
+    <string name="dialog_cancel_button">キャンセル</string>
+    <string name="dialog_add_button">追加</string>
+    <string name="dialog_update_button">更新</string>
+    <string name="snackbar_target_folder">フォルダ</string>
+    <string name="snackbar_target_item">ブックマーク</string>
+    <string name="snackbar_update_message">%sを更新しました。</string>
+    <string name="snackbar_create_message">%sを追加しました。</string>
 </resources>
