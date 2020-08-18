@@ -22,6 +22,7 @@
     <string name="menu_item_add">Add bookmarks</string>
     <string name="menu_sort">Sort</string>
     <string name="menu_image_reacquisition">Image retrieval</string>
+    <string name="breadcrumbs_next">&gt;</string>
 
     <!-- ポップアップ -->
     <string name="popup_folder_delete">Delete folder</string>
@@ -75,8 +76,13 @@
     <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_add_button">Add</string>
     <string name="dialog_update_button">Update</string>
+    <string name="dialog_delete_button">Delete</string>
     <string name="snackbar_target_folder">folder name</string>
     <string name="snackbar_target_item">bookmarks</string>
     <string name="snackbar_update_message">Updated %s.</string>
     <string name="snackbar_create_message">Added %s.</string>
+    <string name="delete_title">Do you want to delete %s?</string>
+    <string name="delete_item_message">This operation is irreversible.</string>
+    <string name="delete_folder_message">The bookmarks in the folder will also be deleted.\nThis operation is irreversible.</string>
+    <string name="deleted_message">Deleted. </string>
 </resources>

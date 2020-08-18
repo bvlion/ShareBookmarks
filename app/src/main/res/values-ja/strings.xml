@@ -22,6 +22,7 @@
     <string name="menu_item_add">ブックマーク追加</string>
     <string name="menu_sort">並び替え</string>
     <string name="menu_image_reacquisition">画像再取得</string>
+    <string name="breadcrumbs_next">&gt;</string>
 
     <!-- ポップアップ -->
     <string name="popup_folder_delete">フォルダを削除</string>
@@ -75,8 +76,13 @@
     <string name="dialog_cancel_button">キャンセル</string>
     <string name="dialog_add_button">追加</string>
     <string name="dialog_update_button">更新</string>
+    <string name="dialog_delete_button">削除</string>
     <string name="snackbar_target_folder">フォルダ</string>
     <string name="snackbar_target_item">ブックマーク</string>
     <string name="snackbar_update_message">%sを更新しました。</string>
     <string name="snackbar_create_message">%sを追加しました。</string>
+    <string name="delete_title">「%s」を削除しますか？</string>
+    <string name="delete_item_message">この操作は元に戻せません。</string>
+    <string name="delete_folder_message">フォルダ内のブックマークも削除されます。\nこの操作は元に戻せません。</string>
+    <string name="deleted_message">削除しました。</string>
 </resources>

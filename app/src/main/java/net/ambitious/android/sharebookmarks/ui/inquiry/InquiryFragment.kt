@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.databinding.FragmentInquiryBinding
@@ -38,7 +37,7 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
     if (viewModel.postResult.value == null) {
       viewModel.postResult.observe(
           viewLifecycleOwner,
-          Observer {
+          {
             view?.run {
               Snackbar.make(
                   this, if (it) {

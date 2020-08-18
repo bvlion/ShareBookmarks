@@ -1,7 +1,6 @@
 package net.ambitious.android.sharebookmarks.data.local.item
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -17,14 +16,14 @@ interface ItemDao {
   @Update
   suspend fun update(items: Item)
 
-  @Delete
-  suspend fun delete(item: Item)
+  @Query("DELETE FROM items WHERE id = :itemId")
+  suspend fun delete(itemId: Long)
 
   @Query("SELECT * FROM items WHERE parent_id = :parentId ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
 
   @Query("SELECT * FROM items WHERE id = :itemId")
-  suspend fun getItem(itemId: Long): Item
+  suspend fun getItem(itemId: Long): Item?
 
   @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId")
   suspend fun getMaxOrder(parentId: Long): Int?

@@ -1,7 +1,6 @@
 package net.ambitious.android.sharebookmarks.ui.inquiry
 
 import android.content.Context
-import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.ambitious.android.sharebookmarks.BuildConfig
@@ -23,7 +22,7 @@ class InquiryViewModel(
       if (BuildConfig.CONTACT_URL.isEmpty()) {
         true
       } else {
-        !TextUtils.isEmpty(contactApi.postContact(mailAddress.value!!, inquiry.value!!))
+        contactApi.postContact(mailAddress.value!!, inquiry.value!!).isNotEmpty()
       }.let {
         _postResult.postValue(it)
         _isSendButtonEnabled.postValue(!it)

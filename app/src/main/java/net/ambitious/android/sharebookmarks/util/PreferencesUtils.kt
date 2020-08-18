@@ -1,14 +1,13 @@
 package net.ambitious.android.sharebookmarks.util
 
 import android.content.Context
-import android.text.TextUtils
 import androidx.preference.PreferenceManager
 
 object PreferencesUtils {
 
   class Data(private val pref: Preference) {
     var userName: String?
-      get() = if (TextUtils.isEmpty(pref.getString(SETTING_USER_NAME))) {
+      get() = if (pref.getString(SETTING_USER_NAME).isNullOrEmpty()) {
         pref.getString(USER_NAME)
       } else {
         pref.getString(SETTING_USER_NAME)

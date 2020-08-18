@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -44,6 +43,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private lateinit var appBarConfiguration: AppBarConfiguration
   private val preferences: PreferencesUtils.Data by inject()
 
+  private lateinit var homeFragment: HomeFragment
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     analyticsUtils.logStartActivity("MainActivity")
@@ -59,6 +60,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     nav_view.setNavigationItemSelectedListener(this)
 
     setNavigation()
+  }
+
+  override fun onStart() {
+    super.onStart()
+    homeFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        ?.childFragmentManager?.fragments?.get(0) as HomeFragment
   }
 
   override fun onCreateOptionsMenu(menu: Menu) = true.apply {
@@ -86,7 +93,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
       drawer_layout.closeDrawer(GravityCompat.START)
     } else {
-      super.onBackPressed()
+      homeFragment.backPress()
     }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -166,17 +173,14 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   override fun isBackShowOnly() = false
 
   override fun onEdited(itemId: Long, itemName: String, itemUrl: String?) {
-    supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        ?.childFragmentManager?.fragments?.get(0)?.let {
-          (it as HomeFragment).updateItem(itemId, itemName, itemUrl)
-        }
+    homeFragment.updateItem(itemId, itemName, itemUrl)
     showSnackbar(
         if (itemId > 0) {
           getString(R.string.snackbar_update_message)
         } else {
           getString(R.string.snackbar_create_message)
         }.format(
-            if (TextUtils.isEmpty(itemUrl)) {
+            if (itemUrl.isNullOrEmpty()) {
               getString(R.string.snackbar_target_folder)
             } else {
               getString(R.string.snackbar_target_item)
@@ -188,7 +192,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   fun onEdit(item: Item) {
     ItemEditDialogFragment.newInstance(
         item.id!!,
-        if (TextUtils.isEmpty(item.url)) {
+        if (item.url.isNullOrEmpty()) {
           FOLDER
         } else {
           ITEM
@@ -214,11 +218,13 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         .into(header.findViewById(R.id.user_image))
     header.findViewById<TextView>(R.id.user_name).text =
       preferences.userName ?: getString(R.string.app_name)
-    header.findViewById<TextView>(R.id.user_mail).text = preferences.userEmail
-    header.findViewById<TextView>(R.id.user_mail).visibility = if (preferences.showMailAddress) {
-      View.VISIBLE
-    } else {
-      View.GONE
+    header.findViewById<TextView>(R.id.user_mail).run {
+      text = preferences.userEmail
+      visibility = if (preferences.showMailAddress) {
+        View.VISIBLE
+      } else {
+        View.GONE
+      }
     }
   }
 
