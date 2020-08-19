@@ -1,7 +1,12 @@
 package net.ambitious.android.sharebookmarks.ui.home
 
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,9 +75,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       homeViewModel.setParentId(it)
     }
     url?.let {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
-      if (preferences.closeApp) {
-        activity?.finish()
+      try {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+        if (preferences.closeApp) {
+          activity?.finish()
+        }
+      } catch (_: Exception) {
+        Toast.makeText(activity, R.string.cant_start_activity, Toast.LENGTH_LONG).show()
       }
     }
   }
@@ -116,14 +125,31 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
-  override fun onCreateShortcut(itemId: Long) {
-    // TODO
-    Toast.makeText(context, "onCreateShortcut", Toast.LENGTH_SHORT).show()
+  override fun onCreateShortcut(itemId: Long, url: String, name: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      (activity?.getSystemService(Context.SHORTCUT_SERVICE) as ShortcutManager).requestPinShortcut(
+          ShortcutInfo.Builder(activity, "shortcut-id-$itemId")
+              .setShortLabel(name)
+              .setIcon(Icon.createWithResource(activity, R.mipmap.ic_launcher_round)) // TODO
+              .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+              .build(), null
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      activity?.sendBroadcast(Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
+        putExtra(Intent.EXTRA_SHORTCUT_NAME, name)
+        putExtra(Intent.EXTRA_SHORTCUT_INTENT, Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        putExtra(
+            Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+            Intent.ShortcutIconResource.fromContext(activity, R.mipmap.ic_launcher_round) // TODO
+        )
+      })
+      Toast.makeText(context, R.string.shortcut_created, Toast.LENGTH_SHORT).show()
+    }
   }
 
-  override fun onThumbnailUpdateClick(itemId: Long) {
-    // TODO
-    Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+  override fun onThumbnailUpdateClick(itemId: Long, url: String) {
+    Toast.makeText(context, "onThumbnailUpdateClick", Toast.LENGTH_SHORT).show()
   }
 
   override fun onRowClick(id: Long) {

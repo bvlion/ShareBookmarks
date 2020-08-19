@@ -50,6 +50,8 @@
     <string name="sign_in_success">%s さんでログインしました。</string>
     <string name="sign_out_confirm">ログアウトしますか？</string>
     <string name="sign_out_complete">ログアウトしました。</string>
+    <string name="cant_start_activity">ショートカットを起動できませんでした。\n登録内容をご確認ください。</string>
+    <string name="shortcut_created">ホームにショートカットを作成しました。</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">メールアドレスとお問い合わせ内容をご入力ください。</string>

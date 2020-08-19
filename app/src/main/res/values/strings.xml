@@ -50,6 +50,8 @@
     <string name="sign_in_success">You have signed in with %s.</string>
     <string name="sign_out_confirm">Do you want to log out?</string>
     <string name="sign_out_complete">Logged out.</string>
+    <string name="cant_start_activity">Unable to activate the shortcut.\nPlease check your registration details.</string>
+    <string name="shortcut_created">A shortcut has been created for Home.</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">Please enter your email address and contact details.</string>

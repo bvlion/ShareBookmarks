@@ -76,8 +76,12 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                 R.id.row_edit -> listener.onEditClick(item)
                 R.id.row_move -> listener.onMoveClick(item.id!!)
                 R.id.row_share -> listener.onShareClick(item.id!!, item.url)
-                R.id.row_create_shortcut -> listener.onCreateShortcut(item.id!!)
-                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(item.id!!)
+                R.id.row_create_shortcut -> listener.onCreateShortcut(
+                    item.id!!,
+                    item.url!!,
+                    item.name
+                )
+                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(item.id!!, item.url!!)
               }
               return@setOnMenuItemClickListener true
             }
@@ -99,8 +103,8 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onEditClick(item: Item)
     fun onMoveClick(itemId: Long)
     fun onShareClick(itemId: Long, url: String?)
-    fun onCreateShortcut(itemId: Long)
-    fun onThumbnailUpdateClick(itemId: Long)
+    fun onCreateShortcut(itemId: Long, url: String, name: String)
+    fun onThumbnailUpdateClick(itemId: Long, url: String)
   }
 
   fun setItems(items: List<Item>) {
