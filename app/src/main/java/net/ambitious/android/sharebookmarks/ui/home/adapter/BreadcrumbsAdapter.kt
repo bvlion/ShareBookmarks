@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.ui.home
+package net.ambitious.android.sharebookmarks.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.R.layout
 
 class BreadcrumbsAdapter(private val listener: OnBreadcrumbsClickListener) : Adapter<ViewHolder>() {
   private val _breadcrumbs = arrayListOf<Pair<Long, String>>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BreadcrumbsViewHolder(
       LayoutInflater.from(parent.context)
-          .inflate(R.layout.row_breadcrumbs, parent, false)
+          .inflate(layout.row_breadcrumbs, parent, false)
   )
 
   override fun getItemCount() = _breadcrumbs.size

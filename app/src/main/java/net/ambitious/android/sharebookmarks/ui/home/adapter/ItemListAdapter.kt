@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.ui.home
+package net.ambitious.android.sharebookmarks.ui.home.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
@@ -23,7 +24,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
       LayoutInflater.from(parent.context)
-          .inflate(R.layout.row_item, parent, false)
+          .inflate(layout.row_item, parent, false)
   )
 
   override fun getItemCount() = _items.size

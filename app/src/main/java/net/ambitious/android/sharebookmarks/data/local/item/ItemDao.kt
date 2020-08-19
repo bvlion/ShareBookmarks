@@ -22,9 +22,15 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE parent_id = :parentId ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
 
+  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId ORDER BY `order`")
+  suspend fun getFolderItems(selfId: Long): List<Item>
+
   @Query("SELECT * FROM items WHERE id = :itemId")
   suspend fun getItem(itemId: Long): Item?
 
   @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId")
   suspend fun getMaxOrder(parentId: Long): Int?
+
+  @Query("UPDATE items SET parent_id = :parentId WHERE id = :selfId")
+  suspend fun move(selfId: Long, parentId: Long)
 }

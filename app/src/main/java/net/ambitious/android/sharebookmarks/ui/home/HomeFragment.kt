@@ -21,8 +21,10 @@ import kotlinx.android.synthetic.main.fragment_home.items_recycler_view
 import kotlinx.android.synthetic.main.fragment_home.items_refresh
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
-import net.ambitious.android.sharebookmarks.ui.home.BreadcrumbsAdapter.OnBreadcrumbsClickListener
-import net.ambitious.android.sharebookmarks.ui.home.ItemListAdapter.OnItemClickListener
+import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter
+import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.OnBreadcrumbsClickListener
+import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
+import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnItemClickListener
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
@@ -48,6 +50,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           itemListAdapter.setItems(it)
           items_refresh.isRefreshing = false
         })
+
+    homeViewModel.folders.observe(
+        viewLifecycleOwner,
+        { folderSelectDialogShow(it.first, it.second) }
+    )
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -110,8 +117,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     (activity as HomeActivity).onEdit(item)
 
   override fun onMoveClick(itemId: Long) {
-    // TODO
-    Toast.makeText(context, "onMoveClick", Toast.LENGTH_SHORT).show()
+    homeViewModel.getFolders(itemId)
   }
 
   override fun onShareClick(itemId: Long, url: String?) {
@@ -160,6 +166,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.updateItem(itemId, itemName, itemUrl)
   }
 
+  fun moveItem(selfId: Long, parentId: Long) = homeViewModel.moveItem(selfId, parentId)
+
   fun backPress() {
     if (homeViewModel.breadcrumbs.value?.size == 1) {
       activity?.finish()
@@ -171,4 +179,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       )
     }
   }
+
+  private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
+    (activity as HomeActivity).onMove(selfId, folderList)
 }

@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.ui.home
+package net.ambitious.android.sharebookmarks.ui.home.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -84,7 +84,7 @@ class ItemEditDialogFragment : DialogFragment() {
             }
         )
         .setView(
-            View.inflate(activity, R.layout.item_folfer_edit, null).apply {
+            View.inflate(activity, R.layout.dialog_item_edit, null).apply {
               editTitleLayout = findViewById(R.id.edit_title_layout)
               editTitleArea = findViewById(R.id.edit_title_area)
               editUrlLayout = findViewById(R.id.edit_url_layout)

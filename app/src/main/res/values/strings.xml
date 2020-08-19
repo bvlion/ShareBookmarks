@@ -79,6 +79,8 @@
     <string name="dialog_add_button">Add</string>
     <string name="dialog_update_button">Update</string>
     <string name="dialog_delete_button">Delete</string>
+    <string name="dialog_move_title">Selecting the destination folder</string>
+    <string name="dialog_move_button">Move</string>
     <string name="snackbar_target_folder">folder name</string>
     <string name="snackbar_target_item">bookmarks</string>
     <string name="snackbar_update_message">Updated %s.</string>
@@ -87,4 +89,5 @@
     <string name="delete_item_message">This operation is irreversible.</string>
     <string name="delete_folder_message">The bookmarks in the folder will also be deleted.\nThis operation is irreversible.</string>
     <string name="deleted_message">Deleted. </string>
+    <string name="move_complete">Moved</string>
 </resources>

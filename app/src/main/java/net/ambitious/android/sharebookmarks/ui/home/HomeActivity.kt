@@ -28,6 +28,8 @@ import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
+import net.ambitious.android.sharebookmarks.ui.home.dialog.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
 import net.ambitious.android.sharebookmarks.util.Const
@@ -38,7 +40,8 @@ import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 
 class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
-    ItemEditDialogFragment.OnClickListener {
+    ItemEditDialogFragment.OnClickListener,
+    FolderListDialogFragment.OnSetListener {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
   private val preferences: PreferencesUtils.Data by inject()
@@ -188,6 +191,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         )
     )
   }
+
+  override fun onset(selfId: Long, parentId: Long) {
+    homeFragment.moveItem(selfId, parentId)
+    showSnackbar(getString(R.string.move_complete))
+  }
+
+  fun onMove(selfId: Long, folderList: List<Item>) =
+    FolderListDialogFragment.newInstance(selfId, ArrayList(folderList))
+        .show(supportFragmentManager, FolderListDialogFragment.TAG)
 
   fun onEdit(item: Item) {
     ItemEditDialogFragment.newInstance(

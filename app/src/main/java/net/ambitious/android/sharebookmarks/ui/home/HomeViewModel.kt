@@ -19,6 +19,10 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
   val breadcrumbs: LiveData<MutableList<Pair<Long, String>>>
     get() = _breadcrumbs
 
+  private val _folders = MutableLiveData<Pair<Long, List<Item>>>()
+  val folders: LiveData<Pair<Long, List<Item>>>
+    get() = _folders
+
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
   fun setParentId(parentId: Long) {
@@ -30,7 +34,38 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
     _breadcrumbsList.clear()
     launch {
       createBreadcrumbs(_parentId.value ?: 0L)
-      _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+      postItems()
+    }
+  }
+
+  fun getFolders(selfId: Long) {
+    launch {
+      val folders = itemDao.getFolderItems(selfId)
+      val idList = arrayListOf<Long>()
+      // 自身の配下のフォルダを再帰的に除外
+      folders.filter { selfId == it.parentId }.map { it.id!! }.forEach { idList.add(it) }
+      if (idList.isNotEmpty()) {
+        deleteChildItems(folders, idList, idList)
+      }
+      _folders.postValue(Pair(selfId, folders.filter { !idList.contains(it.id) }))
+    }
+  }
+
+  private fun deleteChildItems(
+    items: List<Item>,
+    idAllList: ArrayList<Long>,
+    idCheckList: ArrayList<Long>
+  ) {
+    val idNextList = arrayListOf<Long>()
+    // チェック対象の配下のフォルダの ID を取得
+    items.filter { idCheckList.contains(it.parentId) }
+        .map { it.id!! }
+        .forEach { idNextList.add(it) }
+    // チェックが完了に伴い全件リストに格納
+    idAllList.addAll(idCheckList)
+    // まだ配下にフォルダがあればこの処理を再度呼び出す
+    if (idNextList.isNotEmpty()) {
+      deleteChildItems(items, idAllList, idNextList)
     }
   }
 
@@ -43,6 +78,13 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
     } else {
       _breadcrumbsList.add(0, Pair(0, "Home"))
       _breadcrumbs.postValue(_breadcrumbsList)
+    }
+  }
+
+  fun moveItem(selfId: Long, parentId: Long) {
+    launch {
+      itemDao.move(selfId, parentId)
+      postItems()
     }
   }
 
@@ -78,16 +120,20 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
             )
         )
       }
-      _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+      postItems()
     }
 
   fun deleteItem(itemId: Long) = launch {
     deleteItems(itemDao.getItems(itemId))
     itemDao.delete(itemId)
-    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+    postItems()
   }
 
   private fun deleteItems(childItems: List<Item>) {
     childItems.filter { it.url.isNullOrEmpty() }.forEach { deleteItem(it.id!!) }
+  }
+
+  private suspend fun postItems() {
+    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
   }
 }
