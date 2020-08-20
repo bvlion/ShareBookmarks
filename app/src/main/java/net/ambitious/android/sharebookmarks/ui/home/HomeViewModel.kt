@@ -23,6 +23,10 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
   val folders: LiveData<Pair<Long, List<Item>>>
     get() = _folders
 
+  private val _sorting = MutableLiveData<Boolean>()
+  val sorting: LiveData<Boolean>
+    get() = _sorting
+
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
   fun setParentId(parentId: Long) {
@@ -35,6 +39,20 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
     launch {
       createBreadcrumbs(_parentId.value ?: 0L)
       postItems()
+    }
+  }
+
+  fun sortModeChange(start: Boolean) {
+    if (_sorting.value == start) {
+      return
+    }
+    _sorting.value = start
+    launch { postItems() }
+  }
+
+  fun sortSave(items: List<Item>) {
+    launch {
+      items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
     }
   }
 
@@ -83,7 +101,7 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
 
   fun moveItem(selfId: Long, parentId: Long) {
     launch {
-      itemDao.move(selfId, parentId)
+      itemDao.move(selfId, parentId, itemDao.getMaxOrder(parentId) ?: 0)
       postItems()
     }
   }

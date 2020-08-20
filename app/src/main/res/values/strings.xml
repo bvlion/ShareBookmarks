@@ -90,4 +90,6 @@
     <string name="delete_folder_message">The bookmarks in the folder will also be deleted.\nThis operation is irreversible.</string>
     <string name="deleted_message">Deleted. </string>
     <string name="move_complete">Moved</string>
+    <string name="snackbar_sort_complete_message">I saved the sort.</string>
+    <string name="snackbar_sort_cancel_message">The sort has been cancelled.</string>
 </resources>

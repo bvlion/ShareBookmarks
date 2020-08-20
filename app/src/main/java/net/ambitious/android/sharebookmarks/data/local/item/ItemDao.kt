@@ -31,6 +31,9 @@ interface ItemDao {
   @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId")
   suspend fun getMaxOrder(parentId: Long): Int?
 
-  @Query("UPDATE items SET parent_id = :parentId WHERE id = :selfId")
-  suspend fun move(selfId: Long, parentId: Long)
+  @Query("UPDATE items SET parent_id = :parentId, `order` = :order WHERE id = :selfId")
+  suspend fun move(selfId: Long, parentId: Long, order: Int)
+
+  @Query("UPDATE items SET `order` = :order WHERE id = :selfId")
+  suspend fun orderUpdate(selfId: Long, order: Int)
 }

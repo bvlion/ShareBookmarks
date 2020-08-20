@@ -47,6 +47,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private val preferences: PreferencesUtils.Data by inject()
 
   private lateinit var homeFragment: HomeFragment
+  private var sorting = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,6 +76,16 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     menuInflater.inflate(R.menu.main, menu)
   }
 
+  override fun onPrepareOptionsMenu(menu: Menu?) = true.apply {
+    menu?.let {
+      it.findItem(R.id.menu_folder_add).isVisible = !sorting
+      it.findItem(R.id.menu_item_add).isVisible = !sorting
+      it.findItem(R.id.menu_sort_start).isVisible = !sorting
+      it.findItem(R.id.menu_image_reacquisition).isVisible = !sorting
+      it.findItem(R.id.menu_sort_end).isVisible = sorting
+    }
+  }
+
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       R.id.menu_folder_add, R.id.menu_item_add ->
@@ -85,6 +96,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
               ITEM
             }
         )
+      R.id.menu_sort_start -> homeFragment.sort(start = true, isSave = false)
+      R.id.menu_sort_end -> homeFragment.sort(start = false, isSave = true)
     }
     return super.onOptionsItemSelected(item)
   }
@@ -215,6 +228,17 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         .show(supportFragmentManager, ItemEditDialogFragment.TAG)
   }
 
+  fun setSortMode(sortStart: Boolean) {
+    sorting = sortStart
+    invalidateOptionsMenu()
+  }
+
+  fun showSnackbar(message: String) = Snackbar.make(
+      findViewById<FragmentContainerView>(R.id.nav_host_fragment),
+      message,
+      Snackbar.LENGTH_LONG
+  ).show()
+
   private fun onCreateClick(type: ItemType) {
     ItemEditDialogFragment.newInstance(0, type, null, null)
         .show(supportFragmentManager, ItemEditDialogFragment.TAG)
@@ -241,12 +265,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   }
 
   private fun errorSnackbar() = showSnackbar(getString(R.string.sign_in_failure))
-
-  private fun showSnackbar(message: String) = Snackbar.make(
-      findViewById<FragmentContainerView>(R.id.nav_host_fragment),
-      message,
-      Snackbar.LENGTH_LONG
-  ).show()
 
   companion object {
     const val SIGN_IN_REQUEST_CODE = 1001

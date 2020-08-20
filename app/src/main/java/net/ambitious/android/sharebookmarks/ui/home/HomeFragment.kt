@@ -15,7 +15,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.fragment_home.breadcrumbs_recycler_view
 import kotlinx.android.synthetic.main.fragment_home.items_recycler_view
 import kotlinx.android.synthetic.main.fragment_home.items_refresh
@@ -35,6 +38,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private val homeViewModel by viewModel<HomeViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
+
   private lateinit var itemListAdapter: ItemListAdapter
   private lateinit var breadcrumbsAdapter: BreadcrumbsAdapter
 
@@ -55,6 +59,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         viewLifecycleOwner,
         { folderSelectDialogShow(it.first, it.second) }
     )
+
+    homeViewModel.sorting.observe(
+        viewLifecycleOwner,
+        {
+          itemListAdapter.setSortable(it)
+          items_recycler_view.post { itemListAdapter.notifyDataSetChanged() }
+          itemTouchHelper.attachToRecyclerView(items_recycler_view)
+        }
+    )
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -72,8 +85,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       homeViewModel.getItems()
 
       items_refresh.setOnRefreshListener {
-        homeViewModel.getItems()
+        if (homeViewModel.sorting.value == false) {
+          homeViewModel.getItems()
+        } else {
+          items_refresh.isRefreshing = false
+        }
       }
+
+      sort(homeViewModel.sorting.value ?: false, false)
     }
   }
 
@@ -162,6 +181,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.setParentId(id)
   }
 
+  override fun onStartDrag(holder: ViewHolder) {
+    itemTouchHelper.startDrag(holder)
+  }
+
   fun updateItem(itemId: Long, itemName: String, itemUrl: String?) {
     homeViewModel.updateItem(itemId, itemName, itemUrl)
   }
@@ -169,6 +192,12 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   fun moveItem(selfId: Long, parentId: Long) = homeViewModel.moveItem(selfId, parentId)
 
   fun backPress() {
+    if (homeViewModel.sorting.value == true) {
+      (activity as HomeActivity).showSnackbar(getString(R.string.snackbar_sort_cancel_message))
+      sort(start = false, isSave = false)
+      return
+    }
+
     if (homeViewModel.breadcrumbs.value?.size == 1) {
       activity?.finish()
     } else {
@@ -180,6 +209,47 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
+  fun sort(start: Boolean, isSave: Boolean) {
+    if (isSave) {
+      (activity as HomeActivity).showSnackbar(getString(R.string.snackbar_sort_complete_message))
+      homeViewModel.sortSave(itemListAdapter.getItems())
+    } else {
+      homeViewModel.sortModeChange(start)
+    }
+    (activity as HomeActivity).setSortMode(start)
+  }
+
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)
+
+  private val itemTouchHelper by lazy {
+    val simpleItemTouchCallback =
+      object : ItemTouchHelper.SimpleCallback(
+          ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
+          0
+      ) {
+
+        override fun onMove(
+          recyclerView: RecyclerView,
+          viewHolder: ViewHolder,
+          target: ViewHolder
+        ): Boolean {
+          (recyclerView.adapter as ItemListAdapter).moveItem(
+              viewHolder.adapterPosition,
+              target.adapterPosition
+          )
+          return false
+        }
+
+        override fun onSwiped(viewHolder: ViewHolder, direction: Int) {}
+
+        override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
+          if (homeViewModel.sorting.value == false) {
+            sort(start = true, isSave = false)
+          }
+        }
+      }
+
+    ItemTouchHelper(simpleItemTouchCallback)
+  }
 }

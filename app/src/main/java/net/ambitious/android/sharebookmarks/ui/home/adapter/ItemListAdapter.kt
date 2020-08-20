@@ -1,7 +1,9 @@
 package net.ambitious.android.sharebookmarks.ui.home.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -21,6 +23,7 @@ import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 class ItemListAdapter(private val context: Context, private val listener: OnItemClickListener) :
     Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
+  private var sortMode = false
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
       LayoutInflater.from(parent.context)
@@ -29,6 +32,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   override fun getItemCount() = _items.size
 
+  @SuppressLint("ClickableViewAccessibility")
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     (holder as ItemViewHolder).apply {
       _items[position].let { item ->
@@ -89,10 +93,28 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
           }.show()
         }
 
-        if (item.url.isNullOrEmpty()) {
-          rowItem.setOnClickListener { listener.onRowClick(item.id, null) }
+        if (sortMode) {
+          rowItem.setOnTouchListener { v, event ->
+            when (event.actionMasked) {
+              MotionEvent.ACTION_DOWN -> listener.onStartDrag(holder)
+              MotionEvent.ACTION_UP -> v.performClick()
+            }
+            v.onTouchEvent(event)
+          }
         } else {
-          rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
+          if (item.url.isNullOrEmpty()) {
+            rowItem.setOnClickListener { listener.onRowClick(item.id, null) }
+          } else {
+            rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
+          }
+        }
+
+        if (sortMode) {
+          menuImage.visibility = View.GONE
+          sortImage.visibility = View.VISIBLE
+        } else {
+          menuImage.visibility = View.VISIBLE
+          sortImage.visibility = View.GONE
         }
       }
     }
@@ -106,6 +128,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onShareClick(itemId: Long, url: String?)
     fun onCreateShortcut(itemId: Long, url: String, name: String)
     fun onThumbnailUpdateClick(itemId: Long, url: String)
+    fun onStartDrag(holder: ViewHolder)
   }
 
   fun setItems(items: List<Item>) {
@@ -114,13 +137,27 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     notifyDataSetChanged()
   }
 
+  fun setSortable(isSortMode: Boolean) {
+    sortMode = isSortMode
+  }
+
+  fun getItems() = _items
+
   private fun setCompoundDrawablesWithIntrinsicBounds(view: TextView, resourceId: Int) =
     view.setCompoundDrawablesWithIntrinsicBounds(resourceId, 0, 0, 0)
+
+  fun moveItem(fromPosition: Int, toPosition: Int) {
+    notifyItemMoved(fromPosition, toPosition)
+    val item: Item = _items[fromPosition]
+    _items.removeAt(fromPosition)
+    _items.add(toPosition, item)
+  }
 
   class ItemViewHolder internal constructor(itemView: View) :
       ViewHolder(itemView) {
     val titleTextView = itemView.findViewById(R.id.title) as TextView
     val menuImage = itemView.findViewById(R.id.menu_image) as ImageView
+    val sortImage = itemView.findViewById(R.id.menu_sort) as ImageView
     val rowItem = itemView.findViewById(R.id.row_item) as LinearLayout
   }
 }
