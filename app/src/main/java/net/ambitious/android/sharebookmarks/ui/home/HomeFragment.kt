@@ -65,7 +65,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         {
           itemListAdapter.setSortable(it)
           items_recycler_view.post { itemListAdapter.notifyDataSetChanged() }
-          itemTouchHelper.attachToRecyclerView(items_recycler_view)
+          itemTouchHelper.attachToRecyclerView(
+              if (it) {
+                items_recycler_view
+              } else {
+                null
+              }
+          )
         }
     )
   }
@@ -185,6 +191,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     itemTouchHelper.startDrag(holder)
   }
 
+  override fun onsetSortMode() {
+    sort(start = true, isSave = false)
+  }
+
   fun updateItem(itemId: Long, itemName: String, itemUrl: String?) {
     homeViewModel.updateItem(itemId, itemName, itemUrl)
   }
@@ -242,12 +252,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         }
 
         override fun onSwiped(viewHolder: ViewHolder, direction: Int) {}
-
-        override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
-          if (homeViewModel.sorting.value == false) {
-            sort(start = true, isSave = false)
-          }
-        }
       }
 
     ItemTouchHelper(simpleItemTouchCallback)
