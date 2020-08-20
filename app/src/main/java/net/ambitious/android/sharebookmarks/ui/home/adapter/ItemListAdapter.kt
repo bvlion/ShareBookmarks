@@ -12,6 +12,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.item.Item
@@ -39,23 +40,19 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
         titleTextView.text = item.name
         if (item.url == null) {
           when (item.ownerType) {
-            Const.OwnerType.OWNER.value -> setCompoundDrawablesWithIntrinsicBounds(
-                titleTextView,
+            Const.OwnerType.OWNER.value -> titleImageView.setImageResource(
                 R.drawable.ic_item_folder
             )
-            Const.OwnerType.EDITABLE.value or Const.OwnerType.READONLY.value ->
-              setCompoundDrawablesWithIntrinsicBounds(
-                  titleTextView,
-                  R.drawable.ic_item_folder_shared
-              )
+            Const.OwnerType.EDITABLE.value or Const.OwnerType.READONLY.value -> titleImageView.setImageResource(
+                R.drawable.ic_item_folder_shared
+            )
             else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
           }
         } else {
-          // TODO サムネイルを読み込む処理
-          setCompoundDrawablesWithIntrinsicBounds(
-              titleTextView,
-              R.drawable.ic_item_internet
-          )
+          Glide.with(context)
+              .load(createThumbnailUrl(item.url))
+              .placeholder(R.drawable.ic_item_internet)
+              .into(titleImageView)
         }
 
         menuImage.setOnClickListener { v ->
@@ -86,7 +83,10 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                     item.url!!,
                     item.name
                 )
-                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(item.id!!, item.url!!)
+                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(
+                    titleImageView,
+                    createThumbnailUrl(item.url)
+                )
               }
               return@setOnMenuItemClickListener true
             }
@@ -132,7 +132,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onMoveClick(itemId: Long)
     fun onShareClick(itemId: Long, url: String?)
     fun onCreateShortcut(itemId: Long, url: String, name: String)
-    fun onThumbnailUpdateClick(itemId: Long, url: String)
+    fun onThumbnailUpdateClick(imageView: ImageView, url: String?)
     fun onStartDrag(holder: ViewHolder)
     fun onsetSortMode()
   }
@@ -149,9 +149,6 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   fun getItems() = _items
 
-  private fun setCompoundDrawablesWithIntrinsicBounds(view: TextView, resourceId: Int) =
-    view.setCompoundDrawablesWithIntrinsicBounds(resourceId, 0, 0, 0)
-
   fun moveItem(fromPosition: Int, toPosition: Int) {
     notifyItemMoved(fromPosition, toPosition)
     val item: Item = _items[fromPosition]
@@ -159,8 +156,18 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     _items.add(toPosition, item)
   }
 
+  private fun createThumbnailUrl(url: String?) =
+    url?.split("://")?.let {
+      if (it.size < 2) {
+        null
+      } else {
+        Const.GOOGLE_FAVICON_URL + it[1].split("/")[0]
+      }
+    }
+
   class ItemViewHolder internal constructor(itemView: View) :
       ViewHolder(itemView) {
+    val titleImageView = itemView.findViewById(R.id.title_image) as ImageView
     val titleTextView = itemView.findViewById(R.id.title) as TextView
     val menuImage = itemView.findViewById(R.id.menu_image) as ImageView
     val sortImage = itemView.findViewById(R.id.menu_sort) as ImageView

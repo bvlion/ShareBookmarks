@@ -92,4 +92,6 @@
     <string name="move_complete">Moved</string>
     <string name="snackbar_sort_complete_message">I saved the sort.</string>
     <string name="snackbar_sort_cancel_message">The sort has been cancelled.</string>
+    <string name="toast_thumbnail_reload">Update the thumbnail.</string>
+    <string name="snackbar_all_thumbnail_reload">Update all thumbnails.</string>
 </resources>

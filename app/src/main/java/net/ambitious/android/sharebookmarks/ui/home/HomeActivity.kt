@@ -98,6 +98,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         )
       R.id.menu_sort_start -> homeFragment.sort(start = true, isSave = false)
       R.id.menu_sort_end -> homeFragment.sort(start = false, isSave = true)
+      R.id.menu_image_reacquisition -> {
+        homeFragment.imageReload()
+        showSnackbar(getString(R.string.snackbar_all_thumbnail_reload))
+      }
     }
     return super.onOptionsItemSelected(item)
   }

@@ -92,4 +92,6 @@
     <string name="move_complete">移動しました</string>
     <string name="snackbar_sort_complete_message">並び替えを保存しました。</string>
     <string name="snackbar_sort_cancel_message">並び替えをキャンセルしました。</string>
+    <string name="toast_thumbnail_reload">サムネイルを更新します。</string>
+    <string name="snackbar_all_thumbnail_reload">全てのサムネイルを更新します。</string>
 </resources>
