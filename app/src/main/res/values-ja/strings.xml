@@ -6,6 +6,7 @@
 
     <!-- 左メニュー -->
     <string name="menu_how_to_use">使い方</string>
+    <string name="menu_notification">お知らせ</string>
     <string name="menu_login">Google ログイン</string>
     <string name="menu_logout">ログアウト</string>
     <string name="menu_update">データ更新</string>
@@ -101,4 +102,7 @@
 
     <!-- 共有 -->
     <string name="share_login_warning">共有にはログインが必要です。\n左メニュー「ログイン」より Google アカウントでログインを行ってください。</string>
+
+    <!-- お知らせ -->
+    <string name="notification_loading_message">読み込み中…</string>
 </resources>
