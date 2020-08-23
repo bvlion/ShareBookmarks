@@ -26,9 +26,15 @@
       android:title="@string/menu_image_reacquisition"
       app:showAsAction="ifRoom" />
     <item
+      android:id="@+id/menu_set_start_folder"
+      android:icon="@drawable/ic_first_page"
+      android:orderInCategory="50"
+      android:title="@string/set_first_folder"
+      app:showAsAction="ifRoom" />
+    <item
       android:id="@+id/menu_sort_end"
       android:icon="@drawable/ic_check"
-      android:orderInCategory="50"
+      android:orderInCategory="60"
       android:title="@string/menu_sort"
       app:showAsAction="ifRoom" />
 </menu>

@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
+import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
+import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
   private val _items = MutableLiveData<List<Item>>()
@@ -29,9 +31,16 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
-  fun setParentId(parentId: Long) {
+  fun setInitialParentId(parentId: Long?) {
+    _parentId.value = parentId
+  }
+
+  fun setParentId(parentId: Long, preferences: PreferencesUtils.Data) {
     _parentId.value = parentId
     getItems()
+    if (preferences.startFolder == Const.StartFolderType.LAST.value) {
+      preferences.startFolderId = parentId
+    }
   }
 
   fun getItems() {

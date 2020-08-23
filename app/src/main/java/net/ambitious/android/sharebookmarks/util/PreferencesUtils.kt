@@ -41,6 +41,10 @@ object PreferencesUtils {
     var startFolder: String?
       get() = pref.getString(START_FOLDER)
       set(_) = pref.notSave()
+
+    var startFolderId: Long?
+      get() = pref.getStartFolderId()
+      set(value) = pref.saveStartFolderId(value ?: 0)
   }
 
   class Preference(private val context: Context) {
@@ -55,6 +59,13 @@ object PreferencesUtils {
 
     fun getBoolean(saveKey: String) =
       PreferenceManager.getDefaultSharedPreferences(context).getBoolean(saveKey, false)
+
+    fun getStartFolderId() =
+      PreferenceManager.getDefaultSharedPreferences(context).getLong(START_FOLDER_ID, 0)
+
+    fun saveStartFolderId(id: Long) =
+      PreferenceManager.getDefaultSharedPreferences(context).edit()
+          .putLong(START_FOLDER_ID, id).apply()
   }
 
   // Google 情報
@@ -68,5 +79,6 @@ object PreferencesUtils {
   private const val SHOW_MAIL_ADDRESS = "show_mail_address"
   private const val BACKUP_RESTORE_AUTO = "backup_restore_auto"
   private const val CLOSE_APP = "close_app"
-  private const val START_FOLDER = "start_folder"
+  const val START_FOLDER = "start_folder"
+  const val START_FOLDER_ID = "start_folder_id"
 }

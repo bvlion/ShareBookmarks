@@ -22,6 +22,10 @@
     <string name="menu_item_add">ブックマーク追加</string>
     <string name="menu_sort">並び替え</string>
     <string name="menu_image_reacquisition">画像再取得</string>
+    <string name="set_first_folder">初期フォルダに設定する</string>
+    <string name="set_first_folder_done">%s を初期フォルダに設定しました。</string>
+    <string name="set_first_folder_error">初期フォルダを設定できませんでした。</string>
+    <string name="configurable_first_folder">ホーム右上のメニューより初期フォルダに設定できます。</string>
     <string name="breadcrumbs_next">&gt;</string>
 
     <!-- ポップアップ -->

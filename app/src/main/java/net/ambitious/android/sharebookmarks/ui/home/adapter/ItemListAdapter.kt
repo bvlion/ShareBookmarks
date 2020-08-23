@@ -104,7 +104,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
         } else {
           rowItem.setOnTouchListener(null)
           rowItem.setOnLongClickListener {
-            listener.onsetSortMode()
+            listener.onSetSortMode()
             true
           }
           if (item.url.isNullOrEmpty()) {
@@ -134,7 +134,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onCreateShortcut(itemId: Long, url: String, name: String)
     fun onThumbnailUpdateClick(imageView: ImageView, url: String?)
     fun onStartDrag(holder: ViewHolder)
-    fun onsetSortMode()
+    fun onSetSortMode()
   }
 
   fun setItems(items: List<Item>) {

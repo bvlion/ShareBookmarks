@@ -18,4 +18,10 @@ object Const {
     ITEM(0),
     FOLDER(1)
   }
+
+  enum class StartFolderType(val value: String) {
+    ROOT("root"),
+    LAST("last"),
+    TARGET("target")
+  }
 }

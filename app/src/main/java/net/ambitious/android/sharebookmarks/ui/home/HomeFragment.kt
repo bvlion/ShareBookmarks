@@ -52,9 +52,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.items.observe(
         viewLifecycleOwner,
         {
-          breadcrumbsAdapter.setBreadcrumbs(homeViewModel.breadcrumbs.value!!)
           itemListAdapter.setItems(it)
           items_refresh.isRefreshing = false
+        })
+
+    homeViewModel.breadcrumbs.observe(
+        viewLifecycleOwner,
+        {
+          breadcrumbsAdapter.setBreadcrumbs(it)
         })
 
     homeViewModel.folders.observe(
@@ -76,6 +81,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           )
         }
     )
+
+    homeViewModel.setInitialParentId(preferences.startFolderId)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -111,7 +118,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   override fun onRowClick(item: Long?, url: String?) {
     item?.let {
-      homeViewModel.setParentId(it)
+      homeViewModel.setParentId(it, preferences)
     }
     url?.let {
       try {
@@ -203,14 +210,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   }
 
   override fun onRowClick(id: Long) {
-    homeViewModel.setParentId(id)
+    homeViewModel.setParentId(id, preferences)
   }
 
   override fun onStartDrag(holder: ViewHolder) {
     itemTouchHelper.startDrag(holder)
   }
 
-  override fun onsetSortMode() {
+  override fun onSetSortMode() {
     sort(start = true, isSave = false)
   }
 
@@ -233,7 +240,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       homeViewModel.setParentId(
           homeViewModel.breadcrumbs.value?.size?.minus(2)?.let {
             homeViewModel.breadcrumbs.value?.get(it)?.first
-          } ?: 0
+          } ?: 0, preferences
       )
     }
   }
@@ -254,6 +261,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
     homeViewModel.getItems()
   }
+
+  fun setFirstFolder() = homeViewModel.breadcrumbs.value?.last()?.let {
+    preferences.startFolderId = it.first
+    getString(R.string.set_first_folder_done, it.second)
+  } ?: getString(R.string.set_first_folder_error)
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

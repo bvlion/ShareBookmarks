@@ -22,6 +22,10 @@
     <string name="menu_item_add">Add bookmarks</string>
     <string name="menu_sort">Sort</string>
     <string name="menu_image_reacquisition">Image retrieval</string>
+    <string name="set_first_folder">Set the initial folder</string>
+    <string name="set_first_folder_done">Set %s to the initial folder.</string>
+    <string name="set_first_folder_error">The initial folder could not be set.</string>
+    <string name="configurable_first_folder">You can set the initial folder from the menu on the top right of the home page.</string>
     <string name="breadcrumbs_next">&gt;</string>
 
     <!-- ポップアップ -->

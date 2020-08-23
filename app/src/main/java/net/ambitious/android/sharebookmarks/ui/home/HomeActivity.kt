@@ -82,6 +82,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       it.findItem(R.id.menu_item_add).isVisible = !sorting
       it.findItem(R.id.menu_sort_start).isVisible = !sorting
       it.findItem(R.id.menu_image_reacquisition).isVisible = !sorting
+      it.findItem(R.id.menu_set_start_folder).isVisible =
+        !sorting && preferences.startFolder == Const.StartFolderType.TARGET.value
       it.findItem(R.id.menu_sort_end).isVisible = sorting
     }
   }
@@ -102,6 +104,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         homeFragment.imageReload()
         showSnackbar(getString(R.string.snackbar_all_thumbnail_reload))
       }
+      R.id.menu_set_start_folder -> showSnackbar(homeFragment.setFirstFolder())
     }
     return super.onOptionsItemSelected(item)
   }
