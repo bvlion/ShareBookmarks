@@ -104,6 +104,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    homeViewModel.getItems()
+  }
+
   override fun onRowClick(item: Long?, url: String?) {
     item?.let {
       homeViewModel.setParentId(it)
@@ -149,7 +154,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   override fun onShareClick(itemId: Long, url: String?) {
     if (url.isNullOrEmpty()) {
-      // TODO
+      if (preferences.userEmail == null) {
+        context?.let {
+          AlertDialog.Builder(it).setMessage(R.string.share_login_warning)
+              .setPositiveButton(android.R.string.ok, null).create().show()
+        }
+        return
+      }
     } else {
       startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"

@@ -94,4 +94,7 @@
     <string name="snackbar_sort_cancel_message">並び替えをキャンセルしました。</string>
     <string name="toast_thumbnail_reload">サムネイルを更新します。</string>
     <string name="snackbar_all_thumbnail_reload">全てのサムネイルを更新します。</string>
+
+    <!-- 共有 -->
+    <string name="share_login_warning">共有にはログインが必要です。\n左メニュー「ログイン」より Google アカウントでログインを行ってください。</string>
 </resources>

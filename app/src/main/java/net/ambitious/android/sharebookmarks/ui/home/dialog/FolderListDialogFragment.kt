@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.util.Const
 
 class FolderListDialogFragment : DialogFragment() {
 
@@ -24,7 +25,7 @@ class FolderListDialogFragment : DialogFragment() {
     itemId = bundle.getLong(ARG_KEY_SELF_ID)
     @Suppress("UNCHECKED_CAST")
     folderList = bundle.getSerializable(ARG_KEY_FOLDER_LIST) as ArrayList<Item>
-    folderList.add(0, Item(0, null, 0, "Home", null, 0, 0))
+    folderList.add(0, Const.HOME_FOLDER)
     folderItemNameList = folderList.map { it.name }.toTypedArray()
   }
 

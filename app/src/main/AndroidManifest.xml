@@ -28,6 +28,16 @@
         <activity android:name=".ui.inquiry.InquiryActivity" />
         <activity android:name=".ui.setting.SettingActivity" />
 
+        <activity
+          android:name=".ui.shareadd.ShareAddActivity"
+          android:theme="@style/TransparencyTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${admob_key}"/>

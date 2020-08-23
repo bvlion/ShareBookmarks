@@ -29,7 +29,7 @@ import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
-import net.ambitious.android.sharebookmarks.ui.home.dialog.ItemEditDialogFragment
+import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
 import net.ambitious.android.sharebookmarks.util.Const
@@ -192,7 +192,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun isBackShowOnly() = false
 
-  override fun onEdited(itemId: Long, itemName: String, itemUrl: String?) {
+  override fun onEdited(itemId: Long, itemName: String, itemUrl: String?, folderId: Long?) {
     homeFragment.updateItem(itemId, itemName, itemUrl)
     showSnackbar(
         if (itemId > 0) {
@@ -207,6 +207,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             }
         )
     )
+  }
+
+  override fun onCancel() {
+    supportFragmentManager.fragments.filterIsInstance<ItemEditDialogFragment>().forEach {
+      supportFragmentManager.beginTransaction().remove(it).commit()
+    }
   }
 
   override fun onset(selfId: Long, parentId: Long) {
@@ -228,8 +234,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         },
         item.name,
         item.url
-    )
-        .show(supportFragmentManager, ItemEditDialogFragment.TAG)
+    ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
   }
 
   fun setSortMode(sortStart: Boolean) {

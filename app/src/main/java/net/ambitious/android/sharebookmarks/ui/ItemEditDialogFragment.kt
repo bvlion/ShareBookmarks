@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.ui.home.dialog
+package net.ambitious.android.sharebookmarks.ui
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,10 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 
 class ItemEditDialogFragment : DialogFragment() {
@@ -20,11 +23,13 @@ class ItemEditDialogFragment : DialogFragment() {
   private var itemId: Long = 0
   private var itemName: String? = null
   private var itemUrl: String? = null
+  private var folderList: List<Item>? = null
 
   private lateinit var editTitleLayout: TextInputLayout
   private lateinit var editTitleArea: TextInputEditText
   private lateinit var editUrlLayout: TextInputLayout
   private lateinit var editUrlArea: TextInputEditText
+  private lateinit var folderSpinner: AppCompatSpinner
 
   private lateinit var listener: OnClickListener
 
@@ -35,6 +40,10 @@ class ItemEditDialogFragment : DialogFragment() {
     itemId = bundle.getLong(ARG_KEY_ITEM_ID)
     itemName = bundle.getString(ARG_KEY_ITEM_NAME)
     itemUrl = bundle.getString(ARG_KEY_ITEM_URL)
+    if (bundle.containsKey(ARG_KEY_FOLDER_LIST)) {
+      @Suppress("UNCHECKED_CAST")
+      folderList = bundle.getSerializable(ARG_KEY_FOLDER_LIST) as ArrayList<Item>
+    }
   }
 
   override fun onCreateView(
@@ -49,6 +58,17 @@ class ItemEditDialogFragment : DialogFragment() {
     } else {
       editTitleLayout.hint = getString(R.string.dialog_folder_hint)
       editUrlLayout.visibility = View.GONE
+    }
+    folderList?.let { folders ->
+      folderSpinner.visibility = View.VISIBLE
+      context?.run {
+        folderSpinner.adapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item
+        ).apply {
+          folders.forEach { add(it.name) }
+        }
+      }
     }
   }
 
@@ -89,6 +109,7 @@ class ItemEditDialogFragment : DialogFragment() {
               editTitleArea = findViewById(R.id.edit_title_area)
               editUrlLayout = findViewById(R.id.edit_url_layout)
               editUrlArea = findViewById(R.id.edit_url_area)
+              folderSpinner = findViewById(R.id.edit_folder)
             })
         .setNegativeButton(R.string.dialog_cancel_button, null)
         .setPositiveButton(
@@ -111,10 +132,14 @@ class ItemEditDialogFragment : DialogFragment() {
                     editUrlArea.text.toString()
                   } else {
                     null
+                  },
+                  folderList?.let {
+                    it[folderSpinner.selectedItemPosition].id
                   }
               )
               dismiss()
             }
+            setOnDismissListener { listener.onCancel() }
           }
         }
 
@@ -139,7 +164,8 @@ class ItemEditDialogFragment : DialogFragment() {
   }
 
   interface OnClickListener {
-    fun onEdited(itemId: Long, itemName: String, itemUrl: String?)
+    fun onEdited(itemId: Long, itemName: String, itemUrl: String?, folderId: Long?)
+    fun onCancel()
   }
 
   companion object {
@@ -149,6 +175,7 @@ class ItemEditDialogFragment : DialogFragment() {
     private const val ARG_KEY_ITEM_TYPE = "item_type"
     private const val ARG_KEY_ITEM_NAME = "item_name"
     private const val ARG_KEY_ITEM_URL = "item_url"
+    private const val ARG_KEY_FOLDER_LIST = "folder_list"
 
     fun newInstance(
       itemId: Long, itemType: ItemType, itemName: String?, itemUrl: String?
@@ -160,5 +187,15 @@ class ItemEditDialogFragment : DialogFragment() {
         putString(ARG_KEY_ITEM_URL, itemUrl)
       }
     }
+
+    fun newInstance(itemName: String, itemUrl: String, folderList: ArrayList<Item>) =
+      ItemEditDialogFragment().apply {
+        arguments = Bundle().apply {
+          putSerializable(ARG_KEY_ITEM_TYPE, ItemType.ITEM)
+          putString(ARG_KEY_ITEM_NAME, itemName)
+          putString(ARG_KEY_ITEM_URL, itemUrl)
+          putSerializable(ARG_KEY_FOLDER_LIST, folderList)
+        }
+      }
   }
 }

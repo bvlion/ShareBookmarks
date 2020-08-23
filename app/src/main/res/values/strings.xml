@@ -94,4 +94,7 @@
     <string name="snackbar_sort_cancel_message">The sort has been cancelled.</string>
     <string name="toast_thumbnail_reload">Update the thumbnail.</string>
     <string name="snackbar_all_thumbnail_reload">Update all thumbnails.</string>
+
+    <!-- 共有 -->
+    <string name="share_login_warning">You must be logged in to share.\nClick on \"Sign In\" in the left menu and sign in with your Google Account.</string>
 </resources>
