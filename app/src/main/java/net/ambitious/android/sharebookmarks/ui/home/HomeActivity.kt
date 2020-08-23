@@ -130,7 +130,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             preferences.userEmail = it.email
             preferences.userIcon = it.photoUrl?.toString()
             setNavigation()
-            showSnackbar(String.format(getString(R.string.sign_in_success), preferences.userName))
+            showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
         } else {
           errorSnackbar()
@@ -258,8 +258,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   }
 
   private fun setNavigation() {
-    nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userName == null
-    nav_view.menu.findItem(R.id.menu_logout).isVisible = preferences.userName != null
+    nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
+    nav_view.menu.findItem(R.id.menu_logout).isVisible = preferences.userEmail != null
     val header = nav_view.getHeaderView(0)
     Glide.with(this)
         .load(preferences.userIcon ?: R.mipmap.ic_launcher_round)
