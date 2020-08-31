@@ -1,7 +1,21 @@
 package net.ambitious.android.sharebookmarks.ui.notification
 
-import net.ambitious.android.sharebookmarks.data.remote.notification.NotificationApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
+import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 
-class NotificationViewModel(private val notificationApi: NotificationApi) : BaseViewModel() {
+class NotificationViewModel(private val notificationApi: NotificationsApi) : BaseViewModel() {
+
+  private val _notifications = MutableLiveData<NotificationsEntity>()
+  val notifications: LiveData<NotificationsEntity>
+    get() = _notifications
+
+  fun getNotifications() {
+    launch {
+      _notifications.postValue(notificationApi.getNotifications())
+    }
+  }
 }

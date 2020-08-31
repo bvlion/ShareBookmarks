@@ -5,9 +5,9 @@
 
     <group android:checkableBehavior="single">
         <item
-          android:id="@+id/menu_how_to_use"
-          android:icon="@drawable/ic_how_to_use"
-          android:title="@string/menu_how_to_use" />
+          android:id="@+id/menu_notification"
+          android:icon="@drawable/ic_notification"
+          android:title="@string/menu_notification" />
         <item
           android:id="@+id/menu_login"
           android:icon="@drawable/ic_login"
@@ -36,6 +36,10 @@
 
     <item android:title="@string/menu_operation_others">
         <menu>
+            <item
+              android:id="@+id/menu_how_to_use"
+              android:icon="@drawable/ic_how_to_use"
+              android:title="@string/menu_how_to_use" />
             <item
               android:id="@+id/menu_settings"
               android:icon="@drawable/ic_setting"

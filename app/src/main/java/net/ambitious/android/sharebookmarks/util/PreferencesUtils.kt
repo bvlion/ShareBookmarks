@@ -26,6 +26,10 @@ object PreferencesUtils {
       get() = pref.getString(USER_BEARER)
       set(value) = pref.save(USER_BEARER, value)
 
+    var fcmToken: String?
+      get() = pref.getString(FCM_TOKEN)
+      set(value) = pref.save(FCM_TOKEN, value)
+
     var showMailAddress: Boolean
       get() = pref.getBoolean(SHOW_MAIL_ADDRESS)
       set(_) = pref.notSave()
@@ -68,11 +72,12 @@ object PreferencesUtils {
           .putLong(START_FOLDER_ID, id).apply()
   }
 
-  // Google 情報
+  // ユーザー情報
   private const val USER_NAME = "user_name"
   private const val USER_EMAIL = "user_email"
   private const val USER_ICON = "user_icon"
   private const val USER_BEARER = "user_bearer"
+  private const val FCM_TOKEN = "fcm_token"
 
   // 設定
   private const val SETTING_USER_NAME = "setting_user_name"

@@ -16,5 +16,17 @@ class NotificationActivity : BaseActivity() {
 
     setContentView(R.layout.activity_notification)
     setTitle(R.string.menu_notification)
+
+    viewModel.notifications.observe(
+        this,
+        {
+          // adapter
+        }
+    )
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.getNotifications()
   }
 }

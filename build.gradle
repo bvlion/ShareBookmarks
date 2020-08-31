@@ -8,12 +8,14 @@ buildscript {
     ext.crashlytics_version = '17.2.1'
     ext.ads_version = '19.3.0'
     ext.remote_config_version = '19.2.0'
+    ext.messaging_version = '20.2.4'
     ext.koin_version = '2.1.6'
     ext.firebase_ui_auth_version = '6.2.0'
     ext.glide_version = '4.11.0'
     ext.coroutines_version = '1.3.9'
     ext.moshi_version = '1.9.3'
     ext.retrofit_version = '2.9.0'
+    ext.okhttp_version = '4.8.1'
 
     repositories {
         google()
@@ -24,7 +26,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.1'
         classpath 'com.google.android.gms:oss-licenses-plugin:0.10.2'
     }
 }

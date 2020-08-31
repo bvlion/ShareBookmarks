@@ -7,7 +7,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.ambitious.android.sharebookmarks.data.local.ShareBookmarksDatabase
 import net.ambitious.android.sharebookmarks.data.remote.ShareBookmarksApi
-import net.ambitious.android.sharebookmarks.data.remote.notification.NotificationApi
+import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
+import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
 import net.ambitious.android.sharebookmarks.ui.home.HomeViewModel
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationViewModel
@@ -40,7 +41,7 @@ class ShareBookmarksApplication : Application() {
 
   private val viewModelModule = module {
     viewModel {
-      HomeViewModel(get())
+      HomeViewModel(get(), get())
     }
     viewModel {
       InquiryViewModel(androidContext(), get())
@@ -73,7 +74,11 @@ class ShareBookmarksApplication : Application() {
     }
 
     factory {
-      get<ShareBookmarksApi>().create(NotificationApi::class)
+      get<ShareBookmarksApi>().create(NotificationsApi::class)
+    }
+
+    factory {
+      get<ShareBookmarksApi>().create(UsersApi::class)
     }
   }
 

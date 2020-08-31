@@ -1,8 +1,8 @@
-package net.ambitious.android.sharebookmarks.data.remote.notification
+package net.ambitious.android.sharebookmarks.data.remote.notifications
 
 import com.squareup.moshi.Json
 
-data class NotificationEntity(val notifications: List<Notification>) {
+data class NotificationsEntity(val notifications: List<Notification>) {
   data class Notification(
     val id: Long,
     @Json(name = "target_date") val targetDate: String,

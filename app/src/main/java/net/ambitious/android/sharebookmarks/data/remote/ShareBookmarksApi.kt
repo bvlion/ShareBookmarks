@@ -9,6 +9,7 @@ import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -50,6 +51,16 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
           .connectTimeout(20, TimeUnit.SECONDS)
           .readTimeout(20, TimeUnit.SECONDS)
           .addInterceptor(AuthorizationInterceptor(preferences))
+          .addInterceptor(
+              HttpLoggingInterceptor().apply {
+                level =
+                  if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                  } else {
+                    HttpLoggingInterceptor.Level.NONE
+                  }
+              }
+          )
           .build()
 
     private class AuthorizationInterceptor(private val preferences: PreferencesUtils.Data) :

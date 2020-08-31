@@ -31,6 +31,7 @@ import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
+import net.ambitious.android.sharebookmarks.ui.notification.NotificationActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
@@ -131,6 +132,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             preferences.userIcon = it.photoUrl?.toString()
             setNavigation()
             showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
+            preferences.fcmToken?.let { token ->
+              homeFragment.saveUserData(it.email ?: return, token)
+            }
           } ?: errorSnackbar()
         } else {
           errorSnackbar()
@@ -141,6 +145,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun onNavigationItemSelected(item: MenuItem) = false.apply {
     when (item.itemId) {
+      R.id.menu_notification -> startActivity(
+          Intent(
+              this@HomeActivity,
+              NotificationActivity::class.java
+          )
+      )
       R.id.menu_login -> startActivityForResult(
           AuthUI.getInstance()
               .createSignInIntentBuilder()

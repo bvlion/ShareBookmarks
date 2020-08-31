@@ -82,6 +82,19 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         }
     )
 
+    homeViewModel.tokenSave.observe(
+        viewLifecycleOwner,
+        {
+          preferences.userBearer = it
+        }
+    )
+
+    if (savedInstanceState == null) {
+      preferences.userEmail?.let { email ->
+        homeViewModel.sendUserData(email, preferences.fcmToken ?: return@let)
+      }
+    }
+
     homeViewModel.setInitialParentId(preferences.startFolderId)
   }
 
@@ -266,6 +279,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     preferences.startFolderId = it.first
     getString(R.string.set_first_folder_done, it.second)
   } ?: getString(R.string.set_first_folder_error)
+
+  fun saveUserData(email: String, token: String) {
+    homeViewModel.sendUserData(email, token)
+  }
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

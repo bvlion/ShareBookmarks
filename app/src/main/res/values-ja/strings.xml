@@ -5,7 +5,6 @@
     <string name="action_settings">設定</string>
 
     <!-- 左メニュー -->
-    <string name="menu_how_to_use">使い方</string>
     <string name="menu_notification">お知らせ</string>
     <string name="menu_login">Google ログイン</string>
     <string name="menu_logout">ログアウト</string>
@@ -14,6 +13,7 @@
     <string name="menu_billing">アプリ課金</string>
     <string name="menu_app_rating">アプリを評価</string>
     <string name="menu_operation_others">その他</string>
+    <string name="menu_how_to_use">使い方</string>
     <string name="menu_contact">お問い合わせ</string>
     <string name="menu_oss_license">OSS ライセンス</string>
     <string name="menu_settings">設定</string>

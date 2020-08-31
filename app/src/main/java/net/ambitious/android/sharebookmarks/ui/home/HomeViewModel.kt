@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
+import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
+import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.UsersPostData
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
-class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
+class HomeViewModel(
+  private val itemDao: ItemDao,
+  private val usersApi: UsersApi
+) : BaseViewModel() {
   private val _items = MutableLiveData<List<Item>>()
   val items: LiveData<List<Item>>
     get() = _items
@@ -28,6 +33,10 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
   private val _sorting = MutableLiveData<Boolean>()
   val sorting: LiveData<Boolean>
     get() = _sorting
+
+  private val _tokenSave = MutableLiveData<String>()
+  val tokenSave: LiveData<String>
+    get() = _tokenSave
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
@@ -75,6 +84,14 @@ class HomeViewModel(private val itemDao: ItemDao) : BaseViewModel() {
         deleteChildItems(folders, idList, idList)
       }
       _folders.postValue(Pair(selfId, folders.filter { !idList.contains(it.id) }))
+    }
+  }
+
+  fun sendUserData(email: String, token: String) {
+    launch {
+      usersApi.userAuth(UsersPostData(email, token)).accessToken.let {
+        _tokenSave.postValue(it)
+      }
     }
   }
 
