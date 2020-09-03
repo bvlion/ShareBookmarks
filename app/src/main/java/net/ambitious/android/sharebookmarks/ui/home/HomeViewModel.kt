@@ -1,7 +1,10 @@
 package net.ambitious.android.sharebookmarks.ui.home
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
@@ -11,6 +14,7 @@ import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.UsersP
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
+import net.ambitious.android.sharebookmarks.util.OperationUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class HomeViewModel(
@@ -43,6 +47,10 @@ class HomeViewModel(
   private val _networkError = MutableLiveData<Int>()
   val networkError: LiveData<Int>
     get() = _networkError
+
+  private val _bitmap = MutableLiveData<Bitmap>()
+  val bitmap: LiveData<Bitmap>
+    get() = _bitmap
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
@@ -187,6 +195,14 @@ class HomeViewModel(
     deleteItems(itemDao.getItems(itemId))
     itemDao.delete(itemId)
     postItems()
+  }
+
+  @Suppress("BlockingMethodInNonBlockingContext")
+  fun getBitmapFromUrl(context: Context, url: String) = launch {
+    _bitmap.postValue(
+        Glide.with(context).asBitmap()
+            .load(OperationUtils.createThumbnailUrl(url)).submit(100, 100).get()
+    )
   }
 
   private fun deleteItems(childItems: List<Item>) {

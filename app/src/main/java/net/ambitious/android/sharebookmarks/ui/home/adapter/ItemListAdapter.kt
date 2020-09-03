@@ -22,6 +22,7 @@ import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
+import net.ambitious.android.sharebookmarks.util.OperationUtils.createThumbnailUrl
 
 class ItemListAdapter(private val context: Context, private val listener: OnItemClickListener) :
     Adapter<ViewHolder>() {
@@ -160,15 +161,6 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     _items.removeAt(fromPosition)
     _items.add(toPosition, item)
   }
-
-  private fun createThumbnailUrl(url: String?) =
-    url?.split("://")?.let {
-      if (it.size < 2) {
-        null
-      } else {
-        Const.GOOGLE_FAVICON_URL + it[1].split("/")[0]
-      }
-    }
 
   class ItemViewHolder internal constructor(itemView: View) :
       ViewHolder(itemView) {

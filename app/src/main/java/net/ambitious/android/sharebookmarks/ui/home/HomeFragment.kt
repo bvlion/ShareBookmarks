@@ -209,26 +209,27 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   }
 
   override fun onCreateShortcut(itemId: Long, url: String, name: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      (activity?.getSystemService(Context.SHORTCUT_SERVICE) as ShortcutManager).requestPinShortcut(
-          ShortcutInfo.Builder(activity, "shortcut-id-$itemId")
-              .setShortLabel(name)
-              .setIcon(Icon.createWithResource(activity, R.mipmap.ic_launcher_round)) // TODO
-              .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-              .build(), null
-      )
-    } else {
-      @Suppress("DEPRECATION")
-      activity?.sendBroadcast(Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
-        putExtra(Intent.EXTRA_SHORTCUT_NAME, name)
-        putExtra(Intent.EXTRA_SHORTCUT_INTENT, Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        putExtra(
-            Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-            Intent.ShortcutIconResource.fromContext(activity, R.mipmap.ic_launcher_round) // TODO
-        )
-      })
-      Toast.makeText(context, R.string.shortcut_created, Toast.LENGTH_SHORT).show()
-    }
+    homeViewModel.bitmap.observe(viewLifecycleOwner,
+        {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            (activity?.getSystemService(Context.SHORTCUT_SERVICE) as ShortcutManager).requestPinShortcut(
+                ShortcutInfo.Builder(activity, "shortcut-id-$itemId")
+                    .setShortLabel(name)
+                    .setIcon(Icon.createWithBitmap(it))
+                    .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    .build(), null
+            )
+          } else {
+            @Suppress("DEPRECATION")
+            activity?.sendBroadcast(Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
+              putExtra(Intent.EXTRA_SHORTCUT_NAME, name)
+              putExtra(Intent.EXTRA_SHORTCUT_INTENT, Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+              putExtra(Intent.EXTRA_SHORTCUT_ICON, it)
+            })
+            Toast.makeText(context, R.string.shortcut_created, Toast.LENGTH_SHORT).show()
+          }
+        })
+    homeViewModel.getBitmapFromUrl(context ?: return, url)
   }
 
   override fun onThumbnailUpdateClick(imageView: ImageView, url: String?) {
