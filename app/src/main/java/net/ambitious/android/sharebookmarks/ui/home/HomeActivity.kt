@@ -30,6 +30,7 @@ import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
+import net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
@@ -126,15 +127,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     when (requestCode) {
       SIGN_IN_REQUEST_CODE ->
         if (resultCode == RESULT_OK) {
-          FirebaseAuth.getInstance().currentUser?.let {
+          FirebaseAuth.getInstance().currentUser?.also {
             preferences.userName = it.displayName
             preferences.userEmail = it.email
             preferences.userIcon = it.photoUrl?.toString()
             setNavigation()
-            showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
             preferences.fcmToken?.let { token ->
               homeFragment.saveUserData(it.email ?: return, token)
             }
+            showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
         } else {
           errorSnackbar()
@@ -224,19 +225,22 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   }
 
   override fun onCancel() {
-    supportFragmentManager.fragments.filterIsInstance<ItemEditDialogFragment>().forEach {
-      supportFragmentManager.beginTransaction().remove(it).commit()
-    }
+    supportFragmentManager.fragments
+        .filter { it is ItemEditDialogFragment || it is FolderListDialogFragment }
+        .forEach {
+          supportFragmentManager.beginTransaction().remove(it).commit()
+        }
   }
 
-  override fun onset(selfId: Long, parentId: Long) {
+  override fun onSet(selfId: Long, parentId: Long) {
     homeFragment.moveItem(selfId, parentId)
     showSnackbar(getString(R.string.move_complete))
   }
 
-  fun onMove(selfId: Long, folderList: List<Item>) =
+  fun onMove(selfId: Long, folderList: List<Item>) {
     FolderListDialogFragment.newInstance(selfId, ArrayList(folderList))
         .show(supportFragmentManager, FolderListDialogFragment.TAG)
+  }
 
   fun onEdit(item: Item) {
     ItemEditDialogFragment.newInstance(
@@ -261,6 +265,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       message,
       Snackbar.LENGTH_LONG
   ).show()
+
+  fun changeAdmob() {
+    supportFragmentManager.findFragmentById(R.id.admob_fragment)?.let {
+      (it as AdmobFragment).displayChange()
+    }
+  }
 
   private fun onCreateClick(type: ItemType) {
     ItemEditDialogFragment.newInstance(0, type, null, null)

@@ -4,6 +4,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:card="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/row_card"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_margin="@dimen/space_very_small"
@@ -15,7 +16,10 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center_vertical"
-      android:layout_margin="@dimen/space_very_small"
+      android:padding="@dimen/space_small"
+      android:background="?android:selectableItemBackground"
+      android:clickable="true"
+      android:focusable="true"
       android:orientation="horizontal">
 
       <ImageView
@@ -33,6 +37,7 @@
         android:gravity="center_vertical"
         android:textStyle="bold"
         android:layout_marginStart="@dimen/space_small"
+        android:textSize="@dimen/items_text_size"
         tools:text="フォルダー" />
 
       <ImageView

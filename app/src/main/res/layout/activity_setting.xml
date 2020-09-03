@@ -9,7 +9,6 @@
   tools:context=".ui.setting.SettingActivity">
 
   <androidx.fragment.app.FragmentContainerView
-    android:id="@+id/nav_host_fragment"
     android:name="net.ambitious.android.sharebookmarks.ui.setting.SettingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

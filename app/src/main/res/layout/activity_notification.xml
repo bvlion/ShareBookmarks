@@ -1,26 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/notification_refresh"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="0dp"
+      android:layout_weight="1" >
 
-        <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/notification_recycler_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+          android:id="@+id/notification_refresh"
           android:layout_width="match_parent"
-          android:layout_height="match_parent" />
+          android:layout_height="match_parent">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/notification_recycler_view"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
 
-    <TextView
-      android:id="@+id/notification_message"
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+          android:id="@+id/notification_message"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:text="@string/notification_loading_message" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+      android:id="@+id/admob_layout"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:gravity="center"
-      android:text="@string/notification_loading_message" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+      app:layout_behavior="@string/bottom_sheet_behavior">
+        <fragment
+          android:name="net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment"
+          android:id="@+id/admob_fragment"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</LinearLayout>

@@ -8,5 +8,8 @@ object UsersEntity {
     @Json(name = "fcm_token") val fcmToken: String
   )
 
-  data class AuthTokenResponse(@Json(name = "access_token") val accessToken: String)
+  data class AuthTokenResponse(
+    val premium: Boolean,
+    @Json(name = "access_token") val accessToken: String
+  )
 }

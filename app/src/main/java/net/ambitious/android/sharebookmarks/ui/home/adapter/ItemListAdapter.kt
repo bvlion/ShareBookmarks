@@ -10,7 +10,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
@@ -122,6 +124,9 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
           sortImage.visibility = View.GONE
         }
       }
+      cardView.run {
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+      }
     }
   }
 
@@ -167,6 +172,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
 
   class ItemViewHolder internal constructor(itemView: View) :
       ViewHolder(itemView) {
+    val cardView = itemView.findViewById(R.id.row_card) as CardView
     val titleImageView = itemView.findViewById(R.id.title_image) as ImageView
     val titleTextView = itemView.findViewById(R.id.title) as TextView
     val menuImage = itemView.findViewById(R.id.menu_image) as ImageView

@@ -2,9 +2,11 @@ package net.ambitious.android.sharebookmarks.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
+import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.AuthTokenResponse
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.UsersPostData
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
@@ -13,7 +15,7 @@ import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class HomeViewModel(
   private val itemDao: ItemDao,
-  private val usersApi: UsersApi
+  private val usersApi: UsersApi,
 ) : BaseViewModel() {
   private val _items = MutableLiveData<List<Item>>()
   val items: LiveData<List<Item>>
@@ -34,9 +36,13 @@ class HomeViewModel(
   val sorting: LiveData<Boolean>
     get() = _sorting
 
-  private val _tokenSave = MutableLiveData<String>()
-  val tokenSave: LiveData<String>
+  private val _tokenSave = MutableLiveData<AuthTokenResponse>()
+  val tokenSave: LiveData<AuthTokenResponse>
     get() = _tokenSave
+
+  private val _networkError = MutableLiveData<Int>()
+  val networkError: LiveData<Int>
+    get() = _networkError
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
@@ -71,6 +77,7 @@ class HomeViewModel(
   fun sortSave(items: List<Item>) {
     launch {
       items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
+      postItems()
     }
   }
 
@@ -87,12 +94,21 @@ class HomeViewModel(
     }
   }
 
-  fun sendUserData(email: String, token: String) {
-    launch {
-      usersApi.userAuth(UsersPostData(email, token)).accessToken.let {
+  fun setFolderNull() {
+    _folders.postValue(null)
+  }
+
+  fun sendUserData(email: String, token: String, isInitialize: Boolean = false) {
+    launch({
+      usersApi.userAuth(UsersPostData(email, token)).let {
         _tokenSave.postValue(it)
       }
-    }
+      _networkError.postValue(0)
+    }, {
+      if (isInitialize) {
+        _networkError.postValue(R.string.sync_network_error)
+      }
+    })
   }
 
   private fun deleteChildItems(

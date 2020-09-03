@@ -57,6 +57,7 @@
     <string name="sign_out_complete">Logged out.</string>
     <string name="cant_start_activity">Unable to activate the shortcut.\nPlease check your registration details.</string>
     <string name="shortcut_created">A shortcut has been created for Home.</string>
+    <string name="sync_network_error">No automatic synchronization was performed due to a communication failure.</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">Please enter your email address and contact details.</string>
@@ -105,4 +106,5 @@
 
     <!-- お知らせ -->
     <string name="notification_loading_message">Loading....</string>
+    <string name="notification_network_error">The notification could not be loaded due to a communication failure.\nTry to update it in a place with good electric field conditions.</string>
 </resources>

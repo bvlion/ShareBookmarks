@@ -12,5 +12,10 @@
     <dimen name="space_large">24dp</dimen>
     <dimen name="space_very_large">32dp</dimen>
 
-    <dimen name="icon_image_size">24dp</dimen>
+    <dimen name="icon_image_size">20dp</dimen>
+
+    <dimen name="items_text_size">15sp</dimen>
+    <dimen name="notification_title_size">16sp</dimen>
+    <dimen name="notification_subject_size">14sp</dimen>
+    <dimen name="notification_date_size">13sp</dimen>
 </resources>

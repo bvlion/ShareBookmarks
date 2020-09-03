@@ -6,4 +6,6 @@
 
     <color name="colorSidebarStart">#546e7a</color>
     <color name="colorSidebarEnd">#607d8b</color>
+
+    <color name="underLine">#DE9C9C9C</color>
 </resources>

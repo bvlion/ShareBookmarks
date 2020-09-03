@@ -2,7 +2,6 @@ package net.ambitious.android.sharebookmarks.ui.notification
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel

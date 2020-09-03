@@ -25,7 +25,6 @@ class FolderListDialogFragment : DialogFragment() {
     itemId = bundle.getLong(ARG_KEY_SELF_ID)
     @Suppress("UNCHECKED_CAST")
     folderList = bundle.getSerializable(ARG_KEY_FOLDER_LIST) as ArrayList<Item>
-    folderList.add(0, Const.HOME_FOLDER)
     folderItemNameList = folderList.map { it.name }.toTypedArray()
   }
 
@@ -51,11 +50,18 @@ class FolderListDialogFragment : DialogFragment() {
         .setTitle(R.string.dialog_move_title)
         .setNegativeButton(R.string.dialog_cancel_button, null)
         .setPositiveButton(R.string.dialog_move_button) { _, _ ->
-          listener.onset(itemId, selectedId)
-        }.create()
+          listener.onSet(itemId, selectedId)
+        }.create().apply {
+          setOnShowListener {
+            setOnDismissListener {
+              listener.onCancel()
+            }
+          }
+        }
 
   interface OnSetListener {
-    fun onset(selfId: Long, parentId: Long)
+    fun onSet(selfId: Long, parentId: Long)
+    fun onCancel()
   }
 
   companion object {
@@ -65,6 +71,7 @@ class FolderListDialogFragment : DialogFragment() {
     private const val ARG_KEY_FOLDER_LIST = "folder_list"
 
     fun newInstance(itemId: Long, folderList: ArrayList<Item>) = FolderListDialogFragment().apply {
+      folderList.add(0, Const.HOME_FOLDER)
       arguments = Bundle().apply {
         putLong(ARG_KEY_SELF_ID, itemId)
         putSerializable(ARG_KEY_FOLDER_LIST, folderList)

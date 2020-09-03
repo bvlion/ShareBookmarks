@@ -26,6 +26,10 @@ object PreferencesUtils {
       get() = pref.getString(USER_BEARER)
       set(value) = pref.save(USER_BEARER, value)
 
+    var isPremium: Boolean
+      get() = pref.getBoolean(USER_IS_PREMIUM)
+      set(value) = pref.save(USER_IS_PREMIUM, value)
+
     var fcmToken: String?
       get() = pref.getString(FCM_TOKEN)
       set(value) = pref.save(FCM_TOKEN, value)
@@ -56,6 +60,10 @@ object PreferencesUtils {
       PreferenceManager.getDefaultSharedPreferences(context).edit()
           .putString(saveKey, saveValue).apply()
 
+    fun save(saveKey: String, saveValue: Boolean) =
+      PreferenceManager.getDefaultSharedPreferences(context).edit()
+          .putBoolean(saveKey, saveValue).apply()
+
     fun notSave() = Unit
 
     fun getString(saveKey: String) =
@@ -77,6 +85,7 @@ object PreferencesUtils {
   private const val USER_EMAIL = "user_email"
   private const val USER_ICON = "user_icon"
   private const val USER_BEARER = "user_bearer"
+  private const val USER_IS_PREMIUM = "user_is_premium"
   private const val FCM_TOKEN = "fcm_token"
 
   // 設定

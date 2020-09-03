@@ -64,8 +64,12 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
     homeViewModel.folders.observe(
         viewLifecycleOwner,
-        { folderSelectDialogShow(it.first, it.second) }
-    )
+        {
+          it?.run {
+            folderSelectDialogShow(first, second)
+            homeViewModel.setFolderNull()
+          }
+        })
 
     homeViewModel.sorting.observe(
         viewLifecycleOwner,
@@ -85,13 +89,28 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.tokenSave.observe(
         viewLifecycleOwner,
         {
-          preferences.userBearer = it
+          preferences.userBearer = it.accessToken
+          if (preferences.isPremium != it.premium) {
+            preferences.isPremium = it.premium
+            (activity as HomeActivity).changeAdmob()
+          }
+        }
+    )
+
+    homeViewModel.networkError.observe(
+        viewLifecycleOwner,
+        {
+          if (it == 0) {
+            // 自動同期処理
+          } else {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+          }
         }
     )
 
     if (savedInstanceState == null) {
       preferences.userEmail?.let { email ->
-        homeViewModel.sendUserData(email, preferences.fcmToken ?: return@let)
+        homeViewModel.sendUserData(email, preferences.fcmToken ?: return@let, true)
       }
     }
 
@@ -262,9 +281,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     if (isSave) {
       (activity as HomeActivity).showSnackbar(getString(R.string.snackbar_sort_complete_message))
       homeViewModel.sortSave(itemListAdapter.getItems())
-    } else {
-      homeViewModel.sortModeChange(start)
     }
+    homeViewModel.sortModeChange(start)
     (activity as HomeActivity).setSortMode(start)
   }
 

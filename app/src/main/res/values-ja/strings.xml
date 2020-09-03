@@ -57,6 +57,7 @@
     <string name="sign_out_complete">ログアウトしました。</string>
     <string name="cant_start_activity">ショートカットを起動できませんでした。\n登録内容をご確認ください。</string>
     <string name="shortcut_created">ホームにショートカットを作成しました。</string>
+    <string name="sync_network_error">通信に失敗したため自動同期は行われませんでした。</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">メールアドレスとお問い合わせ内容をご入力ください。</string>
@@ -105,4 +106,5 @@
 
     <!-- お知らせ -->
     <string name="notification_loading_message">読み込み中…</string>
+    <string name="notification_network_error">通信に失敗したためお知らせを読み込めませんでした。\n電場状況のよい場所で更新してみてください。</string>
 </resources>
