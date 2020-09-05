@@ -4,15 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
+import net.ambitious.android.sharebookmarks.data.local.share.Share
+import net.ambitious.android.sharebookmarks.data.local.share.ShareDao
 
 @Database(
     entities = [
-      Item::class
+      Item::class,
+      Share::class
     ],
     version = 1
 )
+@TypeConverters(DateTimeConverter::class)
 abstract class ShareBookmarksDatabase : RoomDatabase() {
   companion object {
 
@@ -27,4 +32,6 @@ abstract class ShareBookmarksDatabase : RoomDatabase() {
   }
 
   abstract fun itemDao(): ItemDao
+
+  abstract fun shareDao(): ShareDao
 }

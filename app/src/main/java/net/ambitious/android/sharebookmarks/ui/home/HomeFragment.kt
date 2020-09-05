@@ -30,6 +30,7 @@ import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.OnBreadcrumbsClickListener
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnItemClickListener
+import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
@@ -200,6 +201,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         }
         return
       }
+      startActivity(ShareUserActivity.createIntent(context ?: return, itemId))
+      activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     } else {
       startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
@@ -301,6 +304,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   fun saveUserData(email: String, token: String) {
     homeViewModel.sendUserData(email, token)
+  }
+
+  fun initializeInsert() {
+    homeViewModel.initializeInsert()
   }
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =

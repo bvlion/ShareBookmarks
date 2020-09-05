@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.AppLaunchChecker
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -73,6 +74,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     super.onStart()
     homeFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         ?.childFragmentManager?.fragments?.get(0) as HomeFragment
+
+    // 初回起動時に初期値 DB を設定
+    if (!AppLaunchChecker.hasStartedFromLauncher(this)) {
+      homeFragment.initializeInsert()
+    }
+    AppLaunchChecker.onActivityCreate(this)
   }
 
   override fun onCreateOptionsMenu(menu: Menu) = true.apply {

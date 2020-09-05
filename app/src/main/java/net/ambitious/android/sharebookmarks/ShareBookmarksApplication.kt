@@ -12,6 +12,7 @@ import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
 import net.ambitious.android.sharebookmarks.ui.home.HomeViewModel
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationViewModel
+import net.ambitious.android.sharebookmarks.ui.share.ShareUserViewModel
 import net.ambitious.android.sharebookmarks.ui.shareadd.ShareAddViewModel
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
@@ -52,6 +53,9 @@ class ShareBookmarksApplication : Application() {
     viewModel {
       NotificationViewModel(get())
     }
+    viewModel {
+      ShareUserViewModel(get())
+    }
   }
 
   private val databaseModule = module {
@@ -61,6 +65,10 @@ class ShareBookmarksApplication : Application() {
 
     factory {
       get<ShareBookmarksDatabase>().itemDao()
+    }
+
+    factory {
+      get<ShareBookmarksDatabase>().shareDao()
     }
   }
 

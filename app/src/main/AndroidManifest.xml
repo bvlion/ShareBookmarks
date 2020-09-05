@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
       android:name=".ShareBookmarksApplication"
@@ -31,6 +32,7 @@
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.inquiry.InquiryActivity" />
         <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.share.ShareUserActivity" />
 
         <activity
           android:name=".ui.shareadd.ShareAddActivity"

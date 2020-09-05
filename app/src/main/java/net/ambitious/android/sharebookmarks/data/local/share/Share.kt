@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.data.local.item
+package net.ambitious.android.sharebookmarks.data.local.share
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -8,27 +8,23 @@ import org.joda.time.DateTime
 import java.io.Serializable
 
 @Entity(
-    tableName = "items",
+    tableName = "shares",
     indices = [
       Index(
-          value = ["parent_id", "order"],
-          name = "index_items"
+          value = ["folder_id"],
+          name = "index_shares"
       )
     ]
 )
-data class Item(
+data class Share(
   /** ローカル ID */
   @PrimaryKey(autoGenerate = true) var id: Long? = null,
   /** サーバー側の ID */
   @ColumnInfo(name = "remote_id") val remoteId: Long?,
-  /** 親となるフォルダの ID（トップレベルの場合は 0） */
-  @ColumnInfo(name = "parent_id") val parentId: Long,
-  /** 名称 */
-  val name: String,
-  /** URL（フォルダーの場合は null） */
-  val url: String?,
-  /** 順序（parent_id ごとに一意） */
-  val order: Int,
+  /** シェア対象フォルダ ID */
+  @ColumnInfo(name = "folder_id") val folderId: Long,
+  /** シェア対象 Email */
+  @ColumnInfo(name = "user_email") val userEmail: String,
   /** 本人と保持・編集可・閲覧のみフラグ */
   @ColumnInfo(name = "owner_type") val ownerType: Int,
   /** 有効フラグ */

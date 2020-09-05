@@ -16,19 +16,19 @@ interface ItemDao {
   @Update
   suspend fun update(items: Item)
 
-  @Query("DELETE FROM items WHERE id = :itemId")
+  @Query("UPDATE items SET active = 0 WHERE id = :itemId")
   suspend fun delete(itemId: Long)
 
-  @Query("SELECT * FROM items WHERE parent_id = :parentId ORDER BY `order`")
+  @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
 
-  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId ORDER BY `order`")
+  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 ORDER BY `order`")
   suspend fun getFolderItems(selfId: Long): List<Item>
 
-  @Query("SELECT * FROM items WHERE id = :itemId")
+  @Query("SELECT * FROM items WHERE id = :itemId AND active = 1")
   suspend fun getItem(itemId: Long): Item?
 
-  @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId")
+  @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId AND active = 1")
   suspend fun getMaxOrder(parentId: Long): Int?
 
   @Query("UPDATE items SET parent_id = :parentId, `order` = :order WHERE id = :selfId")

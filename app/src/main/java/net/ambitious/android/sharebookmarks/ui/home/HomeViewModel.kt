@@ -205,6 +205,13 @@ class HomeViewModel(
     )
   }
 
+  fun initializeInsert() {
+    launch {
+      itemDao.insertAll(*Const.INITIALIZE_DB)
+      postItems()
+    }
+  }
+
   private fun deleteItems(childItems: List<Item>) {
     childItems.filter { it.url.isNullOrEmpty() }.forEach { deleteItem(it.id!!) }
   }
