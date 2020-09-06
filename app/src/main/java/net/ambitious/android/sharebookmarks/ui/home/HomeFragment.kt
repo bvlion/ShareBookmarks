@@ -185,8 +185,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
-  override fun onEditClick(item: Item) =
-    (activity as HomeActivity).onEdit(item)
+  override fun onEditClick(item: Item) = (activity as HomeActivity).onEdit(item)
 
   override fun onMoveClick(itemId: Long) {
     homeViewModel.getFolders(itemId)
@@ -245,21 +244,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     Toast.makeText(context, R.string.toast_thumbnail_reload, Toast.LENGTH_SHORT).show()
   }
 
-  override fun onRowClick(id: Long) {
-    homeViewModel.setParentId(id, preferences)
-  }
+  override fun onRowClick(id: Long) = homeViewModel.setParentId(id, preferences)
 
-  override fun onStartDrag(holder: ViewHolder) {
-    itemTouchHelper.startDrag(holder)
-  }
+  override fun onStartDrag(holder: ViewHolder) = itemTouchHelper.startDrag(holder)
 
-  override fun onSetSortMode() {
-    sort(start = true, isSave = false)
-  }
+  override fun onSetSortMode() = sort(start = true, isSave = false)
 
-  fun updateItem(itemId: Long, itemName: String, itemUrl: String?) {
+  fun updateItem(itemId: Long, itemName: String, itemUrl: String?) =
     homeViewModel.updateItem(itemId, itemName, itemUrl)
-  }
 
   fun moveItem(selfId: Long, parentId: Long) = homeViewModel.moveItem(selfId, parentId)
 
@@ -302,13 +294,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     getString(R.string.set_first_folder_done, it.second)
   } ?: getString(R.string.set_first_folder_error)
 
-  fun saveUserData(email: String, token: String) {
-    homeViewModel.sendUserData(email, token)
-  }
+  fun saveUserData(email: String, token: String) = homeViewModel.sendUserData(email, token)
 
-  fun initializeInsert() {
-    homeViewModel.initializeInsert()
-  }
+  fun initializeInsert() = homeViewModel.initializeInsert()
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

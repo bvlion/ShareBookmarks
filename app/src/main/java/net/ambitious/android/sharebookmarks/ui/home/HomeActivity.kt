@@ -98,7 +98,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     }
   }
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).apply {
     when (item.itemId) {
       R.id.menu_folder_add, R.id.menu_item_add ->
         onCreateClick(
@@ -116,7 +116,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_set_start_folder -> showSnackbar(homeFragment.setFirstFolder())
     }
-    return super.onOptionsItemSelected(item)
   }
 
   override fun onSupportNavigateUp() =
@@ -231,25 +230,23 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     )
   }
 
-  override fun onCancel() {
+  override fun onCancel() =
     supportFragmentManager.fragments
         .filter { it is ItemEditDialogFragment || it is FolderListDialogFragment }
         .forEach {
           supportFragmentManager.beginTransaction().remove(it).commit()
         }
-  }
 
   override fun onSet(selfId: Long, parentId: Long) {
     homeFragment.moveItem(selfId, parentId)
     showSnackbar(getString(R.string.move_complete))
   }
 
-  fun onMove(selfId: Long, folderList: List<Item>) {
+  fun onMove(selfId: Long, folderList: List<Item>) =
     FolderListDialogFragment.newInstance(selfId, ArrayList(folderList))
         .show(supportFragmentManager, FolderListDialogFragment.TAG)
-  }
 
-  fun onEdit(item: Item) {
+  fun onEdit(item: Item) =
     ItemEditDialogFragment.newInstance(
         item.id!!,
         if (item.url.isNullOrEmpty()) {
@@ -260,7 +257,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         item.name,
         item.url
     ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
-  }
 
   fun setSortMode(sortStart: Boolean) {
     sorting = sortStart
@@ -273,16 +269,14 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       Snackbar.LENGTH_LONG
   ).show()
 
-  fun changeAdmob() {
+  fun changeAdmob() =
     supportFragmentManager.findFragmentById(R.id.admob_fragment)?.let {
       (it as AdmobFragment).displayChange()
     }
-  }
 
-  private fun onCreateClick(type: ItemType) {
+  private fun onCreateClick(type: ItemType) =
     ItemEditDialogFragment.newInstance(0, type, null, null)
         .show(supportFragmentManager, ItemEditDialogFragment.TAG)
-  }
 
   private fun setNavigation() {
     nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null

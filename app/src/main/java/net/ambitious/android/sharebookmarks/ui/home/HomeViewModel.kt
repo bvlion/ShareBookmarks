@@ -21,6 +21,7 @@ class HomeViewModel(
   private val itemDao: ItemDao,
   private val usersApi: UsersApi,
 ) : BaseViewModel() {
+
   private val _items = MutableLiveData<List<Item>>()
   val items: LiveData<List<Item>>
     get() = _items
@@ -82,42 +83,34 @@ class HomeViewModel(
     launch { postItems() }
   }
 
-  fun sortSave(items: List<Item>) {
-    launch {
-      items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
-      postItems()
+  fun sortSave(items: List<Item>) = launch {
+    items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
+    postItems()
+  }
+
+  fun getFolders(selfId: Long) = launch {
+    val folders = itemDao.getFolderItems(selfId)
+    val idList = arrayListOf<Long>()
+    // 自身の配下のフォルダを再帰的に除外
+    folders.filter { selfId == it.parentId }.map { it.id!! }.forEach { idList.add(it) }
+    if (idList.isNotEmpty()) {
+      deleteChildItems(folders, idList, idList)
     }
+    _folders.postValue(Pair(selfId, folders.filter { !idList.contains(it.id) }))
   }
 
-  fun getFolders(selfId: Long) {
-    launch {
-      val folders = itemDao.getFolderItems(selfId)
-      val idList = arrayListOf<Long>()
-      // 自身の配下のフォルダを再帰的に除外
-      folders.filter { selfId == it.parentId }.map { it.id!! }.forEach { idList.add(it) }
-      if (idList.isNotEmpty()) {
-        deleteChildItems(folders, idList, idList)
-      }
-      _folders.postValue(Pair(selfId, folders.filter { !idList.contains(it.id) }))
+  fun setFolderNull() = _folders.postValue(null)
+
+  fun sendUserData(email: String, token: String, isInitialize: Boolean = false) = launch({
+    usersApi.userAuth(UsersPostData(email, token)).let {
+      _tokenSave.postValue(it)
     }
-  }
-
-  fun setFolderNull() {
-    _folders.postValue(null)
-  }
-
-  fun sendUserData(email: String, token: String, isInitialize: Boolean = false) {
-    launch({
-      usersApi.userAuth(UsersPostData(email, token)).let {
-        _tokenSave.postValue(it)
-      }
-      _networkError.postValue(0)
-    }, {
-      if (isInitialize) {
-        _networkError.postValue(R.string.sync_network_error)
-      }
-    })
-  }
+    _networkError.postValue(0)
+  }, {
+    if (isInitialize) {
+      _networkError.postValue(R.string.sync_network_error)
+    }
+  })
 
   private fun deleteChildItems(
     items: List<Item>,
@@ -149,47 +142,44 @@ class HomeViewModel(
     }
   }
 
-  fun moveItem(selfId: Long, parentId: Long) {
-    launch {
-      itemDao.move(selfId, parentId, itemDao.getMaxOrder(parentId) ?: 0)
-      postItems()
-    }
+  fun moveItem(selfId: Long, parentId: Long) = launch {
+    itemDao.move(selfId, parentId, itemDao.getMaxOrder(parentId) ?: 0)
+    postItems()
   }
 
   fun updateItem(
     itemId: Long,
     itemName: String,
     itemUrl: String?
-  ) =
-    launch {
-      if (itemId > 0) {
-        val item = itemDao.getItem(itemId)!!
-        itemDao.update(
-            Item(
-                itemId,
-                item.remoteId,
-                _parentId.value ?: 0,
-                itemName,
-                itemUrl,
-                item.order,
-                item.ownerType
-            )
-        )
-      } else {
-        itemDao.insert(
-            Item(
-                null,
-                null,
-                _parentId.value ?: 0,
-                itemName,
-                itemUrl,
-                itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
-                _ownerId.value ?: OwnerType.OWNER.value
-            )
-        )
-      }
-      postItems()
+  ) = launch {
+    if (itemId > 0) {
+      val item = itemDao.getItem(itemId)!!
+      itemDao.update(
+          Item(
+              itemId,
+              item.remoteId,
+              _parentId.value ?: 0,
+              itemName,
+              itemUrl,
+              item.order,
+              item.ownerType
+          )
+      )
+    } else {
+      itemDao.insert(
+          Item(
+              null,
+              null,
+              _parentId.value ?: 0,
+              itemName,
+              itemUrl,
+              itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
+              _ownerId.value ?: OwnerType.OWNER.value
+          )
+      )
     }
+    postItems()
+  }
 
   fun deleteItem(itemId: Long) = launch {
     deleteItems(itemDao.getItems(itemId))
@@ -205,18 +195,14 @@ class HomeViewModel(
     )
   }
 
-  fun initializeInsert() {
-    launch {
-      itemDao.insertAll(*Const.INITIALIZE_DB)
-      postItems()
-    }
+  fun initializeInsert() = launch {
+    itemDao.insertAll(*Const.INITIALIZE_DB)
+    postItems()
   }
 
   private fun deleteItems(childItems: List<Item>) {
     childItems.filter { it.url.isNullOrEmpty() }.forEach { deleteItem(it.id!!) }
   }
 
-  private suspend fun postItems() {
-    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
-  }
+  private suspend fun postItems() = _items.postValue(itemDao.getItems(_parentId.value ?: 0))
 }
