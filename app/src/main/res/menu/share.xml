@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-      android:id="@+id/menu_folder_add"
+      android:id="@+id/menu_contact_permission"
       android:icon="@drawable/ic_contact_mail"
       android:orderInCategory="10"
-      android:title="@string/menu_folder_add"
+      android:title="@string/share_permission"
       app:showAsAction="ifRoom" />
     <item
-      android:id="@+id/menu_sort_end"
+      android:id="@+id/menu_user_add_done"
       android:icon="@drawable/ic_check"
       android:orderInCategory="20"
-      android:title="@string/menu_sort"
+      android:title="@string/share_done"
       app:showAsAction="ifRoom" />
 </menu>

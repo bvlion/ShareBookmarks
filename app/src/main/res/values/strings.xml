@@ -107,4 +107,11 @@
     <!-- お知らせ -->
     <string name="notification_loading_message">Loading....</string>
     <string name="notification_network_error">The notification could not be loaded due to a communication failure.\nTry to update it in a place with good electric field conditions.</string>
+
+    <!-- フォルダー共有 -->
+    <string name="share_title">Select destination</string>
+    <string name="share_permission">Use contact information</string>
+    <string name="share_done">Save</string>
+    <string name="share_permission_dialog">Permission to access the site is required to select from the contact list.</string>
+    <string name="share_placeholder">Shared email address</string>
 </resources>

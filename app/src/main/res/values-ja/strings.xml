@@ -107,4 +107,11 @@
     <!-- お知らせ -->
     <string name="notification_loading_message">読み込み中…</string>
     <string name="notification_network_error">通信に失敗したためお知らせを読み込めませんでした。\n電場状況のよい場所で更新してみてください。</string>
+
+    <!-- フォルダー共有 -->
+    <string name="share_title">共有先選択</string>
+    <string name="share_permission">連絡先を利用</string>
+    <string name="share_done">保存</string>
+    <string name="share_permission_dialog">連絡先から選択する場合はアクセスの許可が必要です。</string>
+    <string name="share_placeholder">共有するメールアドレス</string>
 </resources>

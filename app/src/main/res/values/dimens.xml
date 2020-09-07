@@ -18,4 +18,8 @@
     <dimen name="notification_title_size">16sp</dimen>
     <dimen name="notification_subject_size">14sp</dimen>
     <dimen name="notification_date_size">13sp</dimen>
+
+    <dimen name="user_image_size">32dp</dimen>
+    <dimen name="share_name_size">15sp</dimen>
+    <dimen name="share_email_size">14sp</dimen>
 </resources>
