@@ -29,6 +29,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+          android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+          android:launchMode="singleInstance"
+          android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"
+          tools:replace="android:launchMode" />
+
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.inquiry.InquiryActivity" />
         <activity android:name=".ui.setting.SettingActivity" />
@@ -44,7 +51,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.ProjectFirebaseMessagingService">
+        <service android:name=".service.ProjectFirebaseMessagingService"
+          android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

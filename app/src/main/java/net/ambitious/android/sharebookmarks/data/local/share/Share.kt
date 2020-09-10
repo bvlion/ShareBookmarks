@@ -26,9 +26,9 @@ data class Share(
   /** シェア対象 Email */
   @ColumnInfo(name = "user_email") val userEmail: String,
   /** シェア対象 ユーザー名 */
-  @ColumnInfo(name = "user_email") val userName: String?,
+  @ColumnInfo(name = "user_name") val userName: String?,
   /** シェア対象 ユーザーアイコン */
-  @ColumnInfo(name = "user_email") val userIcon: String?,
+  @ColumnInfo(name = "user_icon") val userIcon: String?,
   /** 本人と保持・編集可・閲覧のみフラグ */
   @ColumnInfo(name = "owner_type") val ownerType: Int,
   /** 有効フラグ */
