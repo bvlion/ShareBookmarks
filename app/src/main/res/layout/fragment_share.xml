@@ -5,15 +5,9 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/users_refresh"
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/users_recycler_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/users_recycler_view"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

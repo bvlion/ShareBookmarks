@@ -35,7 +35,7 @@ object PreferencesUtils {
       set(value) = pref.save(FCM_TOKEN, value)
 
     var showMailAddress: Boolean
-      get() = pref.getBoolean(SHOW_MAIL_ADDRESS)
+      get() = pref.getBooleanTrue(SHOW_MAIL_ADDRESS)
       set(_) = pref.notSave()
 
     var backupRestoreAuto: Boolean
@@ -68,6 +68,9 @@ object PreferencesUtils {
 
     fun getString(saveKey: String) =
       PreferenceManager.getDefaultSharedPreferences(context).getString(saveKey, null)
+
+    fun getBooleanTrue(saveKey: String) =
+      PreferenceManager.getDefaultSharedPreferences(context).getBoolean(saveKey, true)
 
     fun getBoolean(saveKey: String) =
       PreferenceManager.getDefaultSharedPreferences(context).getBoolean(saveKey, false)

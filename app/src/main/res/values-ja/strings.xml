@@ -3,6 +3,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">設定</string>
+    <string name="dialog_cancel">キャンセル</string>
 
     <!-- 左メニュー -->
     <string name="menu_notification">お知らせ</string>
@@ -114,4 +115,12 @@
     <string name="share_done">保存</string>
     <string name="share_permission_dialog">連絡先から選択する場合はアクセスの許可が必要です。</string>
     <string name="share_placeholder">共有するメールアドレス</string>
+    <string name="share_permission_disable_dialog_message">連絡先情報取得の権限をアプリ情報の「許可」から設定してください。</string>
+    <string name="share_permission_disable_dialog_ok">アプリ情報</string>
+    <string name="share_email_invalid">無効なメールアドレスです。</string>
+    <string name="share_email_invalid_dialog_message">無効なメールアドレスのため、以下のメールアドレスとは共有されません。</string>
+    <string name="share_email_message">当アプリは Gmail (G Suite を含む) 以外の連絡先とは共有できません。予めご了承下さい。</string>
+    <string name="share_end_warning">変更を破棄しますか？\n変更内容は保存されません。</string>
+    <string name="share_end_warning_ok">破棄</string>
+    <string name="share_end_done">共有先を保存しました。</string>
 </resources>

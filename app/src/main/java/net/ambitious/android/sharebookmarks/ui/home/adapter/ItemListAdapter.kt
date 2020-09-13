@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -94,6 +95,11 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
               return@setOnMenuItemClickListener true
             }
           }.show()
+        }
+
+        // フォルダはオーナー以外編集不可
+        if (item.ownerType != Const.OwnerType.OWNER.value && item.url == null) {
+          menuImage.isVisible = false
         }
 
         if (sortMode) {

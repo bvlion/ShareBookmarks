@@ -114,4 +114,13 @@
     <string name="share_done">Save</string>
     <string name="share_permission_dialog">Permission to access the site is required to select from the contact list.</string>
     <string name="share_placeholder">Shared email address</string>
+    <string name="share_permission_disable_dialog_message">Set the permissions for getting contact information from \"Allow\" in the app information.</string>
+    <string name="share_permission_disable_dialog_ok">Application Information</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="share_email_invalid">Invalid email address.</string>
+    <string name="share_email_invalid_dialog_message">Because it is an invalid email address, it will not be shared with the following email addresses.</string>
+    <string name="share_email_message">Please note that this app cannot be shared with any other contact except Gmail (including G Suite).</string>
+    <string name="share_end_warning">Do you want to discard the changes?\nYour changes will not be saved.</string>
+    <string name="share_end_warning_ok">Discard</string>
+    <string name="share_end_done">You have saved your shares.</string>
 </resources>

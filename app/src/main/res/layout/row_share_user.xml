@@ -23,6 +23,14 @@
       android:layout_width="@dimen/user_image_size"
       android:layout_height="@dimen/user_image_size"
       android:layout_marginEnd="@dimen/space_small"
+      android:src="@drawable/ic_account_circle" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/add_user_image"
+      android:layout_width="@dimen/user_image_size"
+      android:layout_height="@dimen/user_image_size"
+      android:padding="@dimen/space_very_small"
+      android:layout_marginEnd="@dimen/space_small"
       android:src="@drawable/ic_person_add" />
 
     <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -30,6 +38,9 @@
       android:layout_width="0dp"
       android:layout_weight="1"
       android:layout_height="wrap_content"
+      android:inputType="textEmailAddress"
+      android:hint="@string/share_placeholder"
+      android:imeOptions="actionDone"
       android:layout_marginStart="@dimen/space_small"/>
 
     <LinearLayout
@@ -56,7 +67,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/share_user_delete"
-      android:layout_width="@dimen/user_image_size"
+      android:layout_width="@dimen/user_delete_image_size"
       android:layout_height="@dimen/user_image_size"
       android:layout_marginStart="@dimen/space_small"
       android:src="@drawable/ic_clear" />
