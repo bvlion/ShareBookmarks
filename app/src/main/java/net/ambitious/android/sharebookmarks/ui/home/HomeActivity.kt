@@ -56,7 +56,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     super.onCreate(savedInstanceState)
     analyticsUtils.logStartActivity("MainActivity")
 
-    setTheme(R.style.AppTheme_NoActionBar)
+    setTheme(R.style.HomeTealTheme)
     setContentView(R.layout.activity_main)
     setSupportActionBar(toolbar)
 

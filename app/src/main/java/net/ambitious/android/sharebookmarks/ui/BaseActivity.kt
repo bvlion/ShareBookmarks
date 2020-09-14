@@ -3,6 +3,7 @@ package net.ambitious.android.sharebookmarks.ui
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.RemoteConfigUtils
 import org.koin.android.ext.android.inject
@@ -15,7 +16,7 @@ open class BaseActivity : AppCompatActivity() {
 
     RemoteConfigUtils.fetch()
 
-//    setTheme(R.style.AppTheme_NoActionBar)
+    setTheme(R.style.TealTheme)
 
     if (isBackShowOnly()) {
       supportActionBar?.run {

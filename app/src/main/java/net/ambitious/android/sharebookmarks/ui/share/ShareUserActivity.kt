@@ -30,7 +30,7 @@ class ShareUserActivity : BaseActivity() {
 
     supportActionBar?.run {
       setDisplayHomeAsUpEnabled(true)
-      setHomeAsUpIndicator(R.drawable.ic_clear)
+      setHomeAsUpIndicator(R.drawable.ic_clear_white)
     }
   }
 
