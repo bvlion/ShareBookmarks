@@ -4,8 +4,8 @@
   android:opacity="opaque">
 
   <item android:drawable="@android:color/white"/>
-  <item android:gravity="center">
-    <bitmap android:src="@mipmap/ic_launcher_foreground"/>
+  <item>
+    <bitmap android:gravity="center" android:src="@mipmap/splash"/>
   </item>
 
 </layer-list>
