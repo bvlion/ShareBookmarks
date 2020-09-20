@@ -62,7 +62,11 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
           PopupMenu(context, v).apply {
             menuInflater.inflate(
                 if (item.url == null) {
-                  R.menu.row_folder_popup
+                  if (item.ownerType == Const.OwnerType.OWNER.value) {
+                    R.menu.row_folder_popup
+                  } else {
+                    R.menu.row_folder_shared_popup
+                  }
                 } else {
                   R.menu.row_item_popup
                 }, menu

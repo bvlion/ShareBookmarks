@@ -102,16 +102,21 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         viewLifecycleOwner,
         {
           if (it == 0) {
-            // 自動同期処理
+            (activity as HomeActivity).startUpdateService(preferences.backupRestoreAuto)
           } else {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
           }
         }
     )
 
     if (savedInstanceState == null) {
       preferences.userEmail?.let { email ->
-        homeViewModel.sendUserData(email, preferences.fcmToken ?: return@let, true)
+        homeViewModel.sendUserData(
+            email,
+            preferences.userUid ?: return@let,
+            preferences.fcmToken ?: return@let,
+            true
+        )
       }
     }
 
@@ -294,7 +299,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     getString(R.string.set_first_folder_done, it.second)
   } ?: getString(R.string.set_first_folder_error)
 
-  fun saveUserData(email: String, token: String) = homeViewModel.sendUserData(email, token)
+  fun saveUserData(email: String, uid: String, token: String) =
+    homeViewModel.sendUserData(email, uid, token)
 
   fun initializeInsert() = homeViewModel.initializeInsert()
 

@@ -57,7 +57,7 @@
     <string name="sign_out_complete">Logged out.</string>
     <string name="cant_start_activity">Unable to activate the shortcut.\nPlease check your registration details.</string>
     <string name="shortcut_created">A shortcut has been created for Home.</string>
-    <string name="sync_network_error">No automatic synchronization was performed due to a communication failure.</string>
+    <string name="sync_network_error">No synchronization was done because the communication failed.</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">Please enter your email address and contact details.</string>
@@ -93,7 +93,7 @@
     <string name="snackbar_create_message">Added %s.</string>
     <string name="delete_title">Do you want to delete %s?</string>
     <string name="delete_item_message">This operation is irreversible.</string>
-    <string name="delete_folder_message">The bookmarks in the folder will also be deleted.\nThis operation is irreversible.</string>
+    <string name="delete_folder_message">The bookmarks in the folder will also be deleted.\nIf you are sharing, it will also be deleted from the person you are sharing it with.\nThis operation is irreversible.</string>
     <string name="deleted_message">Deleted. </string>
     <string name="move_complete">Moved</string>
     <string name="snackbar_sort_complete_message">I saved the sort.</string>
@@ -123,4 +123,9 @@
     <string name="share_end_warning">Do you want to discard the changes?\nYour changes will not be saved.</string>
     <string name="share_end_warning_ok">Discard</string>
     <string name="share_end_done">You have saved your shares.</string>
+
+    <!-- 通知周り -->
+    <string name="notification_channel_from_app">Notifications from the App</string>
+    <string name="notification_channel_work_server">Notice while working with the server</string>
+    <string name="notification_update_message">Updating…</string>
 </resources>

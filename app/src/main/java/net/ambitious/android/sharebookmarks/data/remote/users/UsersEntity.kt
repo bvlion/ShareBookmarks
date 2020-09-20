@@ -5,6 +5,7 @@ import com.squareup.moshi.Json
 object UsersEntity {
   data class UsersPostData(
     val email: String,
+    val uid: String,
     @Json(name = "fcm_token") val fcmToken: String
   )
 

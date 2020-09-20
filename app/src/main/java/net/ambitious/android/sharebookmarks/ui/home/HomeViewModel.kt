@@ -101,16 +101,17 @@ class HomeViewModel(
 
   fun setFolderNull() = _folders.postValue(null)
 
-  fun sendUserData(email: String, token: String, isInitialize: Boolean = false) = launch({
-    usersApi.userAuth(UsersPostData(email, token)).let {
-      _tokenSave.postValue(it)
-    }
-    _networkError.postValue(0)
-  }, {
-    if (isInitialize) {
-      _networkError.postValue(R.string.sync_network_error)
-    }
-  })
+  fun sendUserData(email: String, uid: String, token: String, isInitialize: Boolean = false) =
+    launch({
+      usersApi.userAuth(UsersPostData(email, uid, token)).let {
+        _tokenSave.postValue(it)
+      }
+      _networkError.postValue(0)
+    }, {
+      if (isInitialize) {
+        _networkError.postValue(R.string.sync_network_error)
+      }
+    })
 
   private fun deleteChildItems(
     items: List<Item>,

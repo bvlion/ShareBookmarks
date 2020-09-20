@@ -3,6 +3,7 @@ package net.ambitious.android.sharebookmarks.ui.home
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +16,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.AppLaunchChecker
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -29,6 +31,7 @@ import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment
@@ -39,6 +42,7 @@ import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
+import net.ambitious.android.sharebookmarks.util.NotificationUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 
@@ -78,6 +82,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     // 初回起動時に初期値 DB を設定
     if (!AppLaunchChecker.hasStartedFromLauncher(this)) {
       homeFragment.initializeInsert()
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        NotificationUtils.createChannels(this)
+      }
     }
     AppLaunchChecker.onActivityCreate(this)
   }
@@ -136,10 +143,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
           FirebaseAuth.getInstance().currentUser?.also {
             preferences.userName = it.displayName
             preferences.userEmail = it.email
+            preferences.userUid = it.uid
             preferences.userIcon = it.photoUrl?.toString()
             setNavigation()
             preferences.fcmToken?.let { token ->
-              homeFragment.saveUserData(it.email ?: return, token)
+              homeFragment.saveUserData(it.email ?: return, it.uid, token)
             }
             showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
@@ -175,11 +183,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
                 .addOnCompleteListener {
                   preferences.userName = null
                   preferences.userEmail = null
+                  preferences.userUid = null
                   preferences.userIcon = null
+                  preferences.userBearer = null
+                  preferences.backupRestoreAuto = false
                   setNavigation()
                   showSnackbar(getString(R.string.sign_out_complete))
                 }
           }.show()
+      R.id.menu_update -> startUpdateService(true)
       R.id.menu_oss_license -> startActivity(
           Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
             putExtra("title", getString(R.string.menu_oss_license))
@@ -209,6 +221,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       )
     }
     drawer_layout.closeDrawer(GravityCompat.START)
+  }
+
+  override fun finish() {
+    startUpdateService(preferences.backupRestoreAuto)
+    super.finish()
   }
 
   override fun isBackShowOnly() = false
@@ -274,6 +291,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       (it as AdmobFragment).displayChange()
     }
 
+  fun startUpdateService(isStart: Boolean) {
+    if (isStart) {
+      ContextCompat.startForegroundService(this, Intent(this, DataUpdateService::class.java))
+    }
+  }
+
   private fun onCreateClick(type: ItemType) =
     ItemEditDialogFragment.newInstance(0, type, null, null)
         .show(supportFragmentManager, ItemEditDialogFragment.TAG)
@@ -281,6 +304,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private fun setNavigation() {
     nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
     nav_view.menu.findItem(R.id.menu_logout).isVisible = preferences.userEmail != null
+    nav_view.menu.findItem(R.id.menu_update).isVisible = preferences.userEmail != null
+    nav_view.menu.findItem(R.id.menu_billing).isVisible = false
     val header = nav_view.getHeaderView(0)
     Glide.with(this)
         .load(preferences.userIcon ?: R.mipmap.ic_launcher_round)

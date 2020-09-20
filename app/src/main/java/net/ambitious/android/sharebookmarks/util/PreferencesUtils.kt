@@ -18,6 +18,10 @@ object PreferencesUtils {
       get() = pref.getString(USER_EMAIL)
       set(value) = pref.save(USER_EMAIL, value)
 
+    var userUid: String?
+      get() = pref.getString(USER_UID)
+      set(value) = pref.save(USER_UID, value)
+
     var userIcon: String?
       get() = pref.getString(USER_ICON)
       set(value) = pref.save(USER_ICON, value)
@@ -40,7 +44,7 @@ object PreferencesUtils {
 
     var backupRestoreAuto: Boolean
       get() = pref.getBoolean(BACKUP_RESTORE_AUTO)
-      set(_) = pref.notSave()
+      set(value) = pref.save(BACKUP_RESTORE_AUTO, value)
 
     var closeApp: Boolean
       get() = pref.getBoolean(CLOSE_APP)
@@ -86,6 +90,7 @@ object PreferencesUtils {
   // ユーザー情報
   private const val USER_NAME = "user_name"
   private const val USER_EMAIL = "user_email"
+  private const val USER_UID = "user_uid"
   private const val USER_ICON = "user_icon"
   private const val USER_BEARER = "user_bearer"
   private const val USER_IS_PREMIUM = "user_is_premium"

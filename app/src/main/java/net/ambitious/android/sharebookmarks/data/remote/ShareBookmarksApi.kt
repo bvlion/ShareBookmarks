@@ -63,8 +63,9 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
           )
           .build()
 
-    private class AuthorizationInterceptor(private val preferences: PreferencesUtils.Data) :
-        Interceptor {
+    private class AuthorizationInterceptor(
+      private val preferences: PreferencesUtils.Data
+    ) : Interceptor {
       override fun intercept(chain: Chain) = chain.proceed(
           chain.request().newBuilder().apply {
             preferences.userBearer?.let {

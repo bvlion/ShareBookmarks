@@ -25,5 +25,6 @@
       app:useSimpleSummaryProvider="true"
       android:entries="@array/first_folder_labels"
       android:entryValues="@array/first_folder_values"
-      android:dialogTitle="@string/setting_start_folder" />
+      android:dialogTitle="@string/setting_start_folder"
+      android:defaultValue="root" />
 </androidx.preference.PreferenceScreen>

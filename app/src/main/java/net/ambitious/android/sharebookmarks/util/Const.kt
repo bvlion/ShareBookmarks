@@ -30,4 +30,11 @@ object Const {
       Item(null, null, 0, "Yahoo", "https://www.yahoo.co.jp/", 2, OwnerType.OWNER.value),
       Item(null, null, 0, "フォルダ", null, 3, OwnerType.OWNER.value)
   )
+
+  object NotificationService {
+    const val DATA_UPDATE_ID = 23487452
+
+    const val NOTICE_CHANNEL = "Channels.NOTICE_CHANNEL"
+    const val DATA_UPDATE_CHANNEL = "Channels.DATA_UPDATE_CHANNEL"
+  }
 }

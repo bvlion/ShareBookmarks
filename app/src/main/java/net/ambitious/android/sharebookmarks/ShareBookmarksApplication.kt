@@ -7,8 +7,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.ambitious.android.sharebookmarks.data.local.ShareBookmarksDatabase
 import net.ambitious.android.sharebookmarks.data.remote.ShareBookmarksApi
+import net.ambitious.android.sharebookmarks.data.remote.item.ItemApi
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
+import net.ambitious.android.sharebookmarks.data.remote.share.ShareApi
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
+import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
+import net.ambitious.android.sharebookmarks.data.source.impl.ShareBookmarksDataSourceImpl
 import net.ambitious.android.sharebookmarks.ui.home.HomeViewModel
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationViewModel
@@ -36,7 +40,14 @@ class ShareBookmarksApplication : Application() {
 
     startKoin {
       androidContext(this@ShareBookmarksApplication)
-      modules(viewModelModule, databaseModule, apiModule, preferencesModule, analyticsModule)
+      modules(
+          viewModelModule,
+          databaseModule,
+          apiModule,
+          preferencesModule,
+          analyticsModule,
+          dataSourceModule
+      )
     }
   }
 
@@ -88,6 +99,14 @@ class ShareBookmarksApplication : Application() {
     factory {
       get<ShareBookmarksApi>().create(UsersApi::class)
     }
+
+    factory {
+      get<ShareBookmarksApi>().create(ShareApi::class)
+    }
+
+    factory {
+      get<ShareBookmarksApi>().create(ItemApi::class)
+    }
   }
 
   private val preferencesModule = module {
@@ -107,6 +126,12 @@ class ShareBookmarksApplication : Application() {
 
     single {
       FirebaseAnalytics.getInstance(androidContext())
+    }
+  }
+
+  private val dataSourceModule = module {
+    single<ShareBookmarksDataSource> {
+      ShareBookmarksDataSourceImpl(get(), get(), get(), get())
     }
   }
 }
