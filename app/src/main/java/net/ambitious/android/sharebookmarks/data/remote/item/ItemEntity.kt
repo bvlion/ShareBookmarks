@@ -3,10 +3,10 @@ package net.ambitious.android.sharebookmarks.data.remote.item
 import com.squareup.moshi.Json
 
 object ItemEntity {
-  data class ItemList(val shares: List<Item>) {
+  data class ItemList(val items: List<Item>) {
     data class Item(
       @Json(name = "remote_id") val remoteId: Long,
-      @Json(name = "parent_id") val serverFolderId: Long,
+      @Json(name = "parent_id") val parentId: Long,
       val name: String,
       val url: String?,
       val orders: Int,
@@ -16,14 +16,14 @@ object ItemEntity {
 
   data class PostItem(
     @Json(name = "local_id") val id: Long,
-    @Json(name = "remote_id") val remoteId: Long,
+    @Json(name = "remote_id") val remoteId: Long?,
     val name: String,
     val url: String?,
     val orders: Int,
     val updated: String
   )
 
-  data class PostResponse(val shares: List<Item>) {
+  data class PostResponse(val items: List<Item>) {
     data class Item(
       @Json(name = "local_id") val id: Long,
       @Json(name = "remote_id") val remoteId: Long

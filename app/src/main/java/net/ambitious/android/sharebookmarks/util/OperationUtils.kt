@@ -7,8 +7,16 @@ import android.provider.ContactsContract.Contacts
 import android.provider.ContactsContract.Data
 import android.util.Base64
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 object OperationUtils {
+  private val DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+
+  fun datetimeFormat(time: Long?): String = DATETIME_FORMAT.print(time ?: DateTime().millis)
+
+  fun datetimeParse(time: String): DateTime = DATETIME_FORMAT.parseDateTime(time)
+
   fun createThumbnailUrl(url: String?) =
     url?.split("://")?.let {
       if (it.size < 2) {

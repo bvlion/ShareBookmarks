@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.home
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.AppLaunchChecker
 import androidx.core.content.ContextCompat
@@ -32,6 +34,7 @@ import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.service.DataUpdateService
+import net.ambitious.android.sharebookmarks.service.MessageBroadcastReceiver
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment
@@ -56,11 +59,13 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private lateinit var homeFragment: HomeFragment
   private var sorting = false
 
+  private lateinit var messageBroadcastReceiver: MessageBroadcastReceiver
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     analyticsUtils.logStartActivity("MainActivity")
 
-    setTheme(R.style.HomeTealTheme)
+    setTheme(R.style.HomeIndigoTheme)
     setContentView(R.layout.activity_main)
     setSupportActionBar(toolbar)
 
@@ -87,6 +92,20 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
     }
     AppLaunchChecker.onActivityCreate(this)
+    messageBroadcastReceiver = MessageBroadcastReceiver {
+      Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
+      homeFragment.imageReload()
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    registerReceiver(messageBroadcastReceiver, IntentFilter(Const.MESSAGE_BROADCAST_ACTION))
+  }
+
+  override fun onPause() {
+    unregisterReceiver(messageBroadcastReceiver)
+    super.onPause()
   }
 
   override fun onCreateOptionsMenu(menu: Menu) = true.apply {

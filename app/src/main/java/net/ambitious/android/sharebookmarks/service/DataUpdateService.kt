@@ -3,10 +3,10 @@ package net.ambitious.android.sharebookmarks.service
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
-import android.widget.Toast
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.R
@@ -30,16 +30,22 @@ class DataUpdateService : Service() {
 
     GlobalScope.launch {
       withContext(Dispatchers.IO) {
-
         try {
           dataSource.dataUpdate()
+          sendMessage(R.string.sync_success)
         } catch (e: Exception) {
           FirebaseCrashlytics.getInstance().recordException(e)
-          Toast.makeText(this@DataUpdateService, R.string.sync_network_error, Toast.LENGTH_LONG).show()
+          sendMessage(R.string.sync_network_error)
         }
 
         stopSelf()
       }
     }
   }
+
+  private fun sendMessage(messageId: Int) =
+    sendBroadcast(Intent().apply {
+      putExtra(Const.MESSAGE_BROADCAST_BUNDLE, getString(messageId))
+      action = Const.MESSAGE_BROADCAST_ACTION
+    })
 }

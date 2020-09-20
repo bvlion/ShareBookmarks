@@ -16,7 +16,7 @@ open class BaseActivity : AppCompatActivity() {
 
     RemoteConfigUtils.fetch()
 
-    setTheme(R.style.TealTheme)
+    setTheme(R.style.IndigoTheme)
 
     if (isBackShowOnly()) {
       supportActionBar?.run {

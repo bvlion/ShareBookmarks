@@ -37,4 +37,7 @@ object Const {
     const val NOTICE_CHANNEL = "Channels.NOTICE_CHANNEL"
     const val DATA_UPDATE_CHANNEL = "Channels.DATA_UPDATE_CHANNEL"
   }
+
+  const val MESSAGE_BROADCAST_ACTION = "message_broadcast_action"
+  const val MESSAGE_BROADCAST_BUNDLE = "message_broadcast_bundle"
 }

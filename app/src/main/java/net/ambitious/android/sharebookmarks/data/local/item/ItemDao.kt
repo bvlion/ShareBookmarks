@@ -16,8 +16,8 @@ interface ItemDao {
   @Update
   suspend fun update(items: Item)
 
-  @Query("UPDATE items SET active = 0 WHERE id = :itemId")
-  suspend fun delete(itemId: Long)
+  @Query("UPDATE items SET active = 0 WHERE id IN (:itemId)")
+  suspend fun delete(vararg itemId: Long)
 
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
@@ -36,4 +36,24 @@ interface ItemDao {
 
   @Query("UPDATE items SET `order` = :order WHERE id = :selfId")
   suspend fun orderUpdate(selfId: Long, order: Int)
+
+  // 以下は同期で利用している
+
+  @Query("SELECT remote_id FROM items WHERE remote_id IS NOT NULL AND active = 0")
+  suspend fun getDeleteItems(): List<Long>
+
+  @Query("SELECT * FROM items WHERE active = 1 ORDER BY parent_id, `order`, upserted")
+  suspend fun getAllItems(): List<Item>
+
+  @Query("SELECT * FROM items WHERE remote_id = :remoteId")
+  suspend fun getSaveRemoteIdItem(remoteId: Long): Item?
+
+  @Query("UPDATE items SET remote_id = :remoteId WHERE id = :id")
+  suspend fun updateRemoteId(id: Long, remoteId: Long)
+
+  @Query("SELECT remote_id FROM items WHERE id = (SELECT parent_id FROM items WHERE id = :id)")
+  suspend fun getParentRemoteId(id: Long): Long?
+
+  @Query("DELETE FROM items WHERE active = 0")
+  suspend fun forceDelete()
 }
