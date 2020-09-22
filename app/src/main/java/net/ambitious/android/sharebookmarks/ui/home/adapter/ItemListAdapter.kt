@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.item.Item
@@ -28,6 +33,8 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
   private var sortMode = false
+
+  private val scope = CoroutineScope(Dispatchers.Main)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
       LayoutInflater.from(parent.context)
@@ -46,16 +53,20 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
             Const.OwnerType.OWNER.value -> titleImageView.setImageResource(
                 R.drawable.ic_item_folder
             )
-            Const.OwnerType.EDITABLE.value or Const.OwnerType.READONLY.value -> titleImageView.setImageResource(
+            Const.OwnerType.EDITABLE.value, Const.OwnerType.READONLY.value -> titleImageView.setImageResource(
                 R.drawable.ic_item_folder_shared
             )
             else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
           }
         } else {
-          Glide.with(context)
-              .load(createThumbnailUrl(item.url))
-              .placeholder(R.drawable.ic_item_internet)
-              .into(titleImageView)
+          scope.launch {
+            Glide.with(context)
+                .load(withContext(Dispatchers.IO) {
+                  createThumbnailUrl(item.url)
+                })
+                .placeholder(R.drawable.ic_item_internet)
+                .into(titleImageView)
+          }
         }
 
         menuImage.setOnClickListener { v ->
@@ -90,10 +101,14 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                     item.url!!,
                     item.name
                 )
-                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(
-                    titleImageView,
-                    createThumbnailUrl(item.url)
-                )
+                R.id.row_update_thumbnail -> scope.launch {
+                  listener.onThumbnailUpdateClick(
+                      titleImageView,
+                      withContext(Dispatchers.IO) {
+                        createThumbnailUrl(item.url)
+                      }
+                  )
+                }
               }
               return@setOnMenuItemClickListener true
             }
@@ -148,6 +163,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
   }
 
   fun setItems(items: List<Item>) {
+    scope.coroutineContext.cancelChildren()
     _items.clear()
     _items.addAll(items)
     notifyDataSetChanged()

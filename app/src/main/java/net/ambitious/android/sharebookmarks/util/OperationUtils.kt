@@ -6,9 +6,14 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.Contacts
 import android.provider.ContactsContract.Data
 import android.util.Base64
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import org.jsoup.Jsoup
+import java.util.regex.Pattern
 
 object OperationUtils {
   private val DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
@@ -17,14 +22,32 @@ object OperationUtils {
 
   fun datetimeParse(time: String): DateTime = DATETIME_FORMAT.parseDateTime(time)
 
-  fun createThumbnailUrl(url: String?) =
-    url?.split("://")?.let {
-      if (it.size < 2) {
-        null
+  suspend fun createThumbnailUrl(url: String?) = url?.let {
+    Pattern.compile("https?://").matcher(url).find().let { isUrl ->
+      if (isUrl) {
+        getOgpImage(it)
       } else {
-        Const.GOOGLE_FAVICON_URL + it[1].split("/")[0]
+        it.split("://").let { schemePossibility ->
+          if (schemePossibility.size < 2) {
+            null
+          } else {
+            getOgpImage("https://${schemePossibility[0]}.com")
+          }
+        }
       }
     }
+  }
+
+  @Suppress("BlockingMethodInNonBlockingContext")
+  private suspend fun getOgpImage(url: String) =
+    Jsoup.connect(url).get().select("meta[property~=og:image]")
+        .map { it.attr("content") }.let { ogImage ->
+          if (ogImage.isEmpty()) {
+            Const.GOOGLE_FAVICON_URL + url.split("/")[2]
+          } else {
+            ogImage.first()
+          }
+        }
 
   fun getContactList(contentResolver: ContentResolver): List<Contact> {
     val emailMap = hashMapOf<String, String>()
