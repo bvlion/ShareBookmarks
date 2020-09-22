@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import net.ambitious.android.sharebookmarks.util.Const
+import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 
 @Dao
 interface ItemDao {
@@ -22,7 +24,7 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
 
-  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 ORDER BY `order`")
+  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 AND owner_type = 0 ORDER BY `order`")
   suspend fun getFolderItems(selfId: Long): List<Item>
 
   @Query("SELECT * FROM items WHERE id = :itemId AND active = 1")
@@ -59,4 +61,13 @@ interface ItemDao {
 
   @Query("DELETE FROM items WHERE active = 0")
   suspend fun forceDelete()
+
+  @Query("UPDATE items SET owner_type = :ownerType WHERE parent_id = :parentId")
+  suspend fun updateOwnerType(ownerType: Int, parentId: Long)
+
+  @Query("SELECT * FROM items WHERE active = 1 AND owner_type != 0")
+  suspend fun getShareFolders(): List<Item>
+
+  @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 AND url IS NULL")
+  suspend fun getFolders(parentId: Long): List<Item>
 }

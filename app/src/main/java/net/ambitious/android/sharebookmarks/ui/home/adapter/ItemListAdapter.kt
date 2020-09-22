@@ -33,6 +33,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
   private var sortMode = false
+  private var _isParentSelf = false
 
   private val scope = CoroutineScope(Dispatchers.Main)
 
@@ -82,6 +83,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                   R.menu.row_item_popup
                 }, menu
             )
+            menu.findItem(R.id.row_move).isVisible = _isParentSelf
             setOnMenuItemClickListener { menu ->
               when (menu.itemId) {
                 R.id.row_delete -> listener.onDeleteClick(
@@ -162,10 +164,11 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onSetSortMode()
   }
 
-  fun setItems(items: List<Item>) {
+  fun setItems(items: List<Item>, isParentSelf: Boolean) {
     scope.coroutineContext.cancelChildren()
     _items.clear()
     _items.addAll(items)
+    _isParentSelf = isParentSelf
     notifyDataSetChanged()
   }
 

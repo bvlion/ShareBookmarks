@@ -107,12 +107,17 @@ class ShareBookmarksDataSourceImpl(
       }
     }
 
+    // 共有配下は全て権限を同じにする
+    itemDao.getShareFolders().forEach {
+      updateOwnerType(it.ownerType, it.id!!)
+    }
+
     // ソートを再構成してローカルを最新とする
     var beforeParentId = 0L
     var order = 0
     itemDao.getAllItems().forEach {
       if (beforeParentId != it.parentId) {
-        beforeParentId = 0
+        beforeParentId = it.parentId
         order = 0
       }
       order++
@@ -156,6 +161,13 @@ class ShareBookmarksDataSourceImpl(
           itemDao.getParentOwnerType(it.parentId) ?: 0 == OwnerType.OWNER.value && it.ownerType != OwnerType.OWNER.value
       )
     })
+  }
+
+  private suspend fun updateOwnerType(ownerType: Int, parentId: Long) {
+    itemDao.updateOwnerType(ownerType, parentId)
+    itemDao.getFolders(parentId).forEach {
+      updateOwnerType(it.ownerType, it.id!!)
+    }
   }
 
   private suspend fun updateShares() {

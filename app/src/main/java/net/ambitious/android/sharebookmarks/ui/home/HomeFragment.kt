@@ -33,6 +33,7 @@ import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnIt
 import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
+import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,7 +54,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.items.observe(
         viewLifecycleOwner,
         {
-          itemListAdapter.setItems(it)
+          itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
           items_refresh.isRefreshing = false
         })
 
@@ -101,10 +102,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.networkError.observe(
         viewLifecycleOwner,
         {
-          if (it == 0) {
-            (activity as HomeActivity).startUpdateService(preferences.backupRestoreAuto)
-          } else {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+          when (it) {
+            0 -> (activity as HomeActivity).startUpdateService(preferences.backupRestoreAuto)
+            -1 -> (activity as HomeActivity).startUpdateService(true)
+            else -> Toast.makeText(context, it, Toast.LENGTH_LONG).show()
           }
         }
     )
@@ -118,9 +119,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
             true
         )
       }
+      homeViewModel.setInitialParentId(preferences.startFolderId)
     }
-
-    homeViewModel.setInitialParentId(preferences.startFolderId)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {

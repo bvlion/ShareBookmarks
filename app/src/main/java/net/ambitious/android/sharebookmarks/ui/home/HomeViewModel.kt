@@ -27,7 +27,10 @@ class HomeViewModel(
     get() = _items
 
   private val _parentId = MutableLiveData<Long>()
-  private val _ownerId = MutableLiveData<Int>()
+
+  private val _ownerType = MutableLiveData<Int>()
+  val ownerType: LiveData<Int>
+    get() = _ownerType
 
   private val _breadcrumbs = MutableLiveData<MutableList<Pair<Long, String>>>()
   val breadcrumbs: LiveData<MutableList<Pair<Long, String>>>
@@ -106,7 +109,11 @@ class HomeViewModel(
       usersApi.userAuth(UsersPostData(email, uid, token)).let {
         _tokenSave.postValue(it)
       }
-      _networkError.postValue(0)
+      if (isInitialize) {
+        _networkError.postValue(0)
+      } else {
+        _networkError.postValue(-1)
+      }
     }, {
       if (isInitialize) {
         _networkError.postValue(R.string.sync_network_error)
@@ -175,7 +182,7 @@ class HomeViewModel(
               itemName,
               itemUrl,
               itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
-              _ownerId.value ?: OwnerType.OWNER.value
+              _ownerType.value ?: OwnerType.OWNER.value
           )
       )
     }
@@ -205,5 +212,8 @@ class HomeViewModel(
     childItems.filter { it.url.isNullOrEmpty() }.forEach { deleteItem(it.id!!) }
   }
 
-  private suspend fun postItems() = _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+  private suspend fun postItems() {
+    _ownerType.postValue(itemDao.getItem(_parentId.value ?: 0)?.ownerType ?: 0)
+    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+  }
 }
