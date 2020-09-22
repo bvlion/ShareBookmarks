@@ -18,4 +18,18 @@ interface ShareDao {
 
   @Query("SELECT * FROM shares WHERE folder_id = :folderId AND active = 1 ORDER BY id")
   suspend fun getShares(folderId: Long): List<Share>
+
+  // 以下は同期で利用している
+
+  @Query("SELECT remote_id FROM shares WHERE remote_id IS NOT NULL AND active = 0")
+  suspend fun getDeleteShares(): List<Long>
+
+  @Query("SELECT * FROM shares WHERE active = 1")
+  suspend fun getAllShares(): List<Share>
+
+  @Query("UPDATE shares SET remote_id = :remoteId WHERE id = :id")
+  suspend fun updateRemoteId(id: Long, remoteId: Long)
+
+  @Query("DELETE FROM shares WHERE active = 0")
+  suspend fun forceDelete()
 }

@@ -15,7 +15,7 @@ object ShareEntity {
 
   data class PostShare(
     @Json(name = "local_id") val id: Long,
-    @Json(name = "remote_id") val remoteId: Long,
+    @Json(name = "remote_id") val remoteId: Long?,
     @Json(name = "folder_id") val serverFolderId: Long,
     @Json(name = "user_email") val userEmail: String,
     @Json(name = "owner_type") val ownerType: Int,

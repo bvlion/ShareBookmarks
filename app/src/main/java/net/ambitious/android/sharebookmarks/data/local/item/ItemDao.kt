@@ -37,6 +37,9 @@ interface ItemDao {
   @Query("UPDATE items SET `order` = :order WHERE id = :selfId")
   suspend fun orderUpdate(selfId: Long, order: Int)
 
+  @Query("SELECT owner_type FROM items WHERE id = :parentId")
+  suspend fun getParentOwnerType(parentId: Long): Int?
+
   // 以下は同期で利用している
 
   @Query("SELECT remote_id FROM items WHERE remote_id IS NOT NULL AND active = 0")

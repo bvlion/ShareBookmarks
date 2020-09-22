@@ -10,6 +10,7 @@ object ItemEntity {
       val name: String,
       val url: String?,
       val orders: Int,
+      @Json(name = "owner_type") val ownerType: Int,
       val updated: String
     )
   }
@@ -32,7 +33,8 @@ object ItemEntity {
 
   data class ParentSet(
     @Json(name = "remote_id") val remoteId: Long,
-    @Json(name = "parent_id") val parentId: Long
+    @Json(name = "parent_id") val parentId: Long,
+    @Json(name = "is_share_folder") val isSharedFolder: Boolean
   )
 
   data class ParentSetResponse(@Json(name = "result_count") val count: Int)
