@@ -2,6 +2,8 @@ package net.ambitious.android.sharebookmarks.util
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -36,10 +38,10 @@ class OperationUtilsUnitTest {
       assertNull(OperationUtils.createThumbnailUrl("test"))
 
       // URL スキーム
-      assertThat(
-          OperationUtils.createThumbnailUrl("slack://channel?team=T12345&id=Cabcde"),
-          `is`("https://a.slack-edge.com/68794/marketing/img/homepage/hp-prospect/unfurl/slack-homepage-unfurl.ja-JP.jpg")
-      )
+      OperationUtils.createThumbnailUrl("slack://channel?team=T12345&id=Cabcde")?.let {
+        assertThat(it, `is`(startsWith("https://")))
+        assertThat(it, `is`(containsString("slack")))
+      }
     }
   }
 }
