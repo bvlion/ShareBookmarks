@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+      android:key="terms_of_use"
+      android:title="@string/other_menu_terms_of_use"
+      app:iconSpaceReserved="false" />
+    <Preference
+      android:key="privacy_policy"
+      android:title="@string/other_menu_privacy_policy"
+      app:iconSpaceReserved="false" />
+    <Preference
+      android:key="version"
+      android:title="@string/other_menu_version"
+      app:iconSpaceReserved="false" />
+    <Preference
+      android:key="contact_us"
+      android:title="@string/other_menu_contact_us"
+      app:iconSpaceReserved="false" />
+</androidx.preference.PreferenceScreen>

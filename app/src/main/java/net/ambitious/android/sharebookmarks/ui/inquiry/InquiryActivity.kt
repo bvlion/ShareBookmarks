@@ -10,6 +10,6 @@ class InquiryActivity : BaseActivity() {
     analyticsUtils.logStartActivity("InquiryActivity")
 
     setContentView(R.layout.activity_inquiry)
-    setTitle(R.string.menu_contact)
+    setTitle(R.string.other_menu_contact_us)
   }
 }

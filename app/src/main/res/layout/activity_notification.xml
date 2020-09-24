@@ -22,12 +22,14 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <TextView
-          android:id="@+id/notification_message"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
+        <ProgressBar
+          android:id="@+id/loading"
+          style="?android:attr/progressBarStyleLargeInverse"
+          android:layout_width="@dimen/loading_progress"
+          android:layout_height="@dimen/loading_progress"
           android:gravity="center"
-          android:text="@string/notification_loading_message" />
+          app:layout_anchor="@+id/notification_recycler_view"
+          app:layout_anchorGravity="center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

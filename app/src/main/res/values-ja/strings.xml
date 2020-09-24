@@ -15,7 +15,7 @@
     <string name="menu_app_rating">アプリを評価</string>
     <string name="menu_operation_others">その他</string>
     <string name="menu_how_to_use">使い方</string>
-    <string name="menu_contact">お問い合わせ</string>
+    <string name="menu_other">その他</string>
     <string name="menu_oss_license">OSS ライセンス</string>
     <string name="menu_settings">設定</string>
 
@@ -107,7 +107,6 @@
     <string name="share_login_warning">共有にはログインが必要です。\n左メニュー「ログイン」より Google アカウントでログインを行ってください。</string>
 
     <!-- お知らせ -->
-    <string name="notification_loading_message">読み込み中…</string>
     <string name="notification_network_error">通信に失敗したためお知らせを読み込めませんでした。\n電場状況のよい場所で更新してみてください。</string>
 
     <!-- フォルダー共有 -->
@@ -129,4 +128,10 @@
     <string name="notification_channel_from_app">アプリからのお知らせ</string>
     <string name="notification_channel_work_server">サーバーとの連携中のお知らせ</string>
     <string name="notification_update_message">更新中…</string>
+
+    <!-- その他 -->
+    <string name="other_menu_privacy_policy">プライバシー・ポリシー</string>
+    <string name="other_menu_terms_of_use">利用規約</string>
+    <string name="other_menu_version">バージョン</string>
+    <string name="other_menu_contact_us">お問い合わせ</string>
 </resources>

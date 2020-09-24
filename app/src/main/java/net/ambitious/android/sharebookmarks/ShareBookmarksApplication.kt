@@ -7,6 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.ambitious.android.sharebookmarks.data.local.ShareBookmarksDatabase
 import net.ambitious.android.sharebookmarks.data.remote.ShareBookmarksApi
+import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.data.remote.item.ItemApi
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
 import net.ambitious.android.sharebookmarks.data.remote.share.ShareApi
@@ -106,6 +107,10 @@ class ShareBookmarksApplication : Application() {
 
     factory {
       get<ShareBookmarksApi>().create(ItemApi::class)
+    }
+
+    factory {
+      get<ShareBookmarksApi>().create(EtcApi::class)
     }
   }
 

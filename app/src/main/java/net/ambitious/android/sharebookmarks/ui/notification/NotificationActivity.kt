@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_notification.notification_message
+import kotlinx.android.synthetic.main.activity_notification.loading
 import kotlinx.android.synthetic.main.activity_notification.notification_recycler_view
 import kotlinx.android.synthetic.main.activity_notification.notification_refresh
 import net.ambitious.android.sharebookmarks.R
@@ -31,7 +31,7 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
     super.onStart()
 
     viewModel.notifications.observe(this, {
-      notification_message.visibility = View.GONE
+      loading.visibility = View.GONE
       notification_refresh.isRefreshing = false
       notificationListAdapter.setItems(it)
     })

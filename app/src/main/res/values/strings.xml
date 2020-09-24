@@ -14,7 +14,7 @@
     <string name="menu_app_rating">Rating your app</string>
     <string name="menu_how_to_use">How to use</string>
     <string name="menu_operation_others">Other</string>
-    <string name="menu_contact">Contact us</string>
+    <string name="menu_other">Other</string>
     <string name="menu_oss_license">OSS license</string>
     <string name="menu_settings">Settings</string>
 
@@ -106,7 +106,6 @@
     <string name="share_login_warning">You must be logged in to share.\nClick on \"Sign In\" in the left menu and sign in with your Google Account.</string>
 
     <!-- お知らせ -->
-    <string name="notification_loading_message">Loading....</string>
     <string name="notification_network_error">The notification could not be loaded due to a communication failure.\nTry to update it in a place with good electric field conditions.</string>
 
     <!-- フォルダー共有 -->
@@ -129,4 +128,10 @@
     <string name="notification_channel_from_app">Notifications from the App</string>
     <string name="notification_channel_work_server">Notice while working with the server</string>
     <string name="notification_update_message">Updating…</string>
+
+    <!-- その他 -->
+    <string name="other_menu_privacy_policy">Privacy Policy</string>
+    <string name="other_menu_terms_of_use">Terms of Use</string>
+    <string name="other_menu_version">Version</string>
+    <string name="other_menu_contact_us">Contact Us</string>
 </resources>

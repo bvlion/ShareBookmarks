@@ -38,9 +38,10 @@ import net.ambitious.android.sharebookmarks.service.MessageBroadcastReceiver
 import net.ambitious.android.sharebookmarks.ui.home.dialog.FolderListDialogFragment
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment
-import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationActivity
+import net.ambitious.android.sharebookmarks.ui.others.OtherActivity
 import net.ambitious.android.sharebookmarks.ui.setting.SettingActivity
+import net.ambitious.android.sharebookmarks.ui.usage.UsageActivity
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
@@ -216,7 +217,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             putExtra("title", getString(R.string.menu_oss_license))
           }
       )
-      R.id.menu_contact -> startActivity(Intent(this@HomeActivity, InquiryActivity::class.java))
+      R.id.menu_other -> startActivity(Intent(this@HomeActivity, OtherActivity::class.java))
       R.id.menu_app_rating -> try {
         startActivity(
             Intent(
@@ -238,6 +239,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
               SettingActivity::class.java
           ), SETTING_REQUEST_CODE
       )
+      R.id.menu_how_to_use -> startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
     }
     drawer_layout.closeDrawer(GravityCompat.START)
   }
