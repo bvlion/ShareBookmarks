@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_notification.notification_recycle
 import kotlinx.android.synthetic.main.activity_notification.notification_refresh
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificationClickListener {
@@ -36,7 +38,7 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
       notificationListAdapter.setItems(it)
     })
 
-    notificationListAdapter = NotificationListAdapter(this)
+    notificationListAdapter = NotificationListAdapter(this, analyticsUtils)
     notification_recycler_view.layoutManager = LinearLayoutManager(this)
     notification_recycler_view.adapter = notificationListAdapter
 
@@ -55,7 +57,6 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
   }
 
   private fun getNotifications() {
-    notification_refresh.isRefreshing = true
     viewModel.getNotifications()
   }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.databinding.FragmentInquiryBinding
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,6 +18,7 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
 
   private val viewModel by viewModel<InquiryViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
+  private val analyticsUtils: AnalyticsUtils by inject()
   private lateinit var binding: FragmentInquiryBinding
 
   override fun onCreateView(
@@ -65,6 +67,7 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
   }
 
   override fun onSendClick() {
+    analyticsUtils.logOtherTap("Inquiry", "onSendClick")
     viewModel.postMessage()
   }
 }

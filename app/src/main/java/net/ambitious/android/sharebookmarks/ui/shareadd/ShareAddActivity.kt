@@ -50,10 +50,12 @@ class ShareAddActivity : AppCompatActivity(), ItemEditDialogFragment.OnClickList
   }
 
   override fun onEdited(itemId: Long, itemName: String, itemUrl: String?, folderId: Long?) {
+    analyticsUtils.logResult("share add", "add")
     viewModel.insertItem(itemName, itemUrl!!, folderId!!)
   }
 
   override fun onCancel() {
+    analyticsUtils.logResult("share add", "cancel")
     finish()
   }
 }

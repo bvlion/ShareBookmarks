@@ -70,4 +70,7 @@ interface ItemDao {
 
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 AND url IS NULL")
   suspend fun getFolders(parentId: Long): List<Item>
+
+  @Query("DELETE FROM items WHERE remote_id = 0")
+  suspend fun deleteFirstItems()
 }

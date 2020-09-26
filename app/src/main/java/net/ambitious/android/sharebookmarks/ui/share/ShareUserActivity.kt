@@ -59,6 +59,7 @@ class ShareUserActivity : BaseActivity() {
   override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).apply {
     when (item.itemId) {
       android.R.id.home -> {
+        analyticsUtils.logOtherTap("Share", "back")
         if (shareUserFragment.isChanged()) {
           AlertDialog.Builder(this@ShareUserActivity)
               .setMessage(R.string.share_end_warning)
@@ -72,11 +73,14 @@ class ShareUserActivity : BaseActivity() {
         }
       }
       R.id.menu_contact_permission -> {
+        analyticsUtils.logOtherTap("Share", "permission")
         isFromMenu = true
         requestReadContactsPermission()
       }
       R.id.menu_user_add_done -> {
+        analyticsUtils.logOtherTap("Share", "add done")
         if (shareUserFragment.getInvalidMails().isNotEmpty()) {
+          analyticsUtils.logResult("Share", "getInvalidMails")
           AlertDialog.Builder(this@ShareUserActivity)
               .setMessage(getString(R.string.share_email_invalid_dialog_message) + "\n\n" +
                   shareUserFragment.getInvalidMails().joinToString("\n") { it.userEmail })
@@ -99,10 +103,12 @@ class ShareUserActivity : BaseActivity() {
   ) {
     when (requestCode) {
       PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        analyticsUtils.logResult("Share", "contact access permission granted")
         sendContactData()
         invalidateOptionsMenu()
       } else {
         if (isFromMenu) {
+          analyticsUtils.logResult("Share", "contact access permission not granted")
           AlertDialog.Builder(this)
               .setMessage(R.string.share_permission_dialog)
               .setPositiveButton(android.R.string.ok, null)
@@ -141,6 +147,7 @@ class ShareUserActivity : BaseActivity() {
       )
     } else {
       if (isFromMenu) {
+        analyticsUtils.logResult("Share", "contact access permission setting dialog")
         AlertDialog.Builder(this)
             .setMessage(R.string.share_permission_disable_dialog_message)
             .setPositiveButton(R.string.share_permission_disable_dialog_ok) { d, _ ->
@@ -156,6 +163,13 @@ class ShareUserActivity : BaseActivity() {
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create().show()
+        isFromMenu = false
+      } else {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            PERMISSION_REQUEST_CODE
+        )
       }
     }
   }

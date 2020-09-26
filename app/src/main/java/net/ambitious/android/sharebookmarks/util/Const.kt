@@ -26,9 +26,9 @@ object Const {
   }
 
   val INITIALIZE_DB = arrayOf(
-      Item(null, null, 0, "Google", "https://www.google.com/", 1, OwnerType.OWNER.value),
-      Item(null, null, 0, "Yahoo", "https://www.yahoo.co.jp/", 2, OwnerType.OWNER.value),
-      Item(null, null, 0, "フォルダ", null, 3, OwnerType.OWNER.value)
+      Item(null, 0, 0, "Google", "https://www.google.com/", 1, OwnerType.OWNER.value),
+      Item(null, 0, 0, "Yahoo", "https://www.yahoo.co.jp/", 2, OwnerType.OWNER.value),
+      Item(null, 0, 0, "フォルダ", null, 3, OwnerType.OWNER.value)
   )
 
   object NotificationService {

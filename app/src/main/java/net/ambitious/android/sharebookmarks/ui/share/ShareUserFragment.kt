@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_share.users_recycler_view
@@ -13,6 +14,7 @@ import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
 import net.ambitious.android.sharebookmarks.ui.share.adapter.ShareUserListAdapter
 import net.ambitious.android.sharebookmarks.ui.share.adapter.ShareUserListAdapter.OnUserCompleteListener
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +23,7 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
 
   private val viewModel by viewModel<ShareUserViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
+  private val analyticsUtils: AnalyticsUtils by inject()
 
   private lateinit var shareListAdapter: ShareUserListAdapter
 
@@ -38,6 +41,7 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
         {
           Toast.makeText(context, R.string.share_end_done, Toast.LENGTH_LONG)
               .show()
+          activity?.setResult(AppCompatActivity.RESULT_OK)
           activity?.finish()
         }
     )
@@ -53,12 +57,14 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
   }
 
   override fun onEditDone(contact: Contact) {
+    analyticsUtils.logOtherTap("Share", "onEditDone")
     if (contact.email.isNotEmpty()) {
       viewModel.addList(contact)
     }
   }
 
   override fun onDelete(position: Int) {
+    analyticsUtils.logOtherTap("Share", "onDelete")
     viewModel.deleteList(position)
   }
 

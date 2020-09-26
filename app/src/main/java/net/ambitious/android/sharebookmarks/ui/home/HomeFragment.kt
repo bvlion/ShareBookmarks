@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -31,6 +32,7 @@ import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.O
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnItemClickListener
 import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
@@ -42,6 +44,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private val homeViewModel by viewModel<HomeViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
+  private val analyticsUtils: AnalyticsUtils by inject()
 
   private lateinit var itemListAdapter: ItemListAdapter
   private lateinit var breadcrumbsAdapter: BreadcrumbsAdapter
@@ -154,23 +157,36 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.getItems()
   }
 
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (resultCode == AppCompatActivity.RESULT_OK) {
+      when (requestCode) {
+        SHARE_USER_ACTIVITY_REQUEST -> (activity as HomeActivity).startUpdateService(true)
+      }
+    }
+  }
+
   override fun onRowClick(item: Long?, url: String?) {
     item?.let {
+      analyticsUtils.logHomeTap("folder")
       homeViewModel.setParentId(it, preferences)
     }
     url?.let {
+      analyticsUtils.logHomeTap("bookmark")
       try {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         if (preferences.closeApp) {
           activity?.finish()
         }
-      } catch (_: Exception) {
+      } catch (e: Exception) {
+        analyticsUtils.logResult("bookmark tap error", e.message ?: "")
         Toast.makeText(activity, R.string.cant_start_activity, Toast.LENGTH_LONG).show()
       }
     }
   }
 
   override fun onDeleteClick(itemId: Long, itemName: String, itemType: ItemType) {
+    analyticsUtils.logHomeTap("delete")
     context?.let {
       AlertDialog.Builder(it)
           .setTitle(getString(R.string.delete_title, itemName))
@@ -185,6 +201,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           )
           .setNegativeButton(R.string.dialog_cancel_button, null)
           .setPositiveButton(R.string.dialog_delete_button) { _, _ ->
+            analyticsUtils.logResult("delete", "success")
             homeViewModel.deleteItem(itemId)
           }.show()
     }
@@ -193,21 +210,28 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   override fun onEditClick(item: Item) = (activity as HomeActivity).onEdit(item)
 
   override fun onMoveClick(itemId: Long) {
+    analyticsUtils.logHomeTap("move")
     homeViewModel.getFolders(itemId)
   }
 
   override fun onShareClick(itemId: Long, url: String?) {
     if (url.isNullOrEmpty()) {
       if (preferences.userEmail == null) {
+        analyticsUtils.logHomeTap("share folder", "error")
         context?.let {
           AlertDialog.Builder(it).setMessage(R.string.share_login_warning)
               .setPositiveButton(android.R.string.ok, null).create().show()
         }
         return
       }
-      startActivity(ShareUserActivity.createIntent(context ?: return, itemId))
+      analyticsUtils.logHomeTap("share folder", "success")
+      startActivityForResult(
+          ShareUserActivity.createIntent(context ?: return, itemId),
+          SHARE_USER_ACTIVITY_REQUEST
+      )
       activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     } else {
+      analyticsUtils.logHomeTap("share bookmark")
       startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, url)
@@ -216,6 +240,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   }
 
   override fun onCreateShortcut(itemId: Long, url: String, name: String) {
+    analyticsUtils.logHomeTap("create shortcut")
     homeViewModel.bitmap.observe(viewLifecycleOwner,
         {
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -240,6 +265,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   }
 
   override fun onThumbnailUpdateClick(imageView: ImageView, url: String?) {
+    analyticsUtils.logHomeTap("thumbnail update")
     context?.let {
       Glide.with(it)
           .load(url)
@@ -280,6 +306,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   fun sort(start: Boolean, isSave: Boolean) {
     if (isSave) {
+      analyticsUtils.logResult("sort", "success")
       (activity as HomeActivity).showSnackbar(getString(R.string.snackbar_sort_complete_message))
       homeViewModel.sortSave(itemListAdapter.getItems())
     }
@@ -330,5 +357,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       }
 
     ItemTouchHelper(simpleItemTouchCallback)
+  }
+
+  companion object {
+    const val SHARE_USER_ACTIVITY_REQUEST = 2001
   }
 }

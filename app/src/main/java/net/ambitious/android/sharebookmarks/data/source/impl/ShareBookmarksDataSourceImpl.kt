@@ -25,6 +25,9 @@ class ShareBookmarksDataSourceImpl(
   }
 
   private suspend fun updateItems() {
+    // 初期データは削除する
+    itemDao.deleteFirstItems()
+
     // 同期済みのローカルで削除した値をサーバーから削除
     itemApi.deleteItems(itemDao.getDeleteItems().map { ItemEntity.DeleteShare(it) })
 

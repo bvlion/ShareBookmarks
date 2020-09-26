@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorSidebar">#90a4ae</color>
+    <color name="colorSidebar">#de93A2FF</color>
 
     <color name="underLine">#de9c9c9c</color>
     <color name="info">#deffebee</color>

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.NotificationUtils
 import org.koin.android.ext.android.inject
@@ -19,10 +20,12 @@ import java.lang.Exception
 class DataUpdateService : Service() {
 
   private val dataSource: ShareBookmarksDataSource by inject()
+  private val analyticsUtils: AnalyticsUtils by inject()
 
   override fun onBind(intent: Intent?) = Binder()
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int) = START_STICKY.apply {
+    val start = System.currentTimeMillis()
     startForeground(
         Const.NotificationService.DATA_UPDATE_ID,
         NotificationUtils.getHomeSituationNotification(this@DataUpdateService)
@@ -39,6 +42,7 @@ class DataUpdateService : Service() {
         }
 
         stopSelf()
+        analyticsUtils.logDataUpdateTime(System.currentTimeMillis() - start)
       }
     }
   }

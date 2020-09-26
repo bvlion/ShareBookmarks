@@ -11,9 +11,11 @@ import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity.Notification
+import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 
 class NotificationListAdapter(
-  private val listener: OnNotificationClickListener
+  private val listener: OnNotificationClickListener,
+  private val analyticsUtils: AnalyticsUtils
 ) : Adapter<ViewHolder>() {
 
   private val _items = arrayListOf<Notification>()
@@ -32,6 +34,7 @@ class NotificationListAdapter(
         subjectTextView.text = notification.subject
         dateTextView.text = notification.targetDate
         tileView.setOnClickListener {
+          analyticsUtils.logOtherTap("notification", "onRowClick ${notification.url}")
           notification.url?.let {
             listener.onRowClick(it)
           }

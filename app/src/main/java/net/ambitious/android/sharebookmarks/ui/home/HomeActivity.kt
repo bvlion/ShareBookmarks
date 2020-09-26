@@ -47,15 +47,12 @@ import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.NotificationUtils
-import net.ambitious.android.sharebookmarks.util.PreferencesUtils
-import org.koin.android.ext.android.inject
 
 class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     ItemEditDialogFragment.OnClickListener,
     FolderListDialogFragment.OnSetListener {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
-  private val preferences: PreferencesUtils.Data by inject()
 
   private lateinit var homeFragment: HomeFragment
   private var sorting = false
@@ -94,6 +91,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     }
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {
+      analyticsUtils.logResult("MessageBroadcastReceiver", it)
       Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
       homeFragment.imageReload()
     }
@@ -130,30 +128,44 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       R.id.menu_folder_add, R.id.menu_item_add ->
         onCreateClick(
             if (item.itemId == R.id.menu_folder_add) {
+              analyticsUtils.logMenuTap("folder add")
               FOLDER
             } else {
+              analyticsUtils.logMenuTap("item add")
               ITEM
             }
         )
-      R.id.menu_sort_start -> homeFragment.sort(start = true, isSave = false)
-      R.id.menu_sort_end -> homeFragment.sort(start = false, isSave = true)
+      R.id.menu_sort_start -> {
+        analyticsUtils.logMenuTap("sort start")
+        homeFragment.sort(start = true, isSave = false)
+      }
+      R.id.menu_sort_end -> {
+        analyticsUtils.logMenuTap("sort end")
+        homeFragment.sort(start = false, isSave = true)
+      }
       R.id.menu_image_reacquisition -> {
+        analyticsUtils.logMenuTap("image reacquisition")
         homeFragment.imageReload()
         showSnackbar(getString(R.string.snackbar_all_thumbnail_reload))
       }
-      R.id.menu_set_start_folder -> showSnackbar(homeFragment.setFirstFolder())
+      R.id.menu_set_start_folder -> {
+        analyticsUtils.logMenuTap("set start folder")
+        showSnackbar(homeFragment.setFirstFolder())
+      }
     }
   }
 
   override fun onSupportNavigateUp() =
     findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
-  override fun onBackPressed() =
+  override fun onBackPressed() {
+    analyticsUtils.logMenuTap("onBackPressed")
     if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
       drawer_layout.closeDrawer(GravityCompat.START)
     } else {
       homeFragment.backPress()
     }
+  }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
@@ -169,6 +181,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             preferences.fcmToken?.let { token ->
               homeFragment.saveUserData(it.email ?: return, it.uid, token)
             }
+            analyticsUtils.logResult("login", "success")
             showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
         } else {
@@ -180,66 +193,93 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun onNavigationItemSelected(item: MenuItem) = false.apply {
     when (item.itemId) {
-      R.id.menu_notification -> startActivity(
-          Intent(
-              this@HomeActivity,
-              NotificationActivity::class.java
-          )
-      )
-      R.id.menu_login -> startActivityForResult(
-          AuthUI.getInstance()
-              .createSignInIntentBuilder()
-              .setAvailableProviders(arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build()))
-              .build(),
-          SIGN_IN_REQUEST_CODE
-      )
-      R.id.menu_logout -> AlertDialog.Builder(this@HomeActivity)
-          .setTitle(R.string.menu_logout)
-          .setMessage(R.string.sign_out_confirm)
-          .setNegativeButton(R.string.fui_cancel, null)
-          .setPositiveButton(R.string.menu_logout) { _, _ ->
-            AuthUI.getInstance()
-                .signOut(this@HomeActivity)
-                .addOnCompleteListener {
-                  preferences.userName = null
-                  preferences.userEmail = null
-                  preferences.userUid = null
-                  preferences.userIcon = null
-                  preferences.userBearer = null
-                  preferences.backupRestoreAuto = false
-                  setNavigation()
-                  showSnackbar(getString(R.string.sign_out_complete))
-                }
-          }.show()
-      R.id.menu_update -> startUpdateService(true)
-      R.id.menu_oss_license -> startActivity(
-          Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
-            putExtra("title", getString(R.string.menu_oss_license))
-          }
-      )
-      R.id.menu_other -> startActivity(Intent(this@HomeActivity, OtherActivity::class.java))
-      R.id.menu_app_rating -> try {
+      R.id.menu_notification -> {
+        analyticsUtils.logMenuTap("notification")
         startActivity(
             Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=${Const.STORE_URL}")
-            )
-        )
-      } catch (_: ActivityNotFoundException) {
-        startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=${Const.STORE_URL}")
+                this@HomeActivity,
+                NotificationActivity::class.java
             )
         )
       }
-      R.id.menu_settings -> startActivityForResult(
-          Intent(
-              this@HomeActivity,
-              SettingActivity::class.java
-          ), SETTING_REQUEST_CODE
-      )
-      R.id.menu_how_to_use -> startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+      R.id.menu_login -> {
+        analyticsUtils.logMenuTap("login")
+        startActivityForResult(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build()))
+                .build(),
+            SIGN_IN_REQUEST_CODE
+        )
+      }
+      R.id.menu_logout -> {
+        analyticsUtils.logMenuTap("logout")
+        AlertDialog.Builder(this@HomeActivity)
+            .setTitle(R.string.menu_logout)
+            .setMessage(R.string.sign_out_confirm)
+            .setNegativeButton(R.string.fui_cancel, null)
+            .setPositiveButton(R.string.menu_logout) { _, _ ->
+              AuthUI.getInstance()
+                  .signOut(this@HomeActivity)
+                  .addOnCompleteListener {
+                    preferences.userName = null
+                    preferences.userEmail = null
+                    preferences.userUid = null
+                    preferences.userIcon = null
+                    preferences.userBearer = null
+                    preferences.backupRestoreAuto = false
+                    setNavigation()
+                    showSnackbar(getString(R.string.sign_out_complete))
+                  }
+            }.show()
+      }
+      R.id.menu_update -> {
+        analyticsUtils.logMenuTap("data update")
+        startUpdateService(true)
+      }
+      R.id.menu_oss_license -> {
+        analyticsUtils.logMenuTap("oss license")
+        startActivity(
+            Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
+              putExtra("title", getString(R.string.menu_oss_license))
+            }
+        )
+      }
+      R.id.menu_other -> {
+        analyticsUtils.logMenuTap("other")
+        startActivity(Intent(this@HomeActivity, OtherActivity::class.java))
+      }
+      R.id.menu_app_rating -> {
+        analyticsUtils.logMenuTap("app rating")
+        try {
+          startActivity(
+              Intent(
+                  Intent.ACTION_VIEW,
+                  Uri.parse("market://details?id=${Const.STORE_URL}")
+              )
+          )
+        } catch (_: ActivityNotFoundException) {
+          startActivity(
+              Intent(
+                  Intent.ACTION_VIEW,
+                  Uri.parse("https://play.google.com/store/apps/details?id=${Const.STORE_URL}")
+              )
+          )
+        }
+      }
+      R.id.menu_settings -> {
+        analyticsUtils.logMenuTap("settings")
+        startActivityForResult(
+            Intent(
+                this@HomeActivity,
+                SettingActivity::class.java
+            ), SETTING_REQUEST_CODE
+        )
+      }
+      R.id.menu_how_to_use -> {
+        analyticsUtils.logMenuTap("how to use")
+        startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+      }
     }
     drawer_layout.closeDrawer(GravityCompat.START)
   }
@@ -253,10 +293,17 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun onEdited(itemId: Long, itemName: String, itemUrl: String?, folderId: Long?) {
     homeFragment.updateItem(itemId, itemName, itemUrl)
+    val target = if (itemUrl.isNullOrEmpty()) {
+      "folder"
+    } else {
+      "bookmark"
+    }
     showSnackbar(
         if (itemId > 0) {
+          analyticsUtils.logResult("item update", target)
           getString(R.string.snackbar_update_message)
         } else {
+          analyticsUtils.logResult("item create", target)
           getString(R.string.snackbar_create_message)
         }.format(
             if (itemUrl.isNullOrEmpty()) {
@@ -276,6 +323,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         }
 
   override fun onSet(selfId: Long, parentId: Long) {
+    analyticsUtils.logResult("item move", "done")
     homeFragment.moveItem(selfId, parentId)
     showSnackbar(getString(R.string.move_complete))
   }
@@ -284,7 +332,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     FolderListDialogFragment.newInstance(selfId, ArrayList(folderList))
         .show(supportFragmentManager, FolderListDialogFragment.TAG)
 
-  fun onEdit(item: Item) =
+  fun onEdit(item: Item) {
+    analyticsUtils.logHomeTap(
+        "edit",
+        if (item.url.isNullOrEmpty()) {
+          "folder"
+        } else {
+          "bookmark"
+        }
+    )
     ItemEditDialogFragment.newInstance(
         item.id!!,
         if (item.url.isNullOrEmpty()) {
@@ -295,8 +351,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         item.name,
         item.url
     ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
+  }
 
   fun setSortMode(sortStart: Boolean) {
+    analyticsUtils.logHomeTap("sort", sortStart.toString())
     sorting = sortStart
     invalidateOptionsMenu()
   }
@@ -314,6 +372,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   fun startUpdateService(isStart: Boolean) {
     if (isStart) {
+      analyticsUtils.logHomeTap("start update")
       ContextCompat.startForegroundService(this, Intent(this, DataUpdateService::class.java))
     }
   }
@@ -344,7 +403,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     }
   }
 
-  private fun errorSnackbar() = showSnackbar(getString(R.string.sign_in_failure))
+  private fun errorSnackbar() {
+    analyticsUtils.logResult("login", "failed")
+    showSnackbar(getString(R.string.sign_in_failure))
+  }
 
   companion object {
     const val SIGN_IN_REQUEST_CODE = 1001
