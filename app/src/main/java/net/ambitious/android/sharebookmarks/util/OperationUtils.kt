@@ -22,16 +22,16 @@ object OperationUtils {
 
   fun datetimeParse(time: String): DateTime = DATETIME_FORMAT.parseDateTime(time)
 
-  suspend fun createThumbnailUrl(url: String?) = url?.let {
+  fun createThumbnailUrl(url: String?) = url?.let {
     Pattern.compile("https?://").matcher(url).find().let { isUrl ->
       if (isUrl) {
-        getOgpImage(it)
+        Const.GOOGLE_FAVICON_URL + url.split("/")[2]
       } else {
         it.split("://").let { schemePossibility ->
           if (schemePossibility.size < 2) {
             null
           } else {
-            getOgpImage("https://${schemePossibility[0]}.com")
+            Const.GOOGLE_FAVICON_URL + "https://${schemePossibility[0]}.com".split("/")[2]
           }
         }
       }
@@ -39,11 +39,11 @@ object OperationUtils {
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")
-  private suspend fun getOgpImage(url: String) =
+  suspend fun getOgpImage(url: String) =
     Jsoup.connect(url).get().select("meta[property~=og:image]")
         .map { it.attr("content") }.let { ogImage ->
           if (ogImage.isEmpty()) {
-            Const.GOOGLE_FAVICON_URL + url.split("/")[2]
+            null
           } else {
             ogImage.first()
           }

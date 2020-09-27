@@ -46,6 +46,7 @@ class ShareBookmarksDataSourceImpl(
                   0,
                   it.name,
                   it.url,
+                  it.url?.let { url -> OperationUtils.getOgpImage(url) },
                   it.orders,
                   it.ownerType,
                   1,
@@ -78,6 +79,7 @@ class ShareBookmarksDataSourceImpl(
                       db.parentId,
                       it.name,
                       it.url,
+                      it.url?.let { url -> OperationUtils.getOgpImage(url) },
                       it.orders,
                       it.ownerType
                   )
@@ -100,6 +102,7 @@ class ShareBookmarksDataSourceImpl(
                   itemDao.getSaveRemoteIdItem(it.parentId)?.id ?: 0,
                   db.name,
                   db.url,
+                  db.ogpUrl,
                   db.order,
                   db.ownerType,
                   1,
@@ -131,6 +134,7 @@ class ShareBookmarksDataSourceImpl(
               it.parentId,
               it.name,
               it.url,
+              it.ogpUrl,
               order,
               it.ownerType,
               it.active,

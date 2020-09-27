@@ -4,6 +4,7 @@
 
     <color name="underLine">#de9c9c9c</color>
     <color name="info">#deffebee</color>
+    <color name="items_background">#DEF0F0F0</color>
 
     <!-- Red -->
     <color name="RedColorPrimary">#e53935</color>

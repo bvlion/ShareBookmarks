@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.home
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
@@ -55,6 +56,10 @@ class HomeViewModel(
   private val _bitmap = MutableLiveData<Bitmap>()
   val bitmap: LiveData<Bitmap>
     get() = _bitmap
+
+  private val _ogpImage = MutableLiveData<Pair<ImageView, String?>>()
+  val ogpImage: LiveData<Pair<ImageView, String?>>
+    get() = _ogpImage
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
@@ -169,6 +174,7 @@ class HomeViewModel(
               _parentId.value ?: 0,
               itemName,
               itemUrl,
+              item.ogpUrl,
               item.order,
               item.ownerType
           )
@@ -181,6 +187,7 @@ class HomeViewModel(
               _parentId.value ?: 0,
               itemName,
               itemUrl,
+              itemUrl?.let { OperationUtils.getOgpImage(it) },
               itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
               _ownerType.value ?: OwnerType.OWNER.value
           )
@@ -204,8 +211,29 @@ class HomeViewModel(
   }
 
   fun initializeInsert() = launch {
-    itemDao.insertAll(*Const.INITIALIZE_DB)
+    itemDao.insertAll(
+        *Const.INITIALIZE_DB.mapIndexed { index, it ->
+          Item(
+              null,
+              0,
+              0,
+              it[0]!!,
+              it[1],
+              it[1]?.let { url -> OperationUtils.getOgpImage(url) },
+              index + 1,
+              OwnerType.OWNER.value
+          )
+        }.toTypedArray()
+    )
     postItems()
+  }
+
+  fun updateImage(ogpImageView: ImageView, id: Long, url: String?) = launch {
+    val ogp = url?.let {
+      OperationUtils.getOgpImage(it)
+    }
+    itemDao.updateOgpImages(ogp, id)
+    _ogpImage.postValue(Pair(ogpImageView, ogp))
   }
 
   private fun deleteItems(childItems: List<Item>) {

@@ -42,6 +42,9 @@ interface ItemDao {
   @Query("SELECT owner_type FROM items WHERE id = :parentId")
   suspend fun getParentOwnerType(parentId: Long): Int?
 
+  @Query("UPDATE items SET ogp_url = :ogpUrl WHERE id = :id")
+  suspend fun updateOgpImages(ogpUrl: String?, id: Long)
+
   // 以下は同期で利用している
 
   @Query("SELECT remote_id FROM items WHERE remote_id IS NOT NULL AND active = 0")

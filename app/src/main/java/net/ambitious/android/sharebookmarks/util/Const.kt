@@ -6,7 +6,7 @@ object Const {
   const val STORE_URL = "net.ambitious.android.sharebookmarks"
   const val GOOGLE_FAVICON_URL = "https://www.google.com/s2/favicons?domain="
 
-  val HOME_FOLDER = Item(0, null, 0, "Home", null, 0, 0)
+  val HOME_FOLDER = Item(0, null, 0, "Home", null, null, 0, 0)
 
   enum class OwnerType(val value: Int) {
     OWNER(0),
@@ -26,9 +26,9 @@ object Const {
   }
 
   val INITIALIZE_DB = arrayOf(
-      Item(null, 0, 0, "Google", "https://www.google.com/", 1, OwnerType.OWNER.value),
-      Item(null, 0, 0, "Yahoo", "https://www.yahoo.co.jp/", 2, OwnerType.OWNER.value),
-      Item(null, 0, 0, "フォルダ", null, 3, OwnerType.OWNER.value)
+      arrayOf("Google", "https://www.google.com/"),
+      arrayOf("Yahoo", "https://www.yahoo.co.jp/"),
+      arrayOf("フォルダ", null)
   )
 
   object NotificationService {

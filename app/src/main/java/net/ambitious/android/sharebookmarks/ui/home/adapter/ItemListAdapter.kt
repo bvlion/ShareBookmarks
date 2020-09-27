@@ -7,19 +7,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.item.Item
@@ -27,15 +22,13 @@ import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
-import net.ambitious.android.sharebookmarks.util.OperationUtils.createThumbnailUrl
+import net.ambitious.android.sharebookmarks.util.OperationUtils
 
 class ItemListAdapter(private val context: Context, private val listener: OnItemClickListener) :
     Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
   private var sortMode = false
   private var _isParentSelf = false
-
-  private val scope = CoroutineScope(Dispatchers.Main)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
       LayoutInflater.from(parent.context)
@@ -49,6 +42,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     (holder as ItemViewHolder).apply {
       _items[position].let { item ->
         titleTextView.text = item.name
+        ogpImage.isVisible = false
         if (item.url == null) {
           when (item.ownerType) {
             Const.OwnerType.OWNER.value -> titleImageView.setImageResource(
@@ -60,13 +54,17 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
             else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
           }
         } else {
-          scope.launch {
+          Glide.with(context)
+              .load(OperationUtils.createThumbnailUrl(item.url))
+              .placeholder(R.drawable.ic_item_internet)
+              .into(titleImageView)
+
+          item.ogpUrl?.let {
             Glide.with(context)
-                .load(withContext(Dispatchers.IO) {
-                  createThumbnailUrl(item.url)
-                })
-                .placeholder(R.drawable.ic_item_internet)
-                .into(titleImageView)
+                .load(it)
+                .centerCrop()
+                .into(ogpImage)
+            ogpImage.isVisible = true
           }
         }
 
@@ -103,14 +101,11 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                     item.url!!,
                     item.name
                 )
-                R.id.row_update_thumbnail -> scope.launch {
-                  listener.onThumbnailUpdateClick(
-                      titleImageView,
-                      withContext(Dispatchers.IO) {
-                        createThumbnailUrl(item.url)
-                      }
-                  )
-                }
+                R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(
+                    ogpImage,
+                    item.url,
+                    item.id!!
+                )
               }
               return@setOnMenuItemClickListener true
             }
@@ -159,13 +154,12 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     fun onMoveClick(itemId: Long)
     fun onShareClick(itemId: Long, url: String?)
     fun onCreateShortcut(itemId: Long, url: String, name: String)
-    fun onThumbnailUpdateClick(imageView: ImageView, url: String?)
+    fun onThumbnailUpdateClick(ogpView: ImageView, url: String?, id: Long)
     fun onStartDrag(holder: ViewHolder)
     fun onSetSortMode()
   }
 
   fun setItems(items: List<Item>, isParentSelf: Boolean) {
-    scope.coroutineContext.cancelChildren()
     _items.clear()
     _items.addAll(items)
     _isParentSelf = isParentSelf
@@ -192,6 +186,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     val titleTextView = itemView.findViewById(R.id.title) as TextView
     val menuImage = itemView.findViewById(R.id.menu_image) as ImageView
     val sortImage = itemView.findViewById(R.id.menu_sort) as ImageView
-    val rowItem = itemView.findViewById(R.id.row_item) as LinearLayout
+    val ogpImage = itemView.findViewById(R.id.ogp_image) as ImageView
+    val rowItem = itemView.findViewById(R.id.row_item) as View
   }
 }

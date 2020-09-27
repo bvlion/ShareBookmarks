@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -109,6 +110,20 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
             0 -> (activity as HomeActivity).startUpdateService(preferences.backupRestoreAuto)
             -1 -> (activity as HomeActivity).startUpdateService(true)
             else -> Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+          }
+        }
+    )
+
+    homeViewModel.ogpImage.observe(
+        viewLifecycleOwner,
+        { ogp ->
+          ogp.first.isVisible = ogp.second != null
+          if (ogp.second != null) {
+            context?.let {
+              Glide.with(it)
+                  .load(ogp.second)
+                  .into(ogp.first)
+            }
           }
         }
     )
@@ -264,14 +279,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.getBitmapFromUrl(context ?: return, url)
   }
 
-  override fun onThumbnailUpdateClick(imageView: ImageView, url: String?) {
+  override fun onThumbnailUpdateClick(ogpView: ImageView, url: String?, id: Long) {
     analyticsUtils.logHomeTap("thumbnail update")
-    context?.let {
-      Glide.with(it)
-          .load(url)
-          .placeholder(R.drawable.ic_item_internet)
-          .into(imageView)
-    }
+    homeViewModel.updateImage(ogpView, id, url)
     Toast.makeText(context, R.string.toast_thumbnail_reload, Toast.LENGTH_SHORT).show()
   }
 

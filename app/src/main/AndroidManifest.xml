@@ -42,6 +42,7 @@
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.share.ShareUserActivity" />
         <activity android:name=".ui.others.OtherActivity" />
+        <activity android:name=".ui.usage.UsageActivity" />
 
         <activity
           android:name=".ui.shareadd.ShareAddActivity"

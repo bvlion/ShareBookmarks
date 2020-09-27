@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -92,7 +93,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {
       analyticsUtils.logResult("MessageBroadcastReceiver", it)
-      Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
+      Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT)
+          .apply { setGravity(Gravity.CENTER, 0, 0) }
+          .show()
       homeFragment.imageReload()
     }
   }

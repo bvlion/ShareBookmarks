@@ -27,6 +27,8 @@ data class Item(
   val name: String,
   /** URL（フォルダーの場合は null） */
   val url: String?,
+  /** ogp の URL（フォルダーの場合は null） */
+  @ColumnInfo(name = "ogp_url") val ogpUrl: String?,
   /** 順序（parent_id ごとに一意） */
   val order: Int,
   /** 本人と保持・編集可・閲覧のみフラグ */

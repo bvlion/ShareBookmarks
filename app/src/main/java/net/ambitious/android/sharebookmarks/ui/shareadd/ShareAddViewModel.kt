@@ -7,6 +7,7 @@ import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
+import net.ambitious.android.sharebookmarks.util.OperationUtils
 
 class ShareAddViewModel(private val itemDao: ItemDao) : BaseViewModel() {
 
@@ -33,6 +34,7 @@ class ShareAddViewModel(private val itemDao: ItemDao) : BaseViewModel() {
               folderId,
               itemName,
               itemUrl,
+              OperationUtils.getOgpImage(itemUrl),
               itemDao.getMaxOrder(folderId) ?: 0,
               OwnerType.OWNER.value
           )
