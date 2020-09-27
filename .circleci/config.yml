@@ -90,8 +90,7 @@ jobs:
               -F "token=$DEPLOYGATE_TOKEN" \
               -F "file=@app/build/outputs/apk/staging/app-staging.apk" \
               -F "message=`git log -1`" \
-              https://deploygate.com/api/users/bvlion/apps
-
+              https://deploygate.com/api/users/$DEPLOYGATE_TARGET/apps
 
   deploy-production:
     docker:

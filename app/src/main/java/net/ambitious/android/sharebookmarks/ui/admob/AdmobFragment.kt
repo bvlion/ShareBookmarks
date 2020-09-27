@@ -80,9 +80,9 @@ class AdmobFragment : Fragment() {
   }
 
   private fun getAdaptiveAdSize(): AdSize {
-    val display = activity?.windowManager?.defaultDisplay
     val outMetrics = DisplayMetrics()
-    display?.getMetrics(outMetrics)
+    @Suppress("DEPRECATION")
+    activity?.windowManager?.defaultDisplay?.getMetrics(outMetrics)
 
     val density = outMetrics.density
 
