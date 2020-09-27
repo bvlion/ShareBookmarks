@@ -7,14 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     apply from: '../dependencies/signing.gradle', to: android
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
     defaultConfig {
         applicationId "net.ambitious.android.sharebookmarks"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode globalConfiguration["appVersionCode"]
         versionName globalConfiguration["appVersionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

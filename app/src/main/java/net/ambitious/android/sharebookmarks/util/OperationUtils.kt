@@ -23,24 +23,14 @@ object OperationUtils {
   fun datetimeParse(time: String): DateTime = DATETIME_FORMAT.parseDateTime(time)
 
   fun createThumbnailUrl(url: String?) = url?.let {
-    Pattern.compile("https?://").matcher(url).find().let { isUrl ->
-      if (isUrl) {
-        Const.GOOGLE_FAVICON_URL + url.split("/")[2]
-      } else {
-        it.split("://").let { schemePossibility ->
-          if (schemePossibility.size < 2) {
-            null
-          } else {
-            Const.GOOGLE_FAVICON_URL + "https://${schemePossibility[0]}.com".split("/")[2]
-          }
-        }
-      }
+    getImageUrl(it)?.let { imageUrl ->
+      Const.GOOGLE_FAVICON_URL + getImageUrl(imageUrl)!!.split("/")[2]
     }
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")
-  suspend fun getOgpImage(url: String) =
-    Jsoup.connect(url).get().select("meta[property~=og:image]")
+  suspend fun getOgpImage(url: String) = getImageUrl(url)?.let { processUrl ->
+    Jsoup.connect(processUrl).get().select("meta[property~=og:image]")
         .map { it.attr("content") }.let { ogImage ->
           if (ogImage.isEmpty()) {
             null
@@ -48,6 +38,23 @@ object OperationUtils {
             ogImage.first()
           }
         }
+  }
+
+  private fun getImageUrl(url: String) = url.let {
+    Pattern.compile("https?://").matcher(url).find().let { isUrl ->
+      if (isUrl) {
+        url
+      } else {
+        it.split("://").let { schemePossibility ->
+          if (schemePossibility.size < 2) {
+            null
+          } else {
+            "https://${schemePossibility[0]}.com"
+          }
+        }
+      }
+    }
+  }
 
   fun getContactList(contentResolver: ContentResolver): List<Contact> {
     val emailMap = hashMapOf<String, String>()
