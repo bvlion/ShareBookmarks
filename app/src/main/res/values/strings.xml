@@ -58,6 +58,7 @@
     <string name="cant_start_activity">Unable to activate the shortcut.\nPlease check your registration details.</string>
     <string name="shortcut_created">A shortcut has been created for Home.</string>
     <string name="sync_network_error">No synchronization was done because the communication failed.</string>
+    <string name="sync_start">Start synchronization.</string>
     <string name="sync_success">Synchronization has been completed.</string>
 
     <!-- お問い合わせ -->

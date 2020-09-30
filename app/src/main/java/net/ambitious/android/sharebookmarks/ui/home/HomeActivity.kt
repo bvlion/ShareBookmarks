@@ -238,6 +238,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             }.show()
       }
       R.id.menu_update -> {
+        Toast.makeText(this@HomeActivity, R.string.sync_start, Toast.LENGTH_LONG).show()
         analyticsUtils.logMenuTap("data update")
         startUpdateService(true)
       }

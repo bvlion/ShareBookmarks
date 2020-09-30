@@ -59,6 +59,7 @@
     <string name="cant_start_activity">ショートカットを起動できませんでした。\n登録内容をご確認ください。</string>
     <string name="shortcut_created">ホームにショートカットを作成しました。</string>
     <string name="sync_network_error">通信に失敗したため同期は行われませんでした。</string>
+    <string name="sync_start">同期を開始します。</string>
     <string name="sync_success">同期が完了しました。</string>
 
     <!-- お問い合わせ -->
