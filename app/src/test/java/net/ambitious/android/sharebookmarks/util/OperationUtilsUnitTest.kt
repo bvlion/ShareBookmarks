@@ -2,19 +2,31 @@ package net.ambitious.android.sharebookmarks.util
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
+import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
+import net.ambitious.android.sharebookmarks.data.remote.etc.OgpEntity
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.startsWith
-import org.hamcrest.core.Is.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TestRule
+import org.mockito.Mockito
 
 class OperationUtilsUnitTest {
   @get:Rule
   val rule: TestRule = InstantTaskExecutorRule()
+
+  private lateinit var etcApi: EtcApi
+
+  @Before
+  fun setUp() {
+    etcApi = object : EtcApi by Mockito.mock(EtcApi::class.java) {
+      override suspend fun getOgpImageUrl(url: String) = OgpEntity("test")
+    }
+  }
 
   @Test
   fun createThumbnailUrlTest() {
@@ -42,21 +54,27 @@ class OperationUtilsUnitTest {
     runBlocking {
       // OGP 取得
       assertThat(
-          OperationUtils.getOgpImage("https://www.ambitious-i.net"),
+          OperationUtils.getOgpImage("https://www.ambitious-i.net", etcApi),
           `is`("https://www.ambitious-i.net/img/main.jpg")
       )
 
       // URL 形式でない
-      assertNull(OperationUtils.getOgpImage("test"))
+      assertNull(OperationUtils.getOgpImage("test", etcApi))
 
       // OGP がない
-      assertNull(OperationUtils.getOgpImage("https://bvlion-app.firebaseapp.com"))
+      assertNull(OperationUtils.getOgpImage("https://bvlion-app.firebaseapp.com", etcApi))
 
       // URL スキーム
-      OperationUtils.getOgpImage("slack://channel?team=T12345&id=Cabcde")?.let {
+      OperationUtils.getOgpImage("slack://channel?team=T12345&id=Cabcde", etcApi)?.let {
         assertThat(it, `is`(startsWith("https://")))
         assertThat(it, `is`(containsString("slack")))
       }
+
+      // 非 SSL（Android であれば etcApi が通信するが Unit Test では通らないためコメントアウト）
+//      assertThat(
+//          OperationUtils.getOgpImage("http://www.ambitious-i.net", etcApi),
+//          `is`("test")
+//      )
     }
   }
 }

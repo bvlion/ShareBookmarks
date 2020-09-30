@@ -4,17 +4,15 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.NotificationUtils
 import org.koin.android.ext.android.inject
-import java.lang.Exception
 
 class DataUpdateService : Service() {
 
@@ -31,9 +29,9 @@ class DataUpdateService : Service() {
     )
 
     GlobalScope.launch {
-      withContext(Dispatchers.IO) {
+      coroutineScope {
         try {
-          dataSource.dataUpdate()
+          dataSource.dataUpdate(this)
           sendMessage(R.string.sync_success)
         } catch (e: Exception) {
           FirebaseCrashlytics.getInstance().recordException(e)

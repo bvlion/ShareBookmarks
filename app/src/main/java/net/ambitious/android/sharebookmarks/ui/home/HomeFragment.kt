@@ -122,6 +122,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
             context?.let {
               Glide.with(it)
                   .load(ogp.second)
+                  .centerCrop()
                   .into(ogp.first)
             }
           }

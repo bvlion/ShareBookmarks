@@ -6,14 +6,14 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.ContactsContract.Contacts
 import android.provider.ContactsContract.Data
 import android.util.Base64
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
+import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.jsoup.Jsoup
+import java.net.URL
 import java.util.regex.Pattern
+import javax.net.ssl.HttpsURLConnection
 
 object OperationUtils {
   private val DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
@@ -29,15 +29,31 @@ object OperationUtils {
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")
-  suspend fun getOgpImage(url: String) = getImageUrl(url)?.let { processUrl ->
-    Jsoup.connect(processUrl).get().select("meta[property~=og:image]")
-        .map { it.attr("content") }.let { ogImage ->
-          if (ogImage.isEmpty()) {
-            null
-          } else {
-            ogImage.first()
+  suspend fun getOgpImage(url: String, etcApi: EtcApi) = try {
+    getImageUrl(url)?.let { processUrl ->
+      Jsoup.connect(processUrl).get().select("meta[property~=og:image]")
+          .map { it.attr("content") }.let { ogImage ->
+            if (ogImage.isEmpty()) {
+              null
+            } else {
+              if (isHttpStatusOk(ogImage.first())) {
+                ogImage.first()
+              } else {
+                null
+              }
+            }
           }
-        }
+    }
+  } catch (e: Exception) {
+    etcApi.getOgpImageUrl(url).url
+  }
+
+  private fun isHttpStatusOk(url: String) = try {
+    val con = (URL(url).openConnection() as HttpsURLConnection).apply { requestMethod = "GET" }
+    con.connect()
+    con.responseCode == HttpsURLConnection.HTTP_OK
+  } catch (_: Exception) {
+    false
   }
 
   private fun getImageUrl(url: String) = url.let {

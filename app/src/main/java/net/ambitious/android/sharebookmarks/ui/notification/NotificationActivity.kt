@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.activity_notification.notification_recycle
 import kotlinx.android.synthetic.main.activity_notification.notification_refresh
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
-import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificationClickListener {

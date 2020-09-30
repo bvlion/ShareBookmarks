@@ -4,12 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
+import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.OperationUtils
 
-class ShareAddViewModel(private val itemDao: ItemDao) : BaseViewModel() {
+class ShareAddViewModel(
+  private val itemDao: ItemDao,
+  private val etcApi: EtcApi
+) : BaseViewModel() {
 
   private val _folders = MutableLiveData<List<Item>>()
   val folders: LiveData<List<Item>>
@@ -34,7 +38,7 @@ class ShareAddViewModel(private val itemDao: ItemDao) : BaseViewModel() {
               folderId,
               itemName,
               itemUrl,
-              OperationUtils.getOgpImage(itemUrl),
+              OperationUtils.getOgpImage(itemUrl, etcApi),
               itemDao.getMaxOrder(folderId) ?: 0,
               OwnerType.OWNER.value
           )

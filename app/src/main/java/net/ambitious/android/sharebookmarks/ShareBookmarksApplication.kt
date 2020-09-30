@@ -54,13 +54,13 @@ class ShareBookmarksApplication : Application() {
 
   private val viewModelModule = module {
     viewModel {
-      HomeViewModel(get(), get())
+      HomeViewModel(get(), get(), get())
     }
     viewModel {
       InquiryViewModel(androidContext(), get())
     }
     viewModel {
-      ShareAddViewModel(get())
+      ShareAddViewModel(get(), get())
     }
     viewModel {
       NotificationViewModel(get())
@@ -136,7 +136,7 @@ class ShareBookmarksApplication : Application() {
 
   private val dataSourceModule = module {
     single<ShareBookmarksDataSource> {
-      ShareBookmarksDataSourceImpl(get(), get(), get(), get())
+      ShareBookmarksDataSourceImpl(get(), get(), get(), get(), get())
     }
   }
 }

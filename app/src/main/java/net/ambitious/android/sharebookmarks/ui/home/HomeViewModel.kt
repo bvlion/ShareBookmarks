@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
+import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.AuthTokenResponse
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersEntity.UsersPostData
@@ -21,6 +22,7 @@ import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 class HomeViewModel(
   private val itemDao: ItemDao,
   private val usersApi: UsersApi,
+  private val etcApi: EtcApi
 ) : BaseViewModel() {
 
   private val _items = MutableLiveData<List<Item>>()
@@ -187,7 +189,7 @@ class HomeViewModel(
               _parentId.value ?: 0,
               itemName,
               itemUrl,
-              itemUrl?.let { OperationUtils.getOgpImage(it) },
+              itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
               itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
               _ownerType.value ?: OwnerType.OWNER.value
           )
@@ -219,7 +221,7 @@ class HomeViewModel(
               0,
               it[0]!!,
               it[1],
-              it[1]?.let { url -> OperationUtils.getOgpImage(url) },
+              it[1]?.let { url -> OperationUtils.getOgpImage(url, etcApi) },
               index + 1,
               OwnerType.OWNER.value
           )
@@ -230,7 +232,7 @@ class HomeViewModel(
 
   fun updateImage(ogpImageView: ImageView, id: Long, url: String?) = launch {
     val ogp = url?.let {
-      OperationUtils.getOgpImage(it)
+      OperationUtils.getOgpImage(it, etcApi)
     }
     itemDao.updateOgpImages(ogp, id)
     _ogpImage.postValue(Pair(ogpImageView, ogp))
