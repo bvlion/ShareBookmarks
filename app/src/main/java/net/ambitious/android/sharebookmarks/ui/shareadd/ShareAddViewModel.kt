@@ -4,23 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
-import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
-import net.ambitious.android.sharebookmarks.util.Const.OwnerType
-import net.ambitious.android.sharebookmarks.util.OperationUtils
+import net.ambitious.android.sharebookmarks.util.Const.OwnerType.OWNER
 
 class ShareAddViewModel(
-  private val itemDao: ItemDao,
-  private val etcApi: EtcApi
+  private val itemDao: ItemDao
 ) : BaseViewModel() {
 
   private val _folders = MutableLiveData<List<Item>>()
   val folders: LiveData<List<Item>>
     get() = _folders
 
-  private val _postResult: MutableLiveData<String> = MutableLiveData()
-  val postResult: LiveData<String>
+  private val _postResult: MutableLiveData<Triple<Long, String, String>> = MutableLiveData()
+  val postResult: LiveData<Triple<Long, String, String>>
     get() = _postResult
 
   fun getFolders() {
@@ -30,20 +27,26 @@ class ShareAddViewModel(
   }
 
   fun insertItem(itemName: String, itemUrl: String, folderId: Long) {
+    _postResult.value = Triple(0, "", "")
     launch {
-      itemDao.insert(
-          Item(
-              null,
-              null,
-              folderId,
+      _postResult.postValue(
+          Triple(
+              itemDao.insert(
+                  Item(
+                      null,
+                      null,
+                      folderId,
+                      itemName,
+                      itemUrl,
+                      null,
+                      itemDao.getMaxOrder(folderId) ?: 0,
+                      OWNER.value
+                  )
+              ),
               itemName,
-              itemUrl,
-              OperationUtils.getOgpImage(itemUrl, etcApi),
-              itemDao.getMaxOrder(folderId) ?: 0,
-              OwnerType.OWNER.value
+              itemUrl
           )
       )
-      _postResult.postValue(itemName)
     }
   }
 }

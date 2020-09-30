@@ -10,7 +10,7 @@ import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 @Dao
 interface ItemDao {
   @Insert
-  suspend fun insert(items: Item)
+  suspend fun insert(items: Item): Long
 
   @Insert
   suspend fun insertAll(vararg items: Item)

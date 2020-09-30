@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import org.koin.android.ext.android.inject
@@ -37,12 +39,20 @@ class ShareAddActivity : AppCompatActivity(), ItemEditDialogFragment.OnClickList
     viewModel.postResult.observe(
         this,
         {
-          Toast.makeText(
-              this,
-              getString(R.string.snackbar_create_message, it),
-              Toast.LENGTH_SHORT
-          ).show()
-          finish()
+          if (it.first > 0) {
+            Toast.makeText(
+                this,
+                getString(R.string.snackbar_create_message, it.second),
+                Toast.LENGTH_SHORT
+            ).show()
+            ContextCompat.startForegroundService(
+                this,
+                Intent(this, UpdateImageService::class.java).apply {
+                  putExtra(UpdateImageService.PARAM_ITEM_ID, it.first)
+                  putExtra(UpdateImageService.PARAM_ITEM_URL, it.third)
+                })
+            finish()
+          }
         }
     )
 
@@ -55,7 +65,9 @@ class ShareAddActivity : AppCompatActivity(), ItemEditDialogFragment.OnClickList
   }
 
   override fun onCancel() {
-    analyticsUtils.logResult("share add", "cancel")
-    finish()
+    if (viewModel.postResult.value == null) {
+      analyticsUtils.logResult("share add", "cancel")
+      finish()
+    }
   }
 }

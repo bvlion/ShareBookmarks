@@ -62,6 +62,7 @@
         </service>
 
         <service android:name=".service.DataUpdateService" />
+        <service android:name=".service.UpdateImageService" />
 
         <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"

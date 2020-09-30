@@ -60,7 +60,7 @@ class ShareBookmarksApplication : Application() {
       InquiryViewModel(androidContext(), get())
     }
     viewModel {
-      ShareAddViewModel(get(), get())
+      ShareAddViewModel(get())
     }
     viewModel {
       NotificationViewModel(get())
