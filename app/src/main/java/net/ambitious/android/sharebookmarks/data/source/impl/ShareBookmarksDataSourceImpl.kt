@@ -1,15 +1,9 @@
 package net.ambitious.android.sharebookmarks.data.source.impl
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.local.share.Share
 import net.ambitious.android.sharebookmarks.data.local.share.ShareDao
-import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.data.remote.item.ItemApi
 import net.ambitious.android.sharebookmarks.data.remote.item.ItemEntity
 import net.ambitious.android.sharebookmarks.data.remote.share.ShareApi
@@ -23,19 +17,15 @@ class ShareBookmarksDataSourceImpl(
   private val shareDao: ShareDao,
   private val itemDao: ItemDao,
   private val shareApi: ShareApi,
-  private val itemApi: ItemApi,
-  private val etcApi: EtcApi
+  private val itemApi: ItemApi
 ) : ShareBookmarksDataSource {
 
-  private lateinit var deferred: Deferred<Unit>
-
-  override suspend fun dataUpdate(coroutineScope: CoroutineScope) {
-    updateItems(coroutineScope)
+  override suspend fun dataUpdate() {
+    updateItems()
     updateShares()
-    deferred.await()
   }
 
-  private suspend fun updateItems(coroutineScope: CoroutineScope) {
+  private suspend fun updateItems() {
     // 初期データは削除する
     itemDao.deleteFirstItems()
 
@@ -171,13 +161,6 @@ class ShareBookmarksDataSourceImpl(
     // ローカルで削除したデータはゴミなので物理削除
     itemDao.forceDelete()
 
-    // サムネイル更新
-    deferred = coroutineScope.async {
-      withContext(Dispatchers.IO) {
-        updateThumbnail(coroutineScope)
-      }
-    }
-
     // サーバー側のフォルダの紐付きを更新
     itemApi.parentSetItems(itemDao.getAllItems().map {
       ItemEntity.ParentSet(
@@ -186,19 +169,6 @@ class ShareBookmarksDataSourceImpl(
           itemDao.getParentOwnerType(it.parentId) ?: 0 == OwnerType.OWNER.value && it.ownerType != OwnerType.OWNER.value
       )
     })
-  }
-
-  private suspend fun updateThumbnail(coroutineScope: CoroutineScope) {
-    itemDao.getAllItems().map {
-      coroutineScope.async {
-        withContext(Dispatchers.IO) {
-          itemDao.updateOgpImages(
-              OperationUtils.getOgpImage(it.url ?: return@withContext, etcApi),
-              it.id!!
-          )
-        }
-      }
-    }.forEach { it.await() }
   }
 
   private suspend fun updateOwnerType(ownerType: Int, parentId: Long) {

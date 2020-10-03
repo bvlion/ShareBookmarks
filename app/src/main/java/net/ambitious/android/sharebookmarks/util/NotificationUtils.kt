@@ -11,11 +11,14 @@ import net.ambitious.android.sharebookmarks.R
 
 object NotificationUtils {
 
-  fun getHomeSituationNotification(context: Context): Notification =
+  fun getHomeSituationNotification(
+    context: Context,
+    messageId: Int = R.string.notification_update_message
+  ): Notification =
     NotificationCompat.Builder(context, Const.NotificationService.DATA_UPDATE_CHANNEL)
         .setSmallIcon(R.drawable.ic_bookmarks)
         .setShowWhen(false)
-        .setContentText(context.getString(R.string.notification_update_message))
+        .setContentText(context.getString(messageId))
         .setAutoCancel(false)
         .build()
 

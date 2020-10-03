@@ -34,8 +34,10 @@ import kotlinx.android.synthetic.main.activity_main.nav_view
 import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.receiver.ImageUploadEndBroadcastReceiver
 import net.ambitious.android.sharebookmarks.service.DataUpdateService
-import net.ambitious.android.sharebookmarks.service.MessageBroadcastReceiver
+import net.ambitious.android.sharebookmarks.receiver.MessageBroadcastReceiver
+import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment
@@ -60,6 +62,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private var sorting = false
 
   private lateinit var messageBroadcastReceiver: MessageBroadcastReceiver
+  private lateinit var imageBroadcastReceiver: ImageUploadEndBroadcastReceiver
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -97,17 +100,29 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT)
           .apply { setGravity(Gravity.CENTER, 0, 0) }
           .show()
+
+      // サムネイル更新
+      ContextCompat.startForegroundService(
+          this,
+          Intent(this, UpdateImageService::class.java).apply {
+            putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+          })
+
       homeFragment.imageReload()
     }
+
+    imageBroadcastReceiver = ImageUploadEndBroadcastReceiver { homeFragment.imageReload() }
   }
 
   override fun onResume() {
     super.onResume()
     registerReceiver(messageBroadcastReceiver, IntentFilter(Const.MESSAGE_BROADCAST_ACTION))
+    registerReceiver(imageBroadcastReceiver, IntentFilter(Const.IMAGE_UPLOAD_BROADCAST_ACTION))
   }
 
   override fun onPause() {
     unregisterReceiver(messageBroadcastReceiver)
+    unregisterReceiver(imageBroadcastReceiver)
     super.onPause()
   }
 

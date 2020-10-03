@@ -31,7 +31,7 @@ class DataUpdateService : Service() {
     GlobalScope.launch {
       coroutineScope {
         try {
-          dataSource.dataUpdate(this)
+          dataSource.dataUpdate()
           sendMessage(R.string.sync_success)
         } catch (e: Exception) {
           FirebaseCrashlytics.getInstance().recordException(e)

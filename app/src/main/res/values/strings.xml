@@ -129,6 +129,7 @@
     <string name="notification_channel_from_app">Notifications from the App</string>
     <string name="notification_channel_work_server">Notice while working with the server</string>
     <string name="notification_update_message">Updating…</string>
+    <string name="notification_image_update_message">Thumbnails are being updated…</string>
 
     <!-- その他 -->
     <string name="other_menu_privacy_policy">Privacy Policy</string>

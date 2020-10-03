@@ -33,6 +33,7 @@ object Const {
 
   object NotificationService {
     const val DATA_UPDATE_ID = 23487452
+    const val IMAGE_UPDATE_ID = 23487453
 
     const val NOTICE_CHANNEL = "Channels.NOTICE_CHANNEL"
     const val DATA_UPDATE_CHANNEL = "Channels.DATA_UPDATE_CHANNEL"
@@ -40,4 +41,6 @@ object Const {
 
   const val MESSAGE_BROADCAST_ACTION = "message_broadcast_action"
   const val MESSAGE_BROADCAST_BUNDLE = "message_broadcast_bundle"
+
+  const val IMAGE_UPLOAD_BROADCAST_ACTION = "image_upload_broadcast_action"
 }

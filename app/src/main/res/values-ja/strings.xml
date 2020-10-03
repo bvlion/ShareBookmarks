@@ -129,6 +129,7 @@
     <string name="notification_channel_from_app">アプリからのお知らせ</string>
     <string name="notification_channel_work_server">サーバーとの連携中のお知らせ</string>
     <string name="notification_update_message">更新中…</string>
+    <string name="notification_image_update_message">サムネイル更新中…</string>
 
     <!-- その他 -->
     <string name="other_menu_privacy_policy">プライバシー・ポリシー</string>

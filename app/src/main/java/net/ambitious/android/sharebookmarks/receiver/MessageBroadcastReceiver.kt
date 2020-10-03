@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.service
+package net.ambitious.android.sharebookmarks.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
