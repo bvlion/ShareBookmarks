@@ -7,6 +7,7 @@ import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType.OWNER
+import org.joda.time.DateTime
 
 class ShareAddViewModel(
   private val itemDao: ItemDao
@@ -29,20 +30,37 @@ class ShareAddViewModel(
   fun insertItem(itemName: String, itemUrl: String, folderId: Long) {
     _postResult.value = Triple(0, "", "")
     launch {
+      val id = itemDao.insert(
+          Item(
+              null,
+              null,
+              folderId,
+              itemName,
+              itemUrl,
+              null,
+              0,
+              OWNER.value
+          )
+      )
+      itemDao.getItems(folderId).forEachIndexed { index, it ->
+        itemDao.update(
+            Item(
+                it.id,
+                it.remoteId,
+                it.parentId,
+                it.name,
+                it.url,
+                it.ogpUrl,
+                index + 1,
+                it.ownerType,
+                it.active,
+                DateTime()
+            )
+        )
+      }
       _postResult.postValue(
           Triple(
-              itemDao.insert(
-                  Item(
-                      null,
-                      null,
-                      folderId,
-                      itemName,
-                      itemUrl,
-                      null,
-                      itemDao.getMaxOrder(folderId) ?: 0,
-                      OWNER.value
-                  )
-              ),
+              id,
               itemName,
               itemUrl
           )

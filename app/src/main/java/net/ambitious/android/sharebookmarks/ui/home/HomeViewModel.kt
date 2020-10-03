@@ -18,6 +18,7 @@ import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.OperationUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
+import org.joda.time.DateTime
 
 class HomeViewModel(
   private val itemDao: ItemDao,
@@ -190,10 +191,26 @@ class HomeViewModel(
               itemName,
               itemUrl,
               itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
-              itemDao.getMaxOrder(_parentId.value ?: 0) ?: 0,
+              0,
               _ownerType.value ?: OwnerType.OWNER.value
           )
       )
+      itemDao.getItems(_parentId.value ?: 0).forEachIndexed { index, it ->
+        itemDao.update(
+            Item(
+                it.id,
+                it.remoteId,
+                it.parentId,
+                it.name,
+                it.url,
+                it.ogpUrl,
+                index + 1,
+                it.ownerType,
+                it.active,
+                DateTime()
+            )
+        )
+      }
     }
     postItems()
   }
