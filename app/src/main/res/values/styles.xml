@@ -160,6 +160,7 @@
     <style name="HomeRedTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/RedSidebar</item>
         <item name="colorPrimary">@color/RedColorPrimary</item>
         <item name="colorPrimaryDark">@color/RedColorPrimaryDark</item>
         <item name="colorAccent">@color/RedAccent</item>
@@ -169,6 +170,7 @@
     <style name="HomePinkTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/PinkSidebar</item>
         <item name="colorPrimary">@color/PinkColorPrimary</item>
         <item name="colorPrimaryDark">@color/PinkColorPrimaryDark</item>
         <item name="colorAccent">@color/PinkAccent</item>
@@ -178,6 +180,7 @@
     <style name="HomePurpleTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/PurpleSidebar</item>
         <item name="colorPrimary">@color/PurpleColorPrimary</item>
         <item name="colorPrimaryDark">@color/PurpleColorPrimaryDark</item>
         <item name="colorAccent">@color/PurpleAccent</item>
@@ -187,6 +190,7 @@
     <style name="HomeDeepPurpleTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/DeepPurpleSidebar</item>
         <item name="colorPrimary">@color/DeepPurpleColorPrimary</item>
         <item name="colorPrimaryDark">@color/DeepPurpleColorPrimaryDark</item>
         <item name="colorAccent">@color/DeepPurpleAccent</item>
@@ -196,6 +200,7 @@
     <style name="HomeIndigoTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/IndigoSidebar</item>
         <item name="colorPrimary">@color/IndigoColorPrimary</item>
         <item name="colorPrimaryDark">@color/IndigoColorPrimaryDark</item>
         <item name="colorAccent">@color/IndigoAccent</item>
@@ -205,6 +210,7 @@
     <style name="HomeBlueTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/BlueSidebar</item>
         <item name="colorPrimary">@color/BlueColorPrimary</item>
         <item name="colorPrimaryDark">@color/BlueColorPrimaryDark</item>
         <item name="colorAccent">@color/BlueAccent</item>
@@ -214,6 +220,7 @@
     <style name="HomeLightBlueTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/LightBlueSidebar</item>
         <item name="colorPrimary">@color/LightBlueColorPrimary</item>
         <item name="colorPrimaryDark">@color/LightBlueColorPrimaryDark</item>
         <item name="colorAccent">@color/LightBlueAccent</item>
@@ -223,6 +230,7 @@
     <style name="HomeCyanTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/CyanSidebar</item>
         <item name="colorPrimary">@color/CyanColorPrimary</item>
         <item name="colorPrimaryDark">@color/CyanColorPrimaryDark</item>
         <item name="colorAccent">@color/CyanAccent</item>
@@ -232,6 +240,7 @@
     <style name="HomeTealTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/TealSidebar</item>
         <item name="colorPrimary">@color/TealColorPrimary</item>
         <item name="colorPrimaryDark">@color/TealColorPrimaryDark</item>
         <item name="colorAccent">@color/TealAccent</item>
@@ -241,6 +250,7 @@
     <style name="HomeGreenTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/GreenSidebar</item>
         <item name="colorPrimary">@color/GreenColorPrimary</item>
         <item name="colorPrimaryDark">@color/GreenColorPrimaryDark</item>
         <item name="colorAccent">@color/GreenAccent</item>
@@ -250,6 +260,7 @@
     <style name="HomeLightGreenTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/LightGreenSidebar</item>
         <item name="colorPrimary">@color/LightGreenColorPrimary</item>
         <item name="colorPrimaryDark">@color/LightGreenColorPrimaryDark</item>
         <item name="colorAccent">@color/LightGreenAccent</item>
@@ -259,6 +270,7 @@
     <style name="HomeLimeTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/LimeSidebar</item>
         <item name="colorPrimary">@color/LimeColorPrimary</item>
         <item name="colorPrimaryDark">@color/LimeColorPrimaryDark</item>
         <item name="colorAccent">@color/LimeAccent</item>
@@ -268,6 +280,7 @@
     <style name="HomeYellowTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/YellowSidebar</item>
         <item name="colorPrimary">@color/YellowColorPrimary</item>
         <item name="colorPrimaryDark">@color/YellowColorPrimaryDark</item>
         <item name="colorAccent">@color/YellowAccent</item>
@@ -277,6 +290,7 @@
     <style name="HomeAmberTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/AmberSidebar</item>
         <item name="colorPrimary">@color/AmberColorPrimary</item>
         <item name="colorPrimaryDark">@color/AmberColorPrimaryDark</item>
         <item name="colorAccent">@color/AmberAccent</item>
@@ -286,6 +300,7 @@
     <style name="HomeOrangeTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/OrangeSidebar</item>
         <item name="colorPrimary">@color/OrangeColorPrimary</item>
         <item name="colorPrimaryDark">@color/OrangeColorPrimaryDark</item>
         <item name="colorAccent">@color/OrangeAccent</item>
@@ -295,6 +310,7 @@
     <style name="HomeDeepOrangeTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/DeepOrangeSidebar</item>
         <item name="colorPrimary">@color/DeepOrangeColorPrimary</item>
         <item name="colorPrimaryDark">@color/DeepOrangeColorPrimaryDark</item>
         <item name="colorAccent">@color/DeepOrangeAccent</item>
@@ -304,6 +320,7 @@
     <style name="HomeBrownTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/BrownSidebar</item>
         <item name="colorPrimary">@color/BrownColorPrimary</item>
         <item name="colorPrimaryDark">@color/BrownColorPrimaryDark</item>
         <item name="colorAccent">@color/BrownAccent</item>
@@ -313,6 +330,7 @@
     <style name="HomeGreyTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/GreySidebar</item>
         <item name="colorPrimary">@color/GreyColorPrimary</item>
         <item name="colorPrimaryDark">@color/GreyColorPrimaryDark</item>
         <item name="colorAccent">@color/GreyAccent</item>
@@ -322,6 +340,7 @@
     <style name="HomeBlueGreyTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorSidebar">@color/BlueGreySidebar</item>
         <item name="colorPrimary">@color/BlueGreyColorPrimary</item>
         <item name="colorPrimaryDark">@color/BlueGreyColorPrimaryDark</item>
         <item name="colorAccent">@color/BlueGreyAccent</item>

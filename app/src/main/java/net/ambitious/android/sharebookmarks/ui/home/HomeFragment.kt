@@ -65,6 +65,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.breadcrumbs.observe(
         viewLifecycleOwner,
         {
+          (activity as HomeActivity).title = it.last().second
           breadcrumbsAdapter.setBreadcrumbs(it)
         })
 

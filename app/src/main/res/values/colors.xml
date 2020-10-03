@@ -1,102 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorSidebar">#de93A2FF</color>
-
     <color name="underLine">#de9c9c9c</color>
     <color name="info">#deffebee</color>
     <color name="items_background">#DEF0F0F0</color>
 
     <!-- Red -->
+    <color name="RedSidebar">#99ff6f60</color>
     <color name="RedColorPrimary">#e53935</color>
     <color name="RedColorPrimaryDark">#ab000d</color>
     <color name="RedAccent">#dee53935</color>
 
     <!-- Pink -->
+    <color name="PinkSidebar">#99ff5c8d</color>
     <color name="PinkColorPrimary">#d81b60</color>
     <color name="PinkColorPrimaryDark">#a00037</color>
     <color name="PinkAccent">#ded81b60</color>
 
     <!--Purple  -->
+    <color name="PurpleSidebar">#99c158dc</color>
     <color name="PurpleColorPrimary">#8e24aa</color>
     <color name="PurpleColorPrimaryDark">#5c007a</color>
     <color name="PurpleAccent">#de8e24aa</color>
 
     <!-- Deep Purple -->
+    <color name="DeepPurpleSidebar">#999162e4</color>
     <color name="DeepPurpleColorPrimary">#5e35b1</color>
     <color name="DeepPurpleColorPrimaryDark">#280680</color>
     <color name="DeepPurpleAccent">#de5e35b1</color>
 
     <!-- Indigo -->
+    <color name="IndigoSidebar">#996f74dd</color>
     <color name="IndigoColorPrimary">#3949ab</color>
     <color name="IndigoColorPrimaryDark">#00227b</color>
     <color name="IndigoAccent">#de3949ab</color>
 
     <!-- Blue -->
+    <color name="BlueSidebar">#996ab7ff</color>
     <color name="BlueColorPrimary">#1e88e5</color>
     <color name="BlueColorPrimaryDark">#005cb2</color>
     <color name="BlueAccent">#de1e88e5</color>
 
     <!-- Light Blue -->
+    <color name="LightBlueSidebar">#9963ccff</color>
     <color name="LightBlueColorPrimary">#039be5</color>
     <color name="LightBlueColorPrimaryDark">#006db3</color>
     <color name="LightBlueAccent">#de039be5</color>
 
     <!-- Cyan -->
+    <color name="CyanSidebar">#995ddef4</color>
     <color name="CyanColorPrimary">#00acc1</color>
     <color name="CyanColorPrimaryDark">#007c91</color>
     <color name="CyanAccent">#de00acc1</color>
 
     <!-- Teal -->
+    <color name="TealSidebar">#994ebaaa</color>
     <color name="TealColorPrimary">#00897b</color>
     <color name="TealColorPrimaryDark">#005b4f</color>
     <color name="TealAccent">#de00897b</color>
 
     <!-- Green -->
+    <color name="GreenSidebar">#9976d275</color>
     <color name="GreenColorPrimary">#43a047</color>
     <color name="GreenColorPrimaryDark">#00701a</color>
     <color name="GreenAccent">#de43a047</color>
 
     <!-- Light Green -->
+    <color name="LightGreenSidebar">#99aee571</color>
     <color name="LightGreenColorPrimary">#7cb342</color>
     <color name="LightGreenColorPrimaryDark">#4b830d</color>
     <color name="LightGreenAccent">#de7cb342</color>
 
     <!-- Lime -->
+    <color name="LimeSidebar">#99f5fd67</color>
     <color name="LimeColorPrimary">#c0ca33</color>
     <color name="LimeColorPrimaryDark">#8c9900</color>
     <color name="LimeAccent">#dec0ca33</color>
 
     <!-- Yellow -->
+    <color name="YellowSidebar">#99ffff6b</color>
     <color name="YellowColorPrimary">#fdd835</color>
     <color name="YellowColorPrimaryDark">#c6a700</color>
     <color name="YellowAccent">#defdd835</color>
 
     <!-- Amber -->
+    <color name="AmberSidebar">#99ffe54c</color>
     <color name="AmberColorPrimary">#ffb300</color>
     <color name="AmberColorPrimaryDark">#c68400</color>
     <color name="AmberAccent">#deffb300</color>
 
     <!-- Orange -->
+    <color name="OrangeSidebar">#99ffbd45</color>
     <color name="OrangeColorPrimary">#fb8c00</color>
     <color name="OrangeColorPrimaryDark">#c25e00</color>
     <color name="OrangeAccent">#defb8c00</color>
 
     <!-- Deep Orange -->
+    <color name="DeepOrangeSidebar">#99ff844c</color>
     <color name="DeepOrangeColorPrimary">#f4511e</color>
     <color name="DeepOrangeColorPrimaryDark">#b91400</color>
     <color name="DeepOrangeAccent">#def4511e</color>
 
     <!-- Brown -->
+    <color name="BrownSidebar">#999c786c</color>
     <color name="BrownColorPrimary">#6d4c41</color>
     <color name="BrownColorPrimaryDark">#40241a</color>
     <color name="BrownAccent">#de6d4c41</color>
 
     <!-- Grey -->
+    <color name="GreySidebar">#99a4a4a4</color>
     <color name="GreyColorPrimary">#757575</color>
     <color name="GreyColorPrimaryDark">#494949</color>
     <color name="GreyAccent">#de757575</color>
 
     <!-- Blue Grey -->
+    <color name="BlueGreySidebar">#99819ca9</color>
     <color name="BlueGreyColorPrimary">#546e7a</color>
     <color name="BlueGreyColorPrimaryDark">#29434e</color>
     <color name="BlueGreyAccent">#de546e7a</color>

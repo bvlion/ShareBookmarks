@@ -97,9 +97,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {
       analyticsUtils.logResult("MessageBroadcastReceiver", it)
-      Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT)
-          .apply { setGravity(Gravity.CENTER, 0, 0) }
-          .show()
+      showSnackbar(it)
 
       // サムネイル更新
       ContextCompat.startForegroundService(
@@ -253,7 +251,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             }.show()
       }
       R.id.menu_update -> {
-        Toast.makeText(this@HomeActivity, R.string.sync_start, Toast.LENGTH_LONG).show()
+        showSnackbar(getString(R.string.sync_start))
         analyticsUtils.logMenuTap("data update")
         startUpdateService(true)
       }
