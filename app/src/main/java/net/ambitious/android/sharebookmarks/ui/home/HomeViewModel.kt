@@ -251,7 +251,7 @@ class HomeViewModel(
     val ogp = url?.let {
       OperationUtils.getOgpImage(it, etcApi)
     }
-    itemDao.updateOgpImages(ogp, id)
+    itemDao.updateOgpImages(ogp ?: "", id)
     _ogpImage.postValue(Pair(ogpImageView, ogp))
   }
 

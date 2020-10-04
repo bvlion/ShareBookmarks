@@ -43,7 +43,7 @@ interface ItemDao {
   suspend fun getParentOwnerType(parentId: Long): Int?
 
   @Query("UPDATE items SET ogp_url = :ogpUrl WHERE id = :id")
-  suspend fun updateOgpImages(ogpUrl: String?, id: Long)
+  suspend fun updateOgpImages(ogpUrl: String, id: Long)
 
   // 以下は同期で利用している
 

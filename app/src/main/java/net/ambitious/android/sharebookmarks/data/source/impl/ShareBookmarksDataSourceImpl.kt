@@ -80,7 +80,7 @@ class ShareBookmarksDataSourceImpl(
                       db.parentId,
                       it.name,
                       it.url,
-                      null,
+                      db.ogpUrl,
                       it.orders,
                       it.ownerType
                   )

@@ -6,12 +6,10 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.AppLaunchChecker
 import androidx.core.content.ContextCompat
@@ -103,7 +101,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       ContextCompat.startForegroundService(
           this,
           Intent(this, UpdateImageService::class.java).apply {
-            putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+            putExtra(UpdateImageService.PARAM_ITEM_ALL, false)
           })
 
       homeFragment.imageReload()
@@ -162,7 +160,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_image_reacquisition -> {
         analyticsUtils.logMenuTap("image reacquisition")
-        homeFragment.imageReload()
+        ContextCompat.startForegroundService(
+            this@HomeActivity,
+            Intent(this@HomeActivity, UpdateImageService::class.java).apply {
+              putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+            })
         showSnackbar(getString(R.string.snackbar_all_thumbnail_reload))
       }
       R.id.menu_set_start_folder -> {

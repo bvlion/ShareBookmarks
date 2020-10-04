@@ -40,12 +40,17 @@ class UpdateImageService : Service() {
     GlobalScope.launch {
       intent.extras?.let {
         if (it.getBoolean(PARAM_ITEM_ALL)) {
-          updateThumbnail(this)
+          updateThumbnail(this, true)
         } else {
-          itemDao.updateOgpImages(
-              OperationUtils.getOgpImage(it.getString(PARAM_ITEM_URL) ?: return@let, etcApi),
-              it.getLong(PARAM_ITEM_ID)
-          )
+          val url = it.getString(PARAM_ITEM_URL)
+          if (url == null) {
+            updateThumbnail(this, false)
+          } else {
+            itemDao.updateOgpImages(
+                OperationUtils.getOgpImage(url, etcApi) ?: "",
+                it.getLong(PARAM_ITEM_ID)
+            )
+          }
         }
       }
       sendBroadcast(Intent(Const.IMAGE_UPLOAD_BROADCAST_ACTION))
@@ -53,12 +58,19 @@ class UpdateImageService : Service() {
     }
   }
 
-  private suspend fun updateThumbnail(coroutineScope: CoroutineScope) {
+  private suspend fun updateThumbnail(coroutineScope: CoroutineScope, isAll: Boolean) {
     itemDao.getAllItems().map {
       coroutineScope.async {
+        if (it.url == null) {
+          return@async
+        }
+        // 全件取得でない場合は既にサムネイルの URL があればスキップする
+        if (!isAll && it.ogpUrl != null) {
+          return@async
+        }
         withContext(Dispatchers.IO) {
           itemDao.updateOgpImages(
-              OperationUtils.getOgpImage(it.url ?: return@withContext, etcApi),
+              OperationUtils.getOgpImage(it.url, etcApi) ?: "",
               it.id!!
           )
         }
