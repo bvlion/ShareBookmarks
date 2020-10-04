@@ -80,6 +80,7 @@ class HomeViewModel(
 
   fun getItems() {
     launch {
+      _breadcrumbsList.clear()
       createBreadcrumbs(_parentId.value ?: 0L)
       postItems()
     }
@@ -146,7 +147,6 @@ class HomeViewModel(
   }
 
   private suspend fun createBreadcrumbs(selfId: Long) {
-    _breadcrumbsList.clear()
     if (selfId > 0) {
       itemDao.getItem(selfId)?.let {
         _breadcrumbsList.add(0, Pair(it.id!!, it.name))
