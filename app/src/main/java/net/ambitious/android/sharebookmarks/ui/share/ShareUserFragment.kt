@@ -74,6 +74,7 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
 
   fun setContactList(contacts: List<Contact>) {
     shareListAdapter.setContacts(contacts)
+    viewModel.updateUserContact(contacts)
   }
 
   fun isChanged() = viewModel.changed.value ?: false

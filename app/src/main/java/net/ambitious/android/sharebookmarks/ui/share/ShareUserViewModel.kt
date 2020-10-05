@@ -62,6 +62,27 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
     _changed.value = true
   }
 
+  fun updateUserContact(contacts: List<Contact>) = launch {
+    shareDao.getAllShares()
+        .filter { it.userName == null }
+        .forEach { share ->
+          contacts.firstOrNull { it.email == share.userEmail }?.let {
+            shareDao.update(
+                Share(
+                    share.id,
+                    share.remoteId,
+                    share.folderId,
+                    share.userEmail,
+                    it.displayName,
+                    it.icon,
+                    share.ownerType
+                )
+            )
+          }
+        }
+    _share.postValue(shareDao.getShares(_folderId.value!!))
+  }
+
   fun save() = launch {
     val dbData = shareDao.getShares(_folderId.value!!)
 
