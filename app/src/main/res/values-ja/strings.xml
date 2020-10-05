@@ -130,6 +130,9 @@
     <string name="notification_channel_work_server">サーバーとの連携中のお知らせ</string>
     <string name="notification_update_message">更新中…</string>
     <string name="notification_image_update_message">サムネイル更新中…</string>
+    <string name="first_dialog_message">当アプリをダウンロードいただき、ありがとうございます！\n各機能は左メニューの「使い方」よりご確認いただけます。</string>
+    <string name="first_dialog_ok">使い方</string>
+    <string name="first_dialog_cancel">後で</string>
 
     <!-- その他 -->
     <string name="other_menu_privacy_policy">プライバシー・ポリシー</string>

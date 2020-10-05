@@ -91,6 +91,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         NotificationUtils.createChannels(this)
       }
+      AlertDialog.Builder(this)
+          .setView(View.inflate(this, R.layout.dialog_first_message, null))
+          .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
+            analyticsUtils.logMenuTap("first dialog how to use")
+            d.dismiss()
+            startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+          }
+          .setNegativeButton(R.string.first_dialog_cancel, null)
+          .create().show()
     }
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {
