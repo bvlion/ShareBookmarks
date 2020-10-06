@@ -155,8 +155,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
       breadcrumbs_recycler_view.adapter = breadcrumbsAdapter
 
-      homeViewModel.getItems()
-
       items_refresh.setOnRefreshListener {
         if (homeViewModel.sorting.value == false) {
           homeViewModel.getItems()
