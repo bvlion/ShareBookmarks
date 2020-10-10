@@ -59,9 +59,9 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
               .placeholder(R.drawable.ic_item_internet)
               .into(titleImageView)
 
-          item.ogpUrl?.let {
+          if (!item.ogpUrl.isNullOrEmpty()) {
             Glide.with(context)
-                .load(it)
+                .load(item.ogpUrl)
                 .centerCrop()
                 .into(ogpImage)
             ogpImage.isVisible = true
