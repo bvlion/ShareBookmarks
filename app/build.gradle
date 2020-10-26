@@ -39,7 +39,7 @@ android {
             signingConfig signingConfigs.debug
             buildConfigField "String", "AD_MOB_BANNER_KEY", "\"" + globalConfiguration["adMobBannerKey"] + "\""
             buildConfigField "String", "CONTACT_URL", "\"" + globalConfiguration["inquiryUrl"] + "\""
-            buildConfigField "String", "BASE_DOMAIN", "\"http://192.168.10.107:8080/\""
+            buildConfigField "String", "BASE_DOMAIN", "\"http://192.168.11.15:8080/\""
         }
         staging {
             debuggable true
