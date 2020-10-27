@@ -24,6 +24,7 @@ class ItemEditDialogFragment : DialogFragment() {
   private var itemName: String? = null
   private var itemUrl: String? = null
   private var folderList: List<Item>? = null
+  private var dialogCancelable = false
 
   private lateinit var editTitleLayout: TextInputLayout
   private lateinit var editTitleArea: TextInputEditText
@@ -40,6 +41,7 @@ class ItemEditDialogFragment : DialogFragment() {
     itemId = bundle.getLong(ARG_KEY_ITEM_ID)
     itemName = bundle.getString(ARG_KEY_ITEM_NAME)
     itemUrl = bundle.getString(ARG_KEY_ITEM_URL)
+    dialogCancelable = bundle.getBoolean(ARG_KEY_CANCELABLE)
     if (bundle.containsKey(ARG_KEY_FOLDER_LIST)) {
       @Suppress("UNCHECKED_CAST")
       folderList = bundle.getSerializable(ARG_KEY_FOLDER_LIST) as ArrayList<Item>
@@ -119,6 +121,7 @@ class ItemEditDialogFragment : DialogFragment() {
               R.string.dialog_add_button
             }, null
         )
+        .setCancelable(dialogCancelable)
         .create().apply {
           setOnShowListener {
             getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
@@ -175,6 +178,7 @@ class ItemEditDialogFragment : DialogFragment() {
     private const val ARG_KEY_ITEM_TYPE = "item_type"
     private const val ARG_KEY_ITEM_NAME = "item_name"
     private const val ARG_KEY_ITEM_URL = "item_url"
+    private const val ARG_KEY_CANCELABLE = "cancelable"
     private const val ARG_KEY_FOLDER_LIST = "folder_list"
 
     fun newInstance(
@@ -194,6 +198,7 @@ class ItemEditDialogFragment : DialogFragment() {
           putSerializable(ARG_KEY_ITEM_TYPE, ItemType.ITEM)
           putString(ARG_KEY_ITEM_NAME, itemName)
           putString(ARG_KEY_ITEM_URL, itemUrl)
+          putBoolean(ARG_KEY_CANCELABLE, true)
           putSerializable(ARG_KEY_FOLDER_LIST, folderList)
         }
       }

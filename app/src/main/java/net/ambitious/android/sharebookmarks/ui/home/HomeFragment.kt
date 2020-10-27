@@ -23,11 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_home.breadcrumbs_recycler_view
-import kotlinx.android.synthetic.main.fragment_home.items_recycler_view
-import kotlinx.android.synthetic.main.fragment_home.items_refresh
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.databinding.FragmentHomeBinding
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.OnBreadcrumbsClickListener
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
@@ -49,17 +47,19 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private lateinit var itemListAdapter: ItemListAdapter
   private lateinit var breadcrumbsAdapter: BreadcrumbsAdapter
+  private lateinit var binding: FragmentHomeBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? = inflater.inflate(R.layout.fragment_home, container, false).apply {
+  ): View? = FragmentHomeBinding.inflate(inflater, container, false).apply {
+    binding = this
     homeViewModel.items.observe(
         viewLifecycleOwner,
         {
           itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
-          items_refresh.isRefreshing = false
+          binding.itemsRefresh.isRefreshing = false
         })
 
     homeViewModel.breadcrumbs.observe(
@@ -82,10 +82,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         viewLifecycleOwner,
         {
           itemListAdapter.setSortable(it)
-          items_recycler_view.post { itemListAdapter.notifyDataSetChanged() }
+          binding.itemsRecyclerView.post { itemListAdapter.notifyDataSetChanged() }
           itemTouchHelper.attachToRecyclerView(
               if (it) {
-                items_recycler_view
+                binding.itemsRecyclerView
               } else {
                 null
               }
@@ -141,25 +141,25 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       }
       homeViewModel.setInitialParentId(preferences.startFolderId)
     }
-  }
+  }.root
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     context?.let {
       itemListAdapter = ItemListAdapter(it, this)
-      items_recycler_view.layoutManager = GridLayoutManager(context, 2)
-      items_recycler_view.adapter = itemListAdapter
+      binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+      binding.itemsRecyclerView.adapter = itemListAdapter
 
       breadcrumbsAdapter = BreadcrumbsAdapter(this)
-      breadcrumbs_recycler_view.layoutManager =
+      binding.breadcrumbsRecyclerView.layoutManager =
         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-      breadcrumbs_recycler_view.adapter = breadcrumbsAdapter
+      binding.breadcrumbsRecyclerView.adapter = breadcrumbsAdapter
 
-      items_refresh.setOnRefreshListener {
+      binding.itemsRefresh.setOnRefreshListener {
         if (homeViewModel.sorting.value == false) {
           homeViewModel.getItems()
         } else {
-          items_refresh.isRefreshing = false
+          binding.itemsRefresh.isRefreshing = false
         }
       }
 
