@@ -38,14 +38,14 @@
     <string name="popup_item_edit">Edit bookmarks</string>
     <string name="popup_item_move">Move bookmark</string>
     <string name="popup_item_share">Share bookmark</string>
-    <string name="popup_item_thumbnail_update">Update thumbnails</string>
+    <string name="popup_item_thumbnail_update">Update images</string>
     <string name="popup_item_create_shortcut">Create shortcut</string>
 
     <!-- 設定 -->
-    <string name="setting_user_name">User name to display in the left menu</string>
-    <string name="setting_user_mail">Displaying an email address</string>
+    <string name="setting_user_name">User name to be displayed when the menu is opened from the top left</string>
+    <string name="setting_user_mail">Show your login email address when you open the menu from the top left corner</string>
     <string name="setting_backup_restore_timing">Backup and restore timing</string>
-    <string name="setting_backup_restore_timing_summary">When it is ON, it is linked to the server at the time of start-up and shutdown, or from the \"Data Update\" menu on the left. If you want to reduce the amount of communication by manual operation only, turn it off. </string>
+    <string name="setting_backup_restore_timing_summary">When it is ON, it is automatically synchronized at the time of start-up and end. If you want to reduce the amount of communication, please turn it off and update manually.</string>
     <string name="setting_close_application">Quit the application when starting up a browser, etc.</string>
     <string name="setting_close_application_summary">If you want to return to this app after the browser or other devices have been launched, turn it off. </string>
     <string name="setting_start_folder">Initial display folder</string>
@@ -100,8 +100,8 @@
     <string name="move_complete">Moved</string>
     <string name="snackbar_sort_complete_message">I saved the sort.</string>
     <string name="snackbar_sort_cancel_message">The sort has been cancelled.</string>
-    <string name="toast_thumbnail_reload">Update the thumbnail.</string>
-    <string name="snackbar_all_thumbnail_reload">Update all thumbnails.</string>
+    <string name="toast_thumbnail_reload">Update the image.</string>
+    <string name="snackbar_all_thumbnail_reload">Update all images.</string>
 
     <!-- 共有 -->
     <string name="share_login_warning">You must be logged in to share.\nClick on \"Sign In\" in the left menu and sign in with your Google Account.</string>
@@ -129,7 +129,7 @@
     <string name="notification_channel_from_app">Notifications from the App</string>
     <string name="notification_channel_work_server">Notice while working with the server</string>
     <string name="notification_update_message">Updating…</string>
-    <string name="notification_image_update_message">Thumbnails are being updated…</string>
+    <string name="notification_image_update_message">Images are being updated…</string>
     <string name="first_dialog_message">Thank you for downloading our app!\nEach function can be confirmed from \"How to use\" in the left menu.</string>
     <string name="first_dialog_ok">How to use</string>
     <string name="first_dialog_cancel">Later</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="first_folder_labels">
-    <item>ルートフォルダ</item>
+    <item>Home フォルダ</item>
     <item>前回のフォルダ</item>
     <item>選択したフォルダ</item>
   </string-array>

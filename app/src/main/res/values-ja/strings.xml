@@ -39,14 +39,14 @@
     <string name="popup_item_edit">ブックマークを編集</string>
     <string name="popup_item_move">ブックマークを移動</string>
     <string name="popup_item_share">ブックマークを共有</string>
-    <string name="popup_item_thumbnail_update">サムネイルを更新</string>
+    <string name="popup_item_thumbnail_update">画像を更新</string>
     <string name="popup_item_create_shortcut">ショートカットを作成</string>
 
     <!-- 設定 -->
-    <string name="setting_user_name">左メニューに表示するユーザー名</string>
-    <string name="setting_user_mail">メールアドレスの表示</string>
+    <string name="setting_user_name">左上からメニューを開いた際に表示するユーザー名</string>
+    <string name="setting_user_mail">左上からメニューを開いた際にログインメールアドレスを表示</string>
     <string name="setting_backup_restore_timing">バックアップ・復元タイミング</string>
-    <string name="setting_backup_restore_timing_summary">ON の場合は起動・終了時、および左メニューの「データ更新」よりサーバーと連携します。手動のみで通信量を減らす場合は OFF にします。</string>
+    <string name="setting_backup_restore_timing_summary">ON の場合は起動時と終了時に毎回自動で同期します。通信量を減らしたい場合は OFF にして手動で更新してください。</string>
     <string name="setting_close_application">ブラウザ等起動時にアプリ終了</string>
     <string name="setting_close_application_summary">ブラウザ等が起動した後にこのアプリに戻りたい場合は OFF にします。</string>
     <string name="setting_start_folder">初期表示フォルダ</string>
@@ -101,8 +101,8 @@
     <string name="move_complete">移動しました</string>
     <string name="snackbar_sort_complete_message">並び替えを保存しました。</string>
     <string name="snackbar_sort_cancel_message">並び替えをキャンセルしました。</string>
-    <string name="toast_thumbnail_reload">サムネイルを更新します。</string>
-    <string name="snackbar_all_thumbnail_reload">全てのサムネイルを更新します。</string>
+    <string name="toast_thumbnail_reload">画像を更新します。</string>
+    <string name="snackbar_all_thumbnail_reload">全ての画像を更新します。</string>
 
     <!-- 共有 -->
     <string name="share_login_warning">共有にはログインが必要です。\n左メニュー「ログイン」より Google アカウントでログインを行ってください。</string>
@@ -129,7 +129,7 @@
     <string name="notification_channel_from_app">アプリからのお知らせ</string>
     <string name="notification_channel_work_server">サーバーとの連携中のお知らせ</string>
     <string name="notification_update_message">更新中…</string>
-    <string name="notification_image_update_message">サムネイル更新中…</string>
+    <string name="notification_image_update_message">画像更新中…</string>
     <string name="first_dialog_message">当アプリをダウンロードいただき、ありがとうございます！\n各機能は左メニューの「使い方」よりご確認いただけます。</string>
     <string name="first_dialog_ok">使い方</string>
     <string name="first_dialog_cancel">後で</string>
