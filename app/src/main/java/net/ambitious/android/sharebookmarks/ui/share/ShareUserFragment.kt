@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_share.users_recycler_view
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
+import net.ambitious.android.sharebookmarks.databinding.FragmentShareBinding
 import net.ambitious.android.sharebookmarks.ui.share.adapter.ShareUserListAdapter
 import net.ambitious.android.sharebookmarks.ui.share.adapter.ShareUserListAdapter.OnUserCompleteListener
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
@@ -26,12 +26,14 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
   private val analyticsUtils: AnalyticsUtils by inject()
 
   private lateinit var shareListAdapter: ShareUserListAdapter
+  private lateinit var binding: FragmentShareBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? = inflater.inflate(R.layout.fragment_share, container, false).apply {
+  ): View? = FragmentShareBinding.inflate(inflater, container, false).apply {
+    binding = this
     viewModel.share.observe(
         viewLifecycleOwner,
         { shareListAdapter.setShares(it) })
@@ -45,14 +47,14 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
           activity?.finish()
         }
     )
-  }
+  }.root
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     context?.let {
       shareListAdapter = ShareUserListAdapter(it, preferences, this)
-      users_recycler_view.layoutManager = LinearLayoutManager(context)
-      users_recycler_view.adapter = shareListAdapter
+      binding.usersRecyclerView.layoutManager = LinearLayoutManager(context)
+      binding.usersRecyclerView.adapter = shareListAdapter
     }
   }
 

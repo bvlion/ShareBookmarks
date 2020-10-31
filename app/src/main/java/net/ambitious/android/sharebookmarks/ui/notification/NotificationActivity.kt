@@ -5,10 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_notification.loading
-import kotlinx.android.synthetic.main.activity_notification.notification_recycler_view
-import kotlinx.android.synthetic.main.activity_notification.notification_refresh
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.databinding.ActivityNotificationBinding
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,13 +15,15 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
   private val viewModel by viewModel<NotificationViewModel>()
 
   private lateinit var notificationListAdapter: NotificationListAdapter
+  private lateinit var binding: ActivityNotificationBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     analyticsUtils.logStartActivity("NotificationActivity")
+    binding = ActivityNotificationBinding.inflate(layoutInflater)
 
-    setContentView(R.layout.activity_notification)
+    setContentView(binding.root)
     setTitle(R.string.menu_notification)
   }
 
@@ -31,16 +31,16 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
     super.onStart()
 
     viewModel.notifications.observe(this, {
-      loading.visibility = View.GONE
-      notification_refresh.isRefreshing = false
+      binding.loading.visibility = View.GONE
+      binding.notificationRefresh.isRefreshing = false
       notificationListAdapter.setItems(it)
     })
 
     notificationListAdapter = NotificationListAdapter(this, analyticsUtils)
-    notification_recycler_view.layoutManager = LinearLayoutManager(this)
-    notification_recycler_view.adapter = notificationListAdapter
+    binding.notificationRecyclerView.layoutManager = LinearLayoutManager(this)
+    binding.notificationRecyclerView.adapter = notificationListAdapter
 
-    notification_refresh.setOnRefreshListener {
+    binding.notificationRefresh.setOnRefreshListener {
       getNotifications()
     }
   }

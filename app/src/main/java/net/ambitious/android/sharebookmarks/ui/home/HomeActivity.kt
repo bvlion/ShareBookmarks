@@ -27,11 +27,9 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.drawer_layout
-import kotlinx.android.synthetic.main.activity_main.nav_view
-import kotlinx.android.synthetic.main.content_main.toolbar
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.databinding.ActivityMainBinding
 import net.ambitious.android.sharebookmarks.receiver.ImageUploadEndBroadcastReceiver
 import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.receiver.MessageBroadcastReceiver
@@ -61,21 +59,24 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   private lateinit var messageBroadcastReceiver: MessageBroadcastReceiver
   private lateinit var imageBroadcastReceiver: ImageUploadEndBroadcastReceiver
+  private lateinit var binding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     analyticsUtils.logStartActivity("MainActivity")
 
     setTheme(R.style.HomeIndigoTheme)
-    setContentView(R.layout.activity_main)
-    setSupportActionBar(toolbar)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+
+    setContentView(binding.root)
+    setSupportActionBar(binding.contentMain.toolbar)
 
     val navController =
       supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()!!
-    appBarConfiguration = AppBarConfiguration(navController.graph, drawer_layout)
+    appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
     setupActionBarWithNavController(navController, appBarConfiguration)
-    nav_view.setupWithNavController(navController)
-    nav_view.setNavigationItemSelectedListener(this)
+    binding.navView.setupWithNavController(navController)
+    binding.navView.setNavigationItemSelectedListener(this)
 
     setNavigation()
   }
@@ -188,8 +189,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun onBackPressed() {
     analyticsUtils.logMenuTap("onBackPressed")
-    if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-      drawer_layout.closeDrawer(GravityCompat.START)
+    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      binding.drawerLayout.closeDrawer(GravityCompat.START)
     } else {
       homeFragment.backPress()
     }
@@ -310,7 +311,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
       }
     }
-    drawer_layout.closeDrawer(GravityCompat.START)
+    binding.drawerLayout.closeDrawer(GravityCompat.START)
   }
 
   override fun finish() {
@@ -411,11 +412,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         .show(supportFragmentManager, ItemEditDialogFragment.TAG)
 
   private fun setNavigation() {
-    nav_view.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
-    nav_view.menu.findItem(R.id.menu_logout).isVisible = preferences.userEmail != null
-    nav_view.menu.findItem(R.id.menu_update).isVisible = preferences.userEmail != null
-    nav_view.menu.findItem(R.id.menu_billing).isVisible = false
-    val header = nav_view.getHeaderView(0)
+    binding.navView.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
+    binding.navView.menu.findItem(R.id.menu_logout).isVisible = preferences.userEmail != null
+    binding.navView.menu.findItem(R.id.menu_update).isVisible = preferences.userEmail != null
+    binding.navView.menu.findItem(R.id.menu_billing).isVisible = false
+    val header = binding.navView.getHeaderView(0)
     Glide.with(this)
         .load(preferences.userIcon ?: R.mipmap.ic_launcher_round)
         .circleCrop()
