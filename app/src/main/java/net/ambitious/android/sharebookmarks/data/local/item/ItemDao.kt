@@ -24,7 +24,7 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`")
   suspend fun getItems(parentId: Long): List<Item>
 
-  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 AND owner_type = 0 ORDER BY `order`")
+  @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 AND owner_type IN (0, 1) ORDER BY `order`")
   suspend fun getFolderItems(selfId: Long): List<Item>
 
   @Query("SELECT * FROM items WHERE id = :itemId AND active = 1")
