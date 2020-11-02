@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
     <EditTextPreference
-      android:key="setting_user_name"
+      android:key="user_name"
       android:title="@string/setting_user_name"
       android:dialogTitle="@string/setting_user_name"
       app:useSimpleSummaryProvider="true"

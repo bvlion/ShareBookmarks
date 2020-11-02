@@ -7,11 +7,7 @@ object PreferencesUtils {
 
   class Data(private val pref: Preference) {
     var userName: String?
-      get() = if (pref.getString(SETTING_USER_NAME).isNullOrEmpty()) {
-        pref.getString(USER_NAME)
-      } else {
-        pref.getString(SETTING_USER_NAME)
-      }
+      get() = pref.getString(USER_NAME)
       set(value) = pref.save(USER_NAME, value)
 
     var userEmail: String?
@@ -97,7 +93,6 @@ object PreferencesUtils {
   private const val FCM_TOKEN = "fcm_token"
 
   // 設定
-  private const val SETTING_USER_NAME = "setting_user_name"
   private const val SHOW_MAIL_ADDRESS = "show_mail_address"
   private const val BACKUP_RESTORE_AUTO = "backup_restore_auto"
   private const val CLOSE_APP = "close_app"
