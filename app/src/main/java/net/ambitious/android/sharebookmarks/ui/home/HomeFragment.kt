@@ -319,8 +319,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       analyticsUtils.logResult("sort", "success")
       (activity as HomeActivity).showSnackbar(getString(R.string.snackbar_sort_complete_message))
       homeViewModel.sortSave(itemListAdapter.getItems())
+    } else {
+      homeViewModel.sortModeChange(start)
     }
-    homeViewModel.sortModeChange(start)
     (activity as HomeActivity).setSortMode(start)
   }
 

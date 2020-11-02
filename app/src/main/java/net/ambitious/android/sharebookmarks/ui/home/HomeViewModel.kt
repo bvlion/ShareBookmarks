@@ -95,6 +95,7 @@ class HomeViewModel(
   }
 
   fun sortSave(items: List<Item>) = launch {
+    _sorting.postValue(false)
     items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
     postItems()
   }
