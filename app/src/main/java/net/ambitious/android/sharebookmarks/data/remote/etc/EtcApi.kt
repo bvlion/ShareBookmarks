@@ -13,4 +13,7 @@ interface EtcApi {
 
   @GET("etc/ogp")
   suspend fun getOgpImageUrl(@Query("url") url: String): OgpEntity
+
+  @GET("etc/{lang}/faq")
+  suspend fun getFaq(@Path("lang") lang: String): FaqEntity
 }
