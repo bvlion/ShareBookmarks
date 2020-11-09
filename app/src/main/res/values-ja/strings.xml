@@ -45,8 +45,6 @@
     <!-- 設定 -->
     <string name="setting_user_name">左上からメニューを開いた際に表示するユーザー名</string>
     <string name="setting_user_mail">左上からメニューを開いた際にログインメールアドレスを表示</string>
-    <string name="setting_backup_restore_timing">バックアップ・復元タイミング</string>
-    <string name="setting_backup_restore_timing_summary">ON の場合は起動時と終了時に毎回自動で同期します。通信量を減らしたい場合は OFF にして手動で更新してください。</string>
     <string name="setting_close_application">ブラウザ等起動時にアプリ終了</string>
     <string name="setting_close_application_summary">ブラウザ等が起動した後にこのアプリに戻りたい場合は OFF にします。</string>
     <string name="setting_start_folder">初期表示フォルダ</string>

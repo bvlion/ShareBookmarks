@@ -44,8 +44,6 @@
     <!-- 設定 -->
     <string name="setting_user_name">User name to be displayed when the menu is opened from the top left</string>
     <string name="setting_user_mail">Show your login email address when you open the menu from the top left corner</string>
-    <string name="setting_backup_restore_timing">Backup and restore timing</string>
-    <string name="setting_backup_restore_timing_summary">When it is ON, it is automatically synchronized at the time of start-up and end. If you want to reduce the amount of communication, please turn it off and update manually.</string>
     <string name="setting_close_application">Quit the application when starting up a browser, etc.</string>
     <string name="setting_close_application_summary">If you want to return to this app after the browser or other devices have been launched, turn it off. </string>
     <string name="setting_start_folder">Initial display folder</string>

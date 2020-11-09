@@ -14,11 +14,6 @@
       android:defaultValue="true"
       app:singleLineTitle="false" />
     <SwitchPreferenceCompat
-      android:key="backup_restore_auto"
-      android:title="@string/setting_backup_restore_timing"
-      android:summary="@string/setting_backup_restore_timing_summary"
-      app:singleLineTitle="false" />
-    <SwitchPreferenceCompat
       android:key="close_app"
       android:title="@string/setting_close_application"
       android:summary="@string/setting_close_application_summary"
