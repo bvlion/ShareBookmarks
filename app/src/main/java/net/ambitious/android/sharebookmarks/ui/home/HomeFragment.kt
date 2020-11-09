@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.databinding.FragmentHomeBinding
+import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.OnBreadcrumbsClickListener
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
@@ -97,20 +98,12 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         viewLifecycleOwner,
         {
           preferences.userBearer = it.accessToken
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+          }
           if (preferences.isPremium != it.premium) {
             preferences.isPremium = it.premium
             (activity as HomeActivity).changeAdmob()
-          }
-        }
-    )
-
-    homeViewModel.networkError.observe(
-        viewLifecycleOwner,
-        {
-          when (it) {
-            0 -> (activity as HomeActivity).startUpdateService(preferences.backupRestoreAuto)
-            -1 -> (activity as HomeActivity).startUpdateService(true)
-            else -> Toast.makeText(context, it, Toast.LENGTH_LONG).show()
           }
         }
     )
@@ -135,8 +128,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         homeViewModel.sendUserData(
             email,
             preferences.userUid ?: return@let,
-            preferences.fcmToken ?: return@let,
-            true
+            preferences.fcmToken ?: return@let
         )
       }
       homeViewModel.setInitialParentId(preferences.startFolderId)
@@ -157,7 +149,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
       binding.itemsRefresh.setOnRefreshListener {
         if (homeViewModel.sorting.value == false) {
-          homeViewModel.getItems()
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+          }
         } else {
           binding.itemsRefresh.isRefreshing = false
         }
@@ -167,16 +161,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
-  override fun onResume() {
-    super.onResume()
-    homeViewModel.getItems()
-  }
-
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     if (resultCode == AppCompatActivity.RESULT_OK) {
       when (requestCode) {
-        SHARE_USER_ACTIVITY_REQUEST -> (activity as HomeActivity).startUpdateService(true)
+        SHARE_USER_ACTIVITY_REQUEST -> context?.let {
+          preferences.shareSynced = false
+          DataUpdateService.startShareSync(it)
+        }
       }
     }
   }

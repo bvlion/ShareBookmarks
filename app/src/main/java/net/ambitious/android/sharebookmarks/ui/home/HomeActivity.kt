@@ -210,6 +210,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             preferences.fcmToken?.let { token ->
               homeFragment.saveUserData(it.email ?: return, it.uid, token)
             }
+            DataUpdateService.startShareSync(this)
             analyticsUtils.logResult("login", "success")
             showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
@@ -256,7 +257,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
                     preferences.userUid = null
                     preferences.userIcon = null
                     preferences.userBearer = null
-                    preferences.backupRestoreAuto = false
                     setNavigation()
                     showSnackbar(getString(R.string.sign_out_complete))
                   }
@@ -265,7 +265,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       R.id.menu_update -> {
         showSnackbar(getString(R.string.sync_start))
         analyticsUtils.logMenuTap("data update")
-        startUpdateService(true)
+        DataUpdateService.startAllSync(this@HomeActivity)
       }
       R.id.menu_oss_license -> {
         analyticsUtils.logMenuTap("oss license")
@@ -312,11 +312,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
     }
     binding.drawerLayout.closeDrawer(GravityCompat.START)
-  }
-
-  override fun finish() {
-    startUpdateService(preferences.backupRestoreAuto)
-    super.finish()
   }
 
   override fun isBackShowOnly() = false
@@ -399,13 +394,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     supportFragmentManager.findFragmentById(R.id.admob_fragment)?.let {
       (it as AdmobFragment).displayChange()
     }
-
-  fun startUpdateService(isStart: Boolean) {
-    if (isStart) {
-      analyticsUtils.logHomeTap("start update")
-      ContextCompat.startForegroundService(this, Intent(this, DataUpdateService::class.java))
-    }
-  }
 
   private fun onCreateClick(type: ItemType) =
     ItemEditDialogFragment.newInstance(0, type, null, null)

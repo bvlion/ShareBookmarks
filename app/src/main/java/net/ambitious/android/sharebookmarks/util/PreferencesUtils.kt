@@ -38,10 +38,6 @@ object PreferencesUtils {
       get() = pref.getBooleanTrue(SHOW_MAIL_ADDRESS)
       set(_) = pref.notSave()
 
-    var backupRestoreAuto: Boolean
-      get() = pref.getBoolean(BACKUP_RESTORE_AUTO)
-      set(value) = pref.save(BACKUP_RESTORE_AUTO, value)
-
     var closeApp: Boolean
       get() = pref.getBoolean(CLOSE_APP)
       set(_) = pref.notSave()
@@ -53,6 +49,14 @@ object PreferencesUtils {
     var startFolderId: Long?
       get() = pref.getStartFolderId()
       set(value) = pref.saveStartFolderId(value ?: 0)
+
+    var latestSync: String?
+      get() = pref.getString(LATEST_ITEM_SYNC_DATE)
+      set(value) = pref.save(LATEST_ITEM_SYNC_DATE, value)
+
+    var shareSynced: Boolean
+      get() = pref.getBoolean(SHARE_SYNCED)
+      set(value) = pref.save(SHARE_SYNCED, value)
   }
 
   class Preference(private val context: Context) {
@@ -91,10 +95,11 @@ object PreferencesUtils {
   private const val USER_BEARER = "user_bearer"
   private const val USER_IS_PREMIUM = "user_is_premium"
   private const val FCM_TOKEN = "fcm_token"
+  private const val LATEST_ITEM_SYNC_DATE = "latest_item_sync_date"
+  private const val SHARE_SYNCED = "share_synced"
 
   // 設定
   private const val SHOW_MAIL_ADDRESS = "show_mail_address"
-  private const val BACKUP_RESTORE_AUTO = "backup_restore_auto"
   private const val CLOSE_APP = "close_app"
   const val START_FOLDER = "start_folder"
   const val START_FOLDER_ID = "start_folder_id"

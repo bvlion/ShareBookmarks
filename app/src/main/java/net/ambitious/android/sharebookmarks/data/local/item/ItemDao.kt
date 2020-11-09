@@ -4,8 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import net.ambitious.android.sharebookmarks.util.Const
-import net.ambitious.android.sharebookmarks.util.Const.OwnerType
+import org.joda.time.DateTime
 
 @Dao
 interface ItemDao {
@@ -21,7 +20,7 @@ interface ItemDao {
   @Query("UPDATE items SET active = 0 WHERE id IN (:itemId)")
   suspend fun delete(vararg itemId: Long)
 
-  @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`")
+  @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`, upserted DESC")
   suspend fun getItems(parentId: Long): List<Item>
 
   @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 AND owner_type IN (0, 1) ORDER BY `order`")
@@ -36,8 +35,8 @@ interface ItemDao {
   @Query("UPDATE items SET parent_id = :parentId, `order` = :order WHERE id = :selfId")
   suspend fun move(selfId: Long, parentId: Long, order: Int)
 
-  @Query("UPDATE items SET `order` = :order WHERE id = :selfId")
-  suspend fun orderUpdate(selfId: Long, order: Int)
+  @Query("UPDATE items SET `order` = :order, upserted = :updated WHERE id = :selfId")
+  suspend fun orderUpdate(selfId: Long, order: Int, updated: DateTime)
 
   @Query("SELECT owner_type FROM items WHERE id = :parentId")
   suspend fun getParentOwnerType(parentId: Long): Int?
@@ -53,8 +52,8 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE active = 1 ORDER BY parent_id, `order`, upserted")
   suspend fun getAllItems(): List<Item>
 
-  @Query("SELECT * FROM items WHERE remote_id = :remoteId")
-  suspend fun getSaveRemoteIdItem(remoteId: Long): Item?
+  @Query("SELECT * FROM items WHERE active = 1 AND upserted >= :latest ORDER BY parent_id, `order`, upserted DESC")
+  suspend fun getTargetItems(latest: DateTime): List<Item>
 
   @Query("UPDATE items SET remote_id = :remoteId WHERE id = :id")
   suspend fun updateRemoteId(id: Long, remoteId: Long)
@@ -74,6 +73,9 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 AND url IS NULL")
   suspend fun getFolders(parentId: Long): List<Item>
 
-  @Query("DELETE FROM items WHERE remote_id = 0")
-  suspend fun deleteFirstItems()
+  @Query("SELECT id FROM items WHERE remote_id = :remoteId")
+  suspend fun getLocalIdFromRemoteId(remoteId: Long): Long?
+
+  @Query("DELETE FROM items")
+  suspend fun deleteAllItems()
 }

@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
-import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
@@ -52,10 +51,6 @@ class HomeViewModel(
   val tokenSave: LiveData<AuthTokenResponse>
     get() = _tokenSave
 
-  private val _networkError = MutableLiveData<Int>()
-  val networkError: LiveData<Int>
-    get() = _networkError
-
   private val _bitmap = MutableLiveData<Bitmap>()
   val bitmap: LiveData<Bitmap>
     get() = _bitmap
@@ -95,8 +90,10 @@ class HomeViewModel(
   }
 
   fun sortSave(items: List<Item>) = launch {
+    DateTime().let {
+      items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1, it) }
+    }
     _sorting.postValue(false)
-    items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1) }
     postItems()
   }
 
@@ -113,21 +110,12 @@ class HomeViewModel(
 
   fun setFolderNull() = _folders.postValue(null)
 
-  fun sendUserData(email: String, uid: String, token: String, isInitialize: Boolean = false) =
-    launch({
+  fun sendUserData(email: String, uid: String, token: String) =
+    launch {
       usersApi.userAuth(UsersPostData(email, uid, token)).let {
         _tokenSave.postValue(it)
       }
-      if (isInitialize) {
-        _networkError.postValue(0)
-      } else {
-        _networkError.postValue(-1)
-      }
-    }, {
-      if (isInitialize) {
-        _networkError.postValue(R.string.sync_network_error)
-      }
-    })
+    }
 
   private fun deleteChildItems(
     items: List<Item>,
@@ -196,22 +184,6 @@ class HomeViewModel(
               _ownerType.value ?: OwnerType.OWNER.value
           )
       )
-      itemDao.getItems(_parentId.value ?: 0).forEachIndexed { index, it ->
-        itemDao.update(
-            Item(
-                it.id,
-                it.remoteId,
-                it.parentId,
-                it.name,
-                it.url,
-                it.ogpUrl,
-                index + 1,
-                it.ownerType,
-                it.active,
-                DateTime()
-            )
-        )
-      }
     }
     postItems()
   }

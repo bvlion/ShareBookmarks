@@ -1,5 +1,6 @@
 package net.ambitious.android.sharebookmarks.data.source.impl
 
+import android.util.Log
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.local.share.Share
@@ -11,7 +12,6 @@ import net.ambitious.android.sharebookmarks.data.remote.share.ShareEntity
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.OperationUtils
-import org.joda.time.DateTime
 
 class ShareBookmarksDataSourceImpl(
   private val shareDao: ShareDao,
@@ -20,54 +20,53 @@ class ShareBookmarksDataSourceImpl(
   private val itemApi: ItemApi
 ) : ShareBookmarksDataSource {
 
-  override suspend fun dataUpdate() {
-    updateItems()
-    updateShares()
+  override suspend fun syncAll() {
+    syncItems(null)
+    syncShares()
   }
 
-  private suspend fun updateItems() {
-    // 初期データは削除する
-    itemDao.deleteFirstItems()
-
+  override suspend fun syncItems(latestSync: String?) {
     // 同期済みのローカルで削除した値をサーバーから削除
-    itemApi.deleteItems(itemDao.getDeleteItems().map { ItemEntity.DeleteShare(it) })
+    itemDao.getDeleteItems().map { ItemEntity.DeleteShare(it) }.let {
+      if (it.isNotEmpty()) {
+        itemApi.deleteItems(it)
+      }
+    }
 
-    // サーバーとローカル全て取得する
-    val remoteData = itemApi.getItems()
-    val localData = itemDao.getAllItems()
+    // 新規の場合はローカルの値を全て削除
+    if (latestSync == null) {
+      itemDao.deleteAllItems()
+    }
+
+    // サーバーとローカルの対象データを取得する
+    val remoteData = itemApi.getItems(latestSync)
+    val localAll = itemDao.getAllItems()
 
     // ローカルに無い値を insert
-    itemDao.insertAll(
-        *remoteData.items
-            .filter { share -> localData.none { it.remoteId == share.remoteId } }
-            .map {
-              Item(
-                  null,
-                  it.remoteId,
-                  0,
-                  it.name,
-                  it.url,
-                  null,
-                  it.orders,
-                  it.ownerType,
-                  1,
-                  OperationUtils.datetimeParse(it.updated)
-              )
-            }
-            .toTypedArray()
-    )
-
-    // サーバーに無い値を delete
-    itemDao.delete(
-        *localData
-            .filter { it.remoteId != null }
-            .filter { db -> remoteData.items.none { db.remoteId == it.remoteId } }
-            .map { it.id!! }
-            .toLongArray()
-    )
+    remoteData.items
+        .filter { share -> localAll.none { it.remoteId == share.remoteId } }
+        .map {
+          Item(
+              null,
+              it.remoteId,
+              0,
+              it.name,
+              it.url,
+              null,
+              it.orders,
+              it.ownerType,
+              if (it.deleted) 0 else 1,
+              OperationUtils.datetimeParse(it.updated)
+          )
+        }
+        .toTypedArray().let {
+          if (it.isNotEmpty()) {
+            itemDao.insertAll(*it)
+          }
+        }
 
     // 更新日時がサーバーの方が新しければローカルを更新
-    localData
+    localAll
         .filter { it.remoteId != null }
         .forEach { db ->
           val remote = remoteData.items.firstOrNull { db.remoteId == it.remoteId }
@@ -82,7 +81,9 @@ class ShareBookmarksDataSourceImpl(
                       it.url,
                       db.ogpUrl,
                       it.orders,
-                      it.ownerType
+                      it.ownerType,
+                      1,
+                      OperationUtils.datetimeParse(it.updated)
                   )
               )
             }
@@ -93,24 +94,20 @@ class ShareBookmarksDataSourceImpl(
     itemDao.getAllItems().forEach { db ->
       val remote = remoteData.items.firstOrNull { db.remoteId == it.remoteId }
       remote?.let {
-        if (db.upserted.isBefore(OperationUtils.datetimeParse(it.updated)) ||
-            db.upserted == OperationUtils.datetimeParse(it.updated)
-        ) {
-          itemDao.update(
-              Item(
-                  db.id,
-                  db.remoteId,
-                  itemDao.getSaveRemoteIdItem(it.parentId)?.id ?: 0,
-                  db.name,
-                  db.url,
-                  db.ogpUrl,
-                  db.order,
-                  db.ownerType,
-                  1,
-                  OperationUtils.datetimeParse(it.updated)
-              )
-          )
-        }
+        itemDao.update(
+            Item(
+                db.id,
+                db.remoteId,
+                itemDao.getLocalIdFromRemoteId(it.remoteParentId) ?: 0,
+                db.name,
+                db.url,
+                db.ogpUrl,
+                db.order,
+                db.ownerType,
+                db.active,
+                db.upserted
+            )
+        )
       }
     }
 
@@ -119,57 +116,53 @@ class ShareBookmarksDataSourceImpl(
       updateOwnerType(it.ownerType, it.id!!)
     }
 
-    // ソートを再構成してローカルを最新とする
-    var beforeParentId = 0L
-    var order = 0
-    itemDao.getAllItems().forEach {
-      if (beforeParentId != it.parentId) {
-        beforeParentId = it.parentId
-        order = 0
-      }
-      order++
-      itemDao.update(
-          Item(
-              it.id,
-              it.remoteId,
-              it.parentId,
-              it.name,
-              it.url,
-              it.ogpUrl,
-              order,
-              it.ownerType,
-              it.active,
-              DateTime()
-          )
-      )
-    }
+    val localData = getLocalItems(latestSync)
 
     // ローカルの値をサーバーに送信
-    itemApi.postItems(itemDao.getAllItems().map {
-      ItemEntity.PostItem(
-          it.id!!,
-          it.remoteId,
-          it.name,
-          it.url,
-          it.order,
-          OperationUtils.datetimeFormat(it.upserted.millis)
-      )
-    }).items.forEach {
-      itemDao.updateRemoteId(it.id, it.remoteId)
+    if (latestSync != null) {
+      localData.map {
+        ItemEntity.PostItem(
+            it.id!!,
+            it.remoteId,
+            it.name,
+            it.url,
+            it.order,
+            OperationUtils.datetimeFormat(it.upserted.millis)
+        )
+      }.let {
+        if (it.isNotEmpty()) {
+          itemApi.postItems(it).items.forEach { item ->
+            itemDao.updateRemoteId(item.id, item.remoteId)
+          }
+        }
+      }
     }
 
     // ローカルで削除したデータはゴミなので物理削除
     itemDao.forceDelete()
 
     // サーバー側のフォルダの紐付きを更新
-    itemApi.parentSetItems(itemDao.getAllItems().map {
+    localData.map {
       ItemEntity.ParentSet(
           it.remoteId!!,
           itemDao.getParentRemoteId(it.id!!) ?: 0,
           itemDao.getParentOwnerType(it.parentId) ?: 0 == OwnerType.OWNER.value && it.ownerType != OwnerType.OWNER.value
       )
-    })
+    }.let {
+      if (it.isNotEmpty()) {
+        itemApi.parentSetItems(it)
+      }
+    }
+
+    Log.d("SYNC", "latestSync $latestSync")
+    Log.d("SYNC", "remote count ${remoteData.items.size}")
+    Log.d("SYNC", "local count ${localData.size}")
   }
+
+  private suspend fun getLocalItems(latestSync: String?) =
+    latestSync?.let {
+      itemDao.getTargetItems(OperationUtils.datetimeParse(it))
+    } ?: itemDao.getAllItems()
 
   private suspend fun updateOwnerType(ownerType: Int, parentId: Long) {
     itemDao.updateOwnerType(ownerType, parentId)
@@ -178,7 +171,7 @@ class ShareBookmarksDataSourceImpl(
     }
   }
 
-  private suspend fun updateShares() {
+  override suspend fun syncShares() {
     // 同期済みのローカルで削除した値をサーバーから削除
     shareApi.deleteShares(shareDao.getDeleteShares().map { ShareEntity.DeleteShare(it) })
 
@@ -194,7 +187,7 @@ class ShareBookmarksDataSourceImpl(
               Share(
                   null,
                   it.remoteId,
-                  itemDao.getSaveRemoteIdItem(it.serverFolderId)?.id ?: 0,
+                  itemDao.getLocalIdFromRemoteId(it.serverFolderId) ?: 0,
                   it.userEmail,
                   null,
                   null,
@@ -226,7 +219,7 @@ class ShareBookmarksDataSourceImpl(
                   Share(
                       db.id,
                       it.remoteId,
-                      itemDao.getSaveRemoteIdItem(it.serverFolderId)?.id ?: 0,
+                      itemDao.getLocalIdFromRemoteId(it.serverFolderId) ?: 0,
                       it.userEmail,
                       db.userName,
                       db.userIcon,

@@ -42,22 +42,6 @@ class ShareAddViewModel(
               OWNER.value
           )
       )
-      itemDao.getItems(folderId).forEachIndexed { index, it ->
-        itemDao.update(
-            Item(
-                it.id,
-                it.remoteId,
-                it.parentId,
-                it.name,
-                it.url,
-                it.ogpUrl,
-                index + 1,
-                it.ownerType,
-                it.active,
-                DateTime()
-            )
-        )
-      }
       _postResult.postValue(
           Triple(
               id,

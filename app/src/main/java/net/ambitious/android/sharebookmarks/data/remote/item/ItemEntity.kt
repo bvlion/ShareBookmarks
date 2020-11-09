@@ -6,12 +6,13 @@ object ItemEntity {
   data class ItemList(val items: List<Item>) {
     data class Item(
       @Json(name = "remote_id") val remoteId: Long,
-      @Json(name = "parent_id") val parentId: Long,
+      @Json(name = "remote_parent_id") val remoteParentId: Long,
       val name: String,
       val url: String?,
       val orders: Int,
       @Json(name = "owner_type") val ownerType: Int,
-      val updated: String
+      val updated: String,
+      val deleted: Boolean
     )
   }
 
