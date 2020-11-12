@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.home
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
@@ -49,6 +50,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   private lateinit var itemListAdapter: ItemListAdapter
   private lateinit var breadcrumbsAdapter: BreadcrumbsAdapter
   private lateinit var binding: FragmentHomeBinding
+
+  private var loading: AlertDialog? = null
+  private var isFirstLoad = false
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -98,9 +102,17 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         viewLifecycleOwner,
         {
           preferences.userBearer = it.accessToken
-          context?.let { context ->
-            DataUpdateService.startItemSync(context)
+          if (isFirstLoad) {
+            setLoadingShow(true)
+          } else {
+            context?.let { context ->
+              DataUpdateService.startItemSync(context)
+              if (!preferences.shareSynced) {
+                DataUpdateService.startShareSync(context)
+              }
+            }
           }
+          isFirstLoad = false
           if (preferences.isPremium != it.premium) {
             preferences.isPremium = it.premium
             (activity as HomeActivity).changeAdmob()
@@ -119,6 +131,37 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
                   .centerCrop()
                   .into(ogp.first)
             }
+          }
+        }
+    )
+
+    homeViewModel.itemUpdate.observe(
+        viewLifecycleOwner,
+        {
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+          }
+        }
+    )
+
+    homeViewModel.dialogShow.observe(
+        viewLifecycleOwner,
+        {
+          if (it) {
+            context?.let { context ->
+              loading = AlertDialog.Builder(context)
+                  .setView(View.inflate(context, R.layout.dialog_loading, null).apply {
+                    Glide.with(context).load(R.mipmap.loading).into(findViewById(R.id.loading_gif))
+                  })
+                  .setCancelable(false)
+                  .create()
+              loading?.show()
+              activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+              DataUpdateService.startAllSync(context)
+            }
+          } else {
+            loading?.dismiss()
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
           }
         }
     )
@@ -149,9 +192,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
       binding.itemsRefresh.setOnRefreshListener {
         if (homeViewModel.sorting.value == false) {
-          context?.let { context ->
-            DataUpdateService.startItemSync(context)
-          }
+          homeViewModel.getItems()
         } else {
           binding.itemsRefresh.isRefreshing = false
         }
@@ -329,10 +370,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     getString(R.string.set_first_folder_done, it.second)
   } ?: getString(R.string.set_first_folder_error)
 
-  fun saveUserData(email: String, uid: String, token: String) =
+  fun saveUserData(email: String, uid: String, token: String) {
+    isFirstLoad = true
     homeViewModel.sendUserData(email, uid, token)
+  }
 
   fun initializeInsert() = homeViewModel.initializeInsert()
+
+  fun setLoadingShow(isShow: Boolean) = homeViewModel.setLoadingShow(isShow)
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

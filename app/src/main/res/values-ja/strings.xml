@@ -9,7 +9,6 @@
     <string name="menu_notification">お知らせ</string>
     <string name="menu_login">Google ログイン</string>
     <string name="menu_logout">ログアウト</string>
-    <string name="menu_update">データ更新</string>
     <string name="menu_operation_billing">応援</string>
     <string name="menu_billing">アプリ課金</string>
     <string name="menu_app_rating">アプリを評価</string>
@@ -57,12 +56,12 @@
     <string name="cant_start_activity">ショートカットを起動できませんでした。\n登録内容をご確認ください。</string>
     <string name="shortcut_created">ホームにショートカットを作成しました。</string>
     <string name="sync_network_error">通信に失敗したため同期は行われませんでした。</string>
-    <string name="sync_start">同期を開始します。</string>
-    <string name="sync_success">同期が完了しました。</string>
+    <string name="sync_title">全データを同期中</string>
+    <string name="sync_success">全データの同期が完了しました。</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">メールアドレスとお問い合わせ内容をご入力ください。</string>
-    <string name="inquiry_top_bottom">頂いたご意見は必ず確認いたしますが、全てにお返事はできないこともございます。\n何卒ご了承下さい。\n\n受け付け後、受付確認メールを送信しています。\n「」よりメールを受信できるよう設定をお願いいたします。</string>
+    <string name="inquiry_top_bottom">頂いたご意見は必ず確認いたしますが、全てにお返事はできないこともございます。\n何卒ご了承下さい。\n\n受け付け後、受付確認メールを送信しています。\n「info@ambitious-i.net」よりメールを受信できるよう設定をお願いいたします。</string>
     <string name="email_hint">メールアドレス</string>
     <string name="email_validation">メールアドレス形式で入力してください。</string>
     <string name="inquiry_hint">お問い合わせ内容</string>
@@ -137,4 +136,7 @@
     <string name="other_menu_terms_of_use">利用規約</string>
     <string name="other_menu_version">バージョン</string>
     <string name="other_menu_contact_us">お問い合わせ</string>
+    <string name="all_sync_dialog_title">全データ更新を行います</string>
+    <string name="all_sync_dialog_subject">この機能は緊急用です。\n管理者より案内がない場合は使用をお控えください。\n\n端末のデータを全て削除し、サーバーから全データを取得しますか？</string>
+    <string name="all_sync_dialog_exec">理解のうえで実行</string>
 </resources>

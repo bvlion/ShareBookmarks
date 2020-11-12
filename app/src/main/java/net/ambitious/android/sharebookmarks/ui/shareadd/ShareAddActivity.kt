@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
@@ -45,6 +46,7 @@ class ShareAddActivity : AppCompatActivity(), ItemEditDialogFragment.OnClickList
                 getString(R.string.snackbar_create_message, it.second),
                 Toast.LENGTH_SHORT
             ).show()
+            DataUpdateService.startItemSync(this)
             ContextCompat.startForegroundService(
                 this,
                 Intent(this, UpdateImageService::class.java).apply {

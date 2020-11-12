@@ -29,11 +29,8 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE id = :itemId AND active = 1")
   suspend fun getItem(itemId: Long): Item?
 
-  @Query("SELECT MAX(`order`) FROM items WHERE parent_id = :parentId AND active = 1")
-  suspend fun getMaxOrder(parentId: Long): Int?
-
-  @Query("UPDATE items SET parent_id = :parentId, `order` = :order WHERE id = :selfId")
-  suspend fun move(selfId: Long, parentId: Long, order: Int)
+  @Query("UPDATE items SET parent_id = :parentId, `order` = 0, upserted = :updated WHERE id = :selfId")
+  suspend fun move(selfId: Long, parentId: Long, updated: DateTime)
 
   @Query("UPDATE items SET `order` = :order, upserted = :updated WHERE id = :selfId")
   suspend fun orderUpdate(selfId: Long, order: Int, updated: DateTime)

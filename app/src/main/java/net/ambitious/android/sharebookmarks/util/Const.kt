@@ -25,6 +25,13 @@ object Const {
     TARGET("target")
   }
 
+  enum class SyncMessageType(val value: String) {
+    ALL_SYNC_SUCCESS("all_sync_success"),
+    ALL_SYNC_ERROR("all_sync_error"),
+    NORMAL_SYNC_SUCCESS("normal_sync_success"),
+    NORMAL_SYNC_ERROR("normal_sync_error")
+  }
+
   val INITIALIZE_DB = arrayOf(
       arrayOf("Google", "https://www.google.com/"),
       arrayOf("Yahoo", "https://www.yahoo.co.jp/"),
@@ -43,4 +50,5 @@ object Const {
   const val MESSAGE_BROADCAST_BUNDLE = "message_broadcast_bundle"
 
   const val IMAGE_UPLOAD_BROADCAST_ACTION = "image_upload_broadcast_action"
+  const val IMAGE_UPLOAD_BROADCAST_BUNDLE = "image_upload_broadcast_bundle"
 }

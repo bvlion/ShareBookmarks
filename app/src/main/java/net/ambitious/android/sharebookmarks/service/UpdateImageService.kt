@@ -52,30 +52,43 @@ class UpdateImageService : Service() {
             )
           }
         }
+        sendBroadcast(Intent(Const.IMAGE_UPLOAD_BROADCAST_ACTION).apply {
+          putExtra(Const.IMAGE_UPLOAD_BROADCAST_BUNDLE, it.getBoolean(PARAM_ITEM_ALL))
+        })
       }
-      sendBroadcast(Intent(Const.IMAGE_UPLOAD_BROADCAST_ACTION))
       stopSelf()
     }
   }
 
   private suspend fun updateThumbnail(coroutineScope: CoroutineScope, isAll: Boolean) {
-    itemDao.getAllItems().map {
-      coroutineScope.async {
-        if (it.url == null) {
-          return@async
+    val items = ArrayList(itemDao.getAllItems())
+    val dropCount = 10
+    do {
+      items.take(dropCount).map {
+        coroutineScope.async {
+          if (it.url == null) {
+            return@async
+          }
+          // 全件取得でない場合は既にサムネイルの URL があればスキップする
+          if (!isAll && it.ogpUrl != null) {
+            return@async
+          }
+          withContext(Dispatchers.IO) {
+            itemDao.updateOgpImages(
+                OperationUtils.getOgpImage(it.url, etcApi) ?: "",
+                it.id!!
+            )
+          }
         }
-        // 全件取得でない場合は既にサムネイルの URL があればスキップする
-        if (!isAll && it.ogpUrl != null) {
-          return@async
-        }
-        withContext(Dispatchers.IO) {
-          itemDao.updateOgpImages(
-              OperationUtils.getOgpImage(it.url, etcApi) ?: "",
-              it.id!!
-          )
+      }.forEach {
+        it.await()
+      }
+      repeat(dropCount) {
+        if (items.isNotEmpty()) {
+          items.removeAt(0)
         }
       }
-    }.forEach { it.await() }
+    } while (items.isNotEmpty())
   }
 
   companion object {

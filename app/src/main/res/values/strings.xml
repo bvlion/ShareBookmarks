@@ -8,7 +8,6 @@
     <string name="menu_notification">Notice</string>
     <string name="menu_login">Google Login</string>
     <string name="menu_logout">Logout</string>
-    <string name="menu_update">Update data</string>
     <string name="menu_operation_billing">Support</string>
     <string name="menu_billing">App billing</string>
     <string name="menu_app_rating">Rating your app</string>
@@ -56,12 +55,12 @@
     <string name="cant_start_activity">Unable to activate the shortcut.\nPlease check your registration details.</string>
     <string name="shortcut_created">A shortcut has been created for Home.</string>
     <string name="sync_network_error">No synchronization was done because the communication failed.</string>
-    <string name="sync_start">Start synchronization.</string>
-    <string name="sync_success">Synchronization has been completed.</string>
+    <string name="sync_title">All data in sync.</string>
+    <string name="sync_success">All data has been synchronized.</string>
 
     <!-- お問い合わせ -->
     <string name="inquiry_top_message">Please enter your email address and contact details.</string>
-    <string name="inquiry_top_bottom">I will always review your comments, but I may not be able to respond to all of them. \nI will not be able to respond to all of them. \n\nAfter I receive your inquiry, a confirmation email will be sent to you. \nPlease be sure to set up your email address so that you can receive the confirmation email.</string>
+    <string name="inquiry_top_bottom">I will always review your comments, but I may not be able to respond to all of them. \nI will not be able to respond to all of them. \n\nAfter I receive your inquiry, a confirmation email will be sent to you. \nPlease set up to receive emails from \"info@ambitious-i.net\".</string>
     <string name="email_hint">email address</string>
     <string name="email_validation">Please enter in the email address format.</string>
     <string name="inquiry_hint">Inquiry details</string>
@@ -137,4 +136,7 @@
     <string name="other_menu_terms_of_use">Terms of Use</string>
     <string name="other_menu_version">Version</string>
     <string name="other_menu_contact_us">Contact Us</string>
+    <string name="all_sync_dialog_title">Update all data</string>
+    <string name="all_sync_dialog_subject">This feature is for emergency use only.\nPlease refrain from using it unless you are informed by the administrator.\n\nDo you want to delete all data on the device and get all data from the server?</string>
+    <string name="all_sync_dialog_exec">Execute with understanding</string>
 </resources>

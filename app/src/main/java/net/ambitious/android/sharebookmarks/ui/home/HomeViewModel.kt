@@ -59,6 +59,14 @@ class HomeViewModel(
   val ogpImage: LiveData<Pair<ImageView, String?>>
     get() = _ogpImage
 
+  private val _itemUpdate = MutableLiveData<Int>()
+  val itemUpdate: LiveData<Int>
+    get() = _itemUpdate
+
+  private val _dialogShow = MutableLiveData<Boolean>()
+  val dialogShow: LiveData<Boolean>
+    get() = _dialogShow
+
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
   fun setInitialParentId(parentId: Long?) {
@@ -94,6 +102,8 @@ class HomeViewModel(
       items.forEachIndexed { index, item -> itemDao.orderUpdate(item.id!!, index + 1, it) }
     }
     _sorting.postValue(false)
+    _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
+    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
     postItems()
   }
 
@@ -148,7 +158,8 @@ class HomeViewModel(
   }
 
   fun moveItem(selfId: Long, parentId: Long) = launch {
-    itemDao.move(selfId, parentId, itemDao.getMaxOrder(parentId) ?: 0)
+    itemDao.move(selfId, parentId, DateTime())
+    _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
     postItems()
   }
 
@@ -185,12 +196,14 @@ class HomeViewModel(
           )
       )
     }
+    _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
     postItems()
   }
 
   fun deleteItem(itemId: Long) = launch {
     deleteItems(itemDao.getItems(itemId))
     itemDao.delete(itemId)
+    _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
     postItems()
   }
 
@@ -226,6 +239,10 @@ class HomeViewModel(
     }
     itemDao.updateOgpImages(ogp ?: "", id)
     _ogpImage.postValue(Pair(ogpImageView, ogp))
+  }
+
+  fun setLoadingShow(isShow: Boolean) {
+    _dialogShow.value = isShow
   }
 
   private fun deleteItems(childItems: List<Item>) {

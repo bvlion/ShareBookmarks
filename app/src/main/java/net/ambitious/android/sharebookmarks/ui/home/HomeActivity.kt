@@ -31,7 +31,6 @@ import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.databinding.ActivityMainBinding
 import net.ambitious.android.sharebookmarks.receiver.ImageUploadEndBroadcastReceiver
-import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.receiver.MessageBroadcastReceiver
 import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
@@ -105,19 +104,29 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {
       analyticsUtils.logResult("MessageBroadcastReceiver", it)
-      showSnackbar(it)
-
-      // サムネイル更新
-      ContextCompat.startForegroundService(
-          this,
-          Intent(this, UpdateImageService::class.java).apply {
-            putExtra(UpdateImageService.PARAM_ITEM_ALL, false)
-          })
-
+      if (it == Const.SyncMessageType.ALL_SYNC_ERROR.value) {
+        homeFragment.setLoadingShow(false)
+      }
+      if (it == Const.SyncMessageType.ALL_SYNC_SUCCESS.value) {
+        ContextCompat.startForegroundService(
+            this,
+            Intent(this, UpdateImageService::class.java).apply {
+              putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+            })
+      }
+      if (it == Const.SyncMessageType.ALL_SYNC_ERROR.value || it == Const.SyncMessageType.NORMAL_SYNC_ERROR.value) {
+        showSnackbar(getString(R.string.sync_network_error))
+      }
       homeFragment.imageReload()
     }
 
-    imageBroadcastReceiver = ImageUploadEndBroadcastReceiver { homeFragment.imageReload() }
+    imageBroadcastReceiver = ImageUploadEndBroadcastReceiver {
+      if (it) {
+        showSnackbar(getString(R.string.sync_success))
+        homeFragment.setLoadingShow(false)
+      }
+      homeFragment.imageReload()
+    }
   }
 
   override fun onResume() {
@@ -210,7 +219,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
             preferences.fcmToken?.let { token ->
               homeFragment.saveUserData(it.email ?: return, it.uid, token)
             }
-            DataUpdateService.startShareSync(this)
             analyticsUtils.logResult("login", "success")
             showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
           } ?: errorSnackbar()
@@ -218,6 +226,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
           errorSnackbar()
         }
       SETTING_REQUEST_CODE -> setNavigation()
+      UPDATE_REQUEST_CODE -> if (resultCode == RESULT_OK) {
+        homeFragment.setLoadingShow(true)
+      }
     }
   }
 
@@ -262,11 +273,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
                   }
             }.show()
       }
-      R.id.menu_update -> {
-        showSnackbar(getString(R.string.sync_start))
-        analyticsUtils.logMenuTap("data update")
-        DataUpdateService.startAllSync(this@HomeActivity)
-      }
       R.id.menu_oss_license -> {
         analyticsUtils.logMenuTap("oss license")
         startActivity(
@@ -277,7 +283,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_other -> {
         analyticsUtils.logMenuTap("other")
-        startActivity(Intent(this@HomeActivity, OtherActivity::class.java))
+        startActivityForResult(
+            Intent(this@HomeActivity, OtherActivity::class.java),
+            UPDATE_REQUEST_CODE
+        )
       }
       R.id.menu_app_rating -> {
         analyticsUtils.logMenuTap("app rating")
@@ -402,7 +411,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private fun setNavigation() {
     binding.navView.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
     binding.navView.menu.findItem(R.id.menu_logout).isVisible = preferences.userEmail != null
-    binding.navView.menu.findItem(R.id.menu_update).isVisible = preferences.userEmail != null
     binding.navView.menu.findItem(R.id.menu_billing).isVisible = false
     val header = binding.navView.getHeaderView(0)
     Glide.with(this)
@@ -429,5 +437,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   companion object {
     const val SIGN_IN_REQUEST_CODE = 1001
     const val SETTING_REQUEST_CODE = 1002
+    const val UPDATE_REQUEST_CODE = 1003
   }
 }

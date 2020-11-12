@@ -16,10 +16,6 @@
           android:id="@+id/menu_logout"
           android:icon="@drawable/ic_logout"
           android:title="@string/menu_logout" />
-        <item
-          android:id="@+id/menu_update"
-          android:icon="@drawable/ic_menu_update"
-          android:title="@string/menu_update" />
     </group>
     <item android:title="@string/menu_operation_billing">
         <menu>

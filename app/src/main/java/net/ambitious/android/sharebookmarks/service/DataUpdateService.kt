@@ -40,13 +40,17 @@ class DataUpdateService : Service() {
         try {
           when (param) {
             SYNC_PARAM_ALL -> {
+              preferences.latestSync = "2020-01-01 00:00:00"
+              preferences.shareSynced = false
               dataSource.syncAll()
               preferences.latestSync = OperationUtils.datetimeFormat(null)
               preferences.shareSynced = true
+              sendMessage(Const.SyncMessageType.ALL_SYNC_SUCCESS.value)
             }
             SYNC_PARAM_SHARE -> {
               dataSource.syncShares()
               preferences.shareSynced = true
+              sendMessage(Const.SyncMessageType.NORMAL_SYNC_SUCCESS.value)
             }
             SYNC_PARAM_ANY_TIME -> {
               dataSource.syncItems(preferences.latestSync)
@@ -55,12 +59,15 @@ class DataUpdateService : Service() {
                 dataSource.syncShares()
                 preferences.shareSynced = true
               }
+              sendMessage(Const.SyncMessageType.NORMAL_SYNC_SUCCESS.value)
             }
           }
-          sendMessage(R.string.sync_success)
         } catch (e: Exception) {
           FirebaseCrashlytics.getInstance().recordException(e)
-          sendMessage(R.string.sync_network_error)
+          when (param) {
+            SYNC_PARAM_ALL -> sendMessage(Const.SyncMessageType.ALL_SYNC_ERROR.value)
+            else -> sendMessage(Const.SyncMessageType.NORMAL_SYNC_ERROR.value)
+          }
         }
 
         stopSelf()
@@ -81,17 +88,22 @@ class DataUpdateService : Service() {
 
     fun startItemSync(context: Context) = startSync(context, SYNC_PARAM_ANY_TIME)
 
-    private fun startSync(context: Context, param: String) =
+    private fun startSync(context: Context, param: String) {
+      val preferences = PreferencesUtils.Data(PreferencesUtils.Preference(context))
+      if (preferences.userUid.isNullOrEmpty()) {
+        return
+      }
       ContextCompat.startForegroundService(
           context,
           Intent(context, DataUpdateService::class.java).apply {
             putExtra(SYNC_KEY, param)
           })
+    }
   }
 
-  private fun sendMessage(messageId: Int) =
+  private fun sendMessage(message: String) =
     sendBroadcast(Intent().apply {
-      putExtra(Const.MESSAGE_BROADCAST_BUNDLE, getString(messageId))
+      putExtra(Const.MESSAGE_BROADCAST_BUNDLE, message)
       action = Const.MESSAGE_BROADCAST_ACTION
     })
 }

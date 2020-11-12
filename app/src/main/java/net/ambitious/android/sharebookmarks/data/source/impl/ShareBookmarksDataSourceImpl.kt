@@ -1,6 +1,5 @@
 package net.ambitious.android.sharebookmarks.data.source.impl
 
-import android.util.Log
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.local.share.Share
@@ -116,11 +115,9 @@ class ShareBookmarksDataSourceImpl(
       updateOwnerType(it.ownerType, it.id!!)
     }
 
-    val localData = getLocalItems(latestSync)
-
     // ローカルの値をサーバーに送信
     if (latestSync != null) {
-      localData.map {
+      getLocalItems(latestSync).map {
         ItemEntity.PostItem(
             it.id!!,
             it.remoteId,
@@ -138,11 +135,8 @@ class ShareBookmarksDataSourceImpl(
       }
     }
 
-    // ローカルで削除したデータはゴミなので物理削除
-    itemDao.forceDelete()
-
     // サーバー側のフォルダの紐付きを更新
-    localData.map {
+    getLocalItems(latestSync).map {
       ItemEntity.ParentSet(
           it.remoteId!!,
           itemDao.getParentRemoteId(it.id!!) ?: 0,
@@ -154,9 +148,8 @@ class ShareBookmarksDataSourceImpl(
       }
     }
 
-    Log.d("SYNC", "latestSync $latestSync")
-    Log.d("SYNC", "remote count ${remoteData.items.size}")
-    Log.d("SYNC", "local count ${localData.size}")
+    // ローカルで削除したデータはゴミなので物理削除
+    itemDao.forceDelete()
   }
 
   private suspend fun getLocalItems(latestSync: String?) =
