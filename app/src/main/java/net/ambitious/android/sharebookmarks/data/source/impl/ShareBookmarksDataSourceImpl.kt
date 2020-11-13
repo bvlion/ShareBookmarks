@@ -1,5 +1,6 @@
 package net.ambitious.android.sharebookmarks.data.source.impl
 
+import com.squareup.moshi.Moshi
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.local.share.Share
@@ -11,12 +12,14 @@ import net.ambitious.android.sharebookmarks.data.remote.share.ShareEntity
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.OperationUtils
+import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class ShareBookmarksDataSourceImpl(
   private val shareDao: ShareDao,
   private val itemDao: ItemDao,
   private val shareApi: ShareApi,
-  private val itemApi: ItemApi
+  private val itemApi: ItemApi,
+  private val preferences: PreferencesUtils.Data
 ) : ShareBookmarksDataSource {
 
   override suspend fun syncAll() {
@@ -41,6 +44,9 @@ class ShareBookmarksDataSourceImpl(
     val remoteData = itemApi.getItems(latestSync)
     val localAll = itemDao.getAllItems()
 
+    // 画像同期対象リスト
+    val imageUpdates = mutableMapOf<Long, String>()
+
     // ローカルに無い値を insert
     remoteData.items
         .filter { share -> localAll.none { it.remoteId == share.remoteId } }
@@ -62,6 +68,13 @@ class ShareBookmarksDataSourceImpl(
           if (it.isNotEmpty()) {
             itemDao.insertAll(*it)
           }
+          if (latestSync != null) {
+            it.map { item ->
+              item.url?.let { url ->
+                imageUpdates[itemDao.getLocalIdFromRemoteId(item.remoteId!!)!!] = url
+              }
+            }
+          }
         }
 
     // 更新日時がサーバーの方が新しければローカルを更新
@@ -81,7 +94,7 @@ class ShareBookmarksDataSourceImpl(
                       db.ogpUrl,
                       it.orders,
                       it.ownerType,
-                      1,
+                      if (it.deleted) 0 else 1,
                       OperationUtils.datetimeParse(it.updated)
                   )
               )
@@ -132,6 +145,11 @@ class ShareBookmarksDataSourceImpl(
             itemDao.updateRemoteId(item.id, item.remoteId)
           }
         }
+      }
+
+      if (imageUpdates.isNotEmpty()) {
+        preferences.imageSyncTarget =
+          Moshi.Builder().build().adapter(Map::class.java).toJson(imageUpdates)
       }
     }
 

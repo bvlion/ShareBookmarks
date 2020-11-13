@@ -21,7 +21,7 @@ class AnalyticsUtils(private val fa: FirebaseAnalytics) {
     })
 
   fun logDataUpdateTime(time: Long) =
-    fa.logEvent("dateUpdate", Bundle().apply {
+    fa.logEvent("dataUpdate", Bundle().apply {
       putString("total", "$time msec")
     })
 

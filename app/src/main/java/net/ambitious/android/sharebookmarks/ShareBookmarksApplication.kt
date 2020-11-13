@@ -136,7 +136,7 @@ class ShareBookmarksApplication : Application() {
 
   private val dataSourceModule = module {
     single<ShareBookmarksDataSource> {
-      ShareBookmarksDataSourceImpl(get(), get(), get(), get())
+      ShareBookmarksDataSourceImpl(get(), get(), get(), get(), get())
     }
   }
 }

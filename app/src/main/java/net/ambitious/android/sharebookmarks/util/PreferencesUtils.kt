@@ -57,6 +57,10 @@ object PreferencesUtils {
     var shareSynced: Boolean
       get() = pref.getBoolean(SHARE_SYNCED)
       set(value) = pref.save(SHARE_SYNCED, value)
+
+    var imageSyncTarget: String?
+      get() = pref.getString(IMAGE_SYNC_TARGET)
+      set(value) = pref.save(IMAGE_SYNC_TARGET, value)
   }
 
   class Preference(private val context: Context) {
@@ -95,8 +99,11 @@ object PreferencesUtils {
   private const val USER_BEARER = "user_bearer"
   private const val USER_IS_PREMIUM = "user_is_premium"
   private const val FCM_TOKEN = "fcm_token"
+
+  // 同期
   private const val LATEST_ITEM_SYNC_DATE = "latest_item_sync_date"
   private const val SHARE_SYNCED = "share_synced"
+  private const val IMAGE_SYNC_TARGET = "image_sync_target"
 
   // 設定
   private const val SHOW_MAIL_ADDRESS = "show_mail_address"

@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,16 +25,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.squareup.moshi.Moshi
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.databinding.FragmentHomeBinding
 import net.ambitious.android.sharebookmarks.service.DataUpdateService
+import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.BreadcrumbsAdapter.OnBreadcrumbsClickListener
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnItemClickListener
 import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
+import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
@@ -65,6 +69,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         {
           itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
           binding.itemsRefresh.isRefreshing = false
+          targetImageUpdate()
         })
 
     homeViewModel.breadcrumbs.observe(
@@ -192,7 +197,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
       binding.itemsRefresh.setOnRefreshListener {
         if (homeViewModel.sorting.value == false) {
-          homeViewModel.getItems()
+          if (preferences.userUid.isNullOrEmpty()) {
+            homeViewModel.getItems()
+          } else {
+            context?.let { context ->
+              DataUpdateService.startItemSync(context)
+            }
+          }
         } else {
           binding.itemsRefresh.isRefreshing = false
         }
@@ -381,6 +392,23 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)
+
+  private fun targetImageUpdate() {
+    val syncTarget = preferences.imageSyncTarget
+    if (!syncTarget.isNullOrEmpty()) {
+      Moshi.Builder().build().adapter(Map::class.java).fromJson(syncTarget)?.forEach {
+        context?.let { context ->
+          ContextCompat.startForegroundService(
+              context,
+              Intent(context, UpdateImageService::class.java).apply {
+                putExtra(UpdateImageService.PARAM_ITEM_ID, it.key.toString().toLong())
+                putExtra(UpdateImageService.PARAM_ITEM_URL, it.value.toString())
+              })
+        }
+      }
+    }
+    preferences.imageSyncTarget = ""
+  }
 
   private val itemTouchHelper by lazy {
     val simpleItemTouchCallback =
