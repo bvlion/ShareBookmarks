@@ -8,12 +8,9 @@ import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
@@ -29,8 +26,8 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
 
   fun create4Inquiry(): ContactApi =
     Retrofit.Builder()
-        .baseUrl("https://maker.ifttt.com/")
-        .addConverterFactory(StringConverterFactory())
+        .baseUrl("https://script.google.com/")
+        .addConverterFactory(getFactory())
         .client(client)
         .build()
         .create(ContactApi::class.java)
@@ -75,13 +72,6 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
               .method(chain.request().method, chain.request().body)
               .build()
       )
-    }
-
-    private class StringConverterFactory : Converter.Factory() {
-      override fun responseBodyConverter(
-        type: Type?, annotations: Array<Annotation?>?,
-        retrofit: Retrofit?
-      ): Converter<ResponseBody, String?> = Converter { it.string() }
     }
   }
 }

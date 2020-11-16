@@ -10,7 +10,7 @@ jobs:
 
       - run:
           name: set version
-          command: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_IFTTT_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
+          command: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
 
       - run:
           name: Error Check

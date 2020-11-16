@@ -3,10 +3,15 @@ package net.ambitious.android.sharebookmarks.ui.inquiry
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.squareup.moshi.Moshi
 import net.ambitious.android.sharebookmarks.BuildConfig
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.remote.contact.ContactApi
+import net.ambitious.android.sharebookmarks.data.remote.contact.ContactEntity
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
+import org.json.JSONObject
+import java.lang.Exception
 
 class InquiryViewModel(
   private val context: Context,
@@ -18,16 +23,26 @@ class InquiryViewModel(
     get() = _postResult
 
   fun postMessage() {
-    launch {
-      if (BuildConfig.CONTACT_URL.isEmpty()) {
-        true
+    _isSendButtonEnabled.value = false
+    launch({
+      if (BuildConfig.CONTACT_URL.isEmpty()) { // 開発環境
+        "{\"ok\":true}"
       } else {
-        contactApi.postContact(mailAddress.value!!, inquiry.value!!).isNotEmpty()
+        contactApi.postContact(ContactEntity(mailAddress.value!!, inquiry.value!!))
       }.let {
-        _postResult.postValue(it)
-        _isSendButtonEnabled.postValue(!it)
+        try {
+          JSONObject(it.toString())
+          _postResult.postValue(true)
+        } catch (_: Exception) {
+          FirebaseCrashlytics.getInstance().recordException(Exception(it.toString()))
+          _postResult.postValue(false)
+          _isSendButtonEnabled.postValue(true)
+        }
       }
-    }
+    }, {
+      _postResult.postValue(false)
+      _isSendButtonEnabled.postValue(true)
+    })
   }
 
   private val _mailAddress: MutableLiveData<String> = MutableLiveData()
