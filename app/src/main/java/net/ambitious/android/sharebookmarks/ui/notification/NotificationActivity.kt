@@ -55,6 +55,6 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
   }
 
   private fun getNotifications() {
-    viewModel.getNotifications()
+    viewModel.getNotifications(preferences.userBearer != null)
   }
 }

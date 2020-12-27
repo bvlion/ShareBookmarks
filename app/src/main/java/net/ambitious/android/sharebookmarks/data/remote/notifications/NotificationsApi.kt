@@ -5,4 +5,7 @@ import retrofit2.http.GET
 interface NotificationsApi {
   @GET("notifications/list")
   suspend fun getNotifications(): NotificationsEntity
+
+  @GET("notifications/auth/list")
+  suspend fun getAuthNotifications(): NotificationsEntity
 }
