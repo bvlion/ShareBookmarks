@@ -43,7 +43,7 @@ class NotificationViewModelTest {
   fun fetchNotification() {
     val observer = TestObserver<NotificationsEntity>()
     viewModel.notifications.observeForever(observer)
-    viewModel.getNotifications()
+    viewModel.getNotifications(false)
     observer.await()
 
     val notifications = observer.get()!!
