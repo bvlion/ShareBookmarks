@@ -139,4 +139,18 @@
     <string name="all_sync_dialog_title">全データ更新を行います</string>
     <string name="all_sync_dialog_subject">この機能は緊急用です。\n管理者より案内がない場合は使用をお控えください。\n\n端末のデータを全て削除し、サーバーから全データを取得しますか？</string>
     <string name="all_sync_dialog_exec">理解のうえで実行</string>
+
+    <!-- 使い方 -->
+    <string name="ic_how_to_use_text_main_1">共有をタップ！</string>
+    <string name="ic_how_to_use_text_sub_1">ブラウザの右上をタップしてメニューを開き、共有を選択します。</string>
+    <string name="ic_how_to_use_text_main_2">ブックマーク共有を選択！</string>
+    <string name="ic_how_to_use_text_sub_2">共有メニューから当アプリ「ブックマーク共有」を選択します。</string>
+    <string name="ic_how_to_use_text_main_3">URL を追加！</string>
+    <string name="ic_how_to_use_text_sub_3">タイトルと URL を確認して追加をタップします。</string>
+    <string name="ic_how_to_use_text_main_4">追加完了！</string>
+    <string name="ic_how_to_use_text_sub_4">矢印のようにブックマークが追加されます。（画像はサイトによって設定されない場合があります。）</string>
+    <string name="ic_how_to_use_text_main_5">フォルダを共有する！</string>
+    <string name="ic_how_to_use_text_sub_5">フォルダのメニューから「フォルダを共有」を選択します。</string>
+    <string name="ic_how_to_use_text_main_6">共有先を設定！</string>
+    <string name="ic_how_to_use_text_sub_6">共有するお相手の Google メールアドレスを入力、右上のチェックをタップすればフォルダ内のブックマークが共有されます。（メールアドレスはアドレス帳からも検索できます。）</string>
 </resources>

@@ -139,4 +139,18 @@
     <string name="all_sync_dialog_title">Update all data</string>
     <string name="all_sync_dialog_subject">This feature is for emergency use only.\nPlease refrain from using it unless you are informed by the administrator.\n\nDo you want to delete all data on the device and get all data from the server?</string>
     <string name="all_sync_dialog_exec">Execute with understanding</string>
+
+    <!-- 使い方 -->
+    <string name="ic_how_to_use_text_main_1">Tap to share! </string>
+    <string name="ic_how_to_use_text_sub_1">Tap the top right corner of the browser to open the menu and select Share. </string>
+    <string name="ic_how_to_use_text_main_2">Select ShareBookmarks! </string>
+    <string name="ic_how_to_use_text_sub_2">Select our application \"ShareBookmarks\" from the sharing menu.  </string>
+    <string name="ic_how_to_use_text_main_3">Add URL! </string>
+    <string name="ic_how_to_use_text_sub_3">Check the title and URL and tap Add. </string>
+    <string name="ic_how_to_use_text_main_4">Addition complete! </string>
+    <string name="ic_how_to_use_text_sub_4">The bookmark will be added as an arrow. (Image may not be set depending on the site.) </string>
+    <string name="ic_how_to_use_text_main_5">Share the folder! </string>
+    <string name="ic_how_to_use_text_sub_5">Select \"Share Folder\" from the folder\'s menu. </string>
+    <string name="ic_how_to_use_text_main_6">Set share destination! </string>
+    <string name="ic_how_to_use_text_sub_6">Enter the Google email address of the person you want to share with, and tap the checkbox in the upper right corner to share the bookmarks in the folder. (You can also search for the email address in your address book. </string>
 </resources>
