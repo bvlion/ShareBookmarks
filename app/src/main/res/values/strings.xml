@@ -153,4 +153,9 @@
     <string name="ic_how_to_use_text_sub_5">Select \"Share Folder\" from the folder\'s menu. </string>
     <string name="ic_how_to_use_text_main_6">Set share destination! </string>
     <string name="ic_how_to_use_text_sub_6">Enter the Google email address of the person you want to share with, and tap the checkbox in the upper right corner to share the bookmarks in the folder. (You can also search for the email address in your address book. </string>
+
+    <!-- 良くある質問 -->
+    <string name="questions_title">FAQ</string>
+    <string name="questions_text">Do you have any of the following problems?</string>
+    <string name="inquiry_button">Inquire directly</string>
 </resources>

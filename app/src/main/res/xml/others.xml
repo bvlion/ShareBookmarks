@@ -15,7 +15,7 @@
       android:title="@string/other_menu_version"
       app:iconSpaceReserved="false" />
     <Preference
-      android:key="contact_us"
-      android:title="@string/other_menu_contact_us"
+      android:key="questions"
+      android:title="@string/questions_title"
       app:iconSpaceReserved="false" />
 </androidx.preference.PreferenceScreen>

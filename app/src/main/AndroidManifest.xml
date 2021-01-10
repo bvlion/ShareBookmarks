@@ -44,6 +44,7 @@
         <activity android:name=".ui.share.ShareUserActivity" />
         <activity android:name=".ui.others.OtherActivity" />
         <activity android:name=".ui.usage.UsageActivity" />
+        <activity android:name=".ui.faq.FaqActivity" />
 
         <activity
           android:name=".ui.shareadd.ShareAddActivity"

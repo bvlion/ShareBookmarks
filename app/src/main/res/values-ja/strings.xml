@@ -153,4 +153,9 @@
     <string name="ic_how_to_use_text_sub_5">フォルダのメニューから「フォルダを共有」を選択します。</string>
     <string name="ic_how_to_use_text_main_6">共有先を設定！</string>
     <string name="ic_how_to_use_text_sub_6">共有するお相手の Google メールアドレスを入力、右上のチェックをタップすればフォルダ内のブックマークが共有されます。（メールアドレスはアドレス帳からも検索できます。）</string>
+
+    <!-- 良くある質問 -->
+    <string name="questions_title">よくある質問</string>
+    <string name="questions_text">以下の内容でお困りではないですか？</string>
+    <string name="inquiry_button">直接問い合わせる</string>
 </resources>

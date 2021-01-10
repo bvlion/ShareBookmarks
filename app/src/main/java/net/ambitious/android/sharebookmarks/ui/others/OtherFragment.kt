@@ -8,8 +8,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import net.ambitious.android.sharebookmarks.BuildConfig
 import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.service.DataUpdateService
-import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryActivity
+import net.ambitious.android.sharebookmarks.ui.faq.FaqActivity
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
@@ -55,9 +54,9 @@ class OtherFragment : PreferenceFragmentCompat() {
       otherActivity.privacyPolicyShow()
     }
 
-    preferenceScreen.findPreference<Preference>(CONTACT_US)?.setOnPreferenceClickListener {
+    preferenceScreen.findPreference<Preference>(QUESTIONS)?.setOnPreferenceClickListener {
       analyticsUtils.logOtherTap("Other", "inquiry")
-      startActivity(Intent(context, InquiryActivity::class.java))
+      startActivity(Intent(context, FaqActivity::class.java))
       true
     }
   }
@@ -66,6 +65,6 @@ class OtherFragment : PreferenceFragmentCompat() {
     const val TERMS_OF_USE = "terms_of_use"
     const val PRIVACY_POLICY = "privacy_policy"
     const val VERSION = "version"
-    const val CONTACT_US = "contact_us"
+    const val QUESTIONS = "questions"
   }
 }
