@@ -139,6 +139,7 @@
     <string name="all_sync_dialog_title">Update all data</string>
     <string name="all_sync_dialog_subject">This feature is for emergency use only.\nPlease refrain from using it unless you are informed by the administrator.\n\nDo you want to delete all data on the device and get all data from the server?</string>
     <string name="all_sync_dialog_exec">Execute with understanding</string>
+    <string name="communication_error">Failed to load.\nPlease check your communication environment.</string>
 
     <!-- 使い方 -->
     <string name="ic_how_to_use_text_main_1">Tap to share! </string>

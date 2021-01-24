@@ -4,9 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.databinding.ActivityNotificationBinding
+import net.ambitious.android.sharebookmarks.databinding.ActivityApiListViewBinding
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,13 +16,13 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
   private val viewModel by viewModel<NotificationViewModel>()
 
   private lateinit var notificationListAdapter: NotificationListAdapter
-  private lateinit var binding: ActivityNotificationBinding
+  private lateinit var binding: ActivityApiListViewBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     analyticsUtils.logStartActivity("NotificationActivity")
-    binding = ActivityNotificationBinding.inflate(layoutInflater)
+    binding = ActivityApiListViewBinding.inflate(layoutInflater)
 
     setContentView(binding.root)
     setTitle(R.string.menu_notification)
@@ -32,15 +33,16 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
 
     viewModel.notifications.observe(this, {
       binding.loading.visibility = View.GONE
-      binding.notificationRefresh.isRefreshing = false
+      binding.refresh.isRefreshing = false
+      binding.errorText.isVisible = it.notifications.isEmpty()
       notificationListAdapter.setItems(it)
     })
 
     notificationListAdapter = NotificationListAdapter(this, analyticsUtils)
-    binding.notificationRecyclerView.layoutManager = LinearLayoutManager(this)
-    binding.notificationRecyclerView.adapter = notificationListAdapter
+    binding.recyclerView.layoutManager = LinearLayoutManager(this)
+    binding.recyclerView.adapter = notificationListAdapter
 
-    binding.notificationRefresh.setOnRefreshListener {
+    binding.refresh.setOnRefreshListener {
       getNotifications()
     }
   }

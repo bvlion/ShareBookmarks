@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_small"
+    android:layout_marginEnd="@dimen/space_small"
+    android:layout_marginTop="@dimen/space_small"
+    android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/inquiry_button"
+      style="@style/Widget.MaterialComponents.Button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_normal"
+      android:text="@string/inquiry_button"
+      android:textAllCaps="false"
+      app:cornerRadius="@dimen/space_very_small" />
+
+    <TextView
+      android:id="@+id/header"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:gravity="center_vertical"
+      android:textSize="@dimen/faq_header_text"
+      android:layout_marginBottom="@dimen/space_small"
+      android:padding="@dimen/space_normal"
+      android:text="@string/questions_text"
+      tools:text="以下の内容でお困りではないですか？" />
+
+    <TextView
+      android:id="@+id/title"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      android:gravity="center_vertical"
+      android:textSize="@dimen/items_text_size"
+      android:layout_marginBottom="@dimen/space_small"
+      app:drawableStartCompat="@drawable/ic_help"
+      app:drawableEndCompat="@drawable/ic_arrow_forward"
+      android:drawablePadding="@dimen/space_small"
+      tools:text="フォルダー" />
+
+  </LinearLayout>
+</layout>

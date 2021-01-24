@@ -12,12 +12,12 @@
       android:layout_weight="1" >
 
       <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/notification_refresh"
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/notification_recycler_view"
+          android:id="@+id/recycler_view"
           android:layout_width="match_parent"
           android:layout_height="match_parent" />
 
@@ -29,8 +29,18 @@
         android:layout_width="@dimen/loading_progress"
         android:layout_height="@dimen/loading_progress"
         android:gravity="center"
-        app:layout_anchor="@+id/notification_recycler_view"
+        app:layout_anchor="@+id/recycler_view"
         app:layout_anchorGravity="center" />
+
+      <TextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/communication_error"
+        android:gravity="center"
+        app:layout_anchor="@+id/recycler_view"
+        app:layout_anchorGravity="center"
+        android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -40,7 +50,7 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       app:layout_behavior="@string/bottom_sheet_behavior">
-      <fragment
+      <androidx.fragment.app.FragmentContainerView
         android:name="net.ambitious.android.sharebookmarks.ui.admob.AdmobFragment"
         android:id="@+id/admob_fragment"
         android:layout_width="match_parent"

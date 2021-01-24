@@ -17,6 +17,7 @@
     <dimen name="loading_progress">50dp</dimen>
     <dimen name="thumbnail_size">70sp</dimen>
 
+    <dimen name="faq_header_text">17sp</dimen>
     <dimen name="items_text_size">15sp</dimen>
     <dimen name="notification_title_size">16sp</dimen>
     <dimen name="notification_subject_size">14sp</dimen>

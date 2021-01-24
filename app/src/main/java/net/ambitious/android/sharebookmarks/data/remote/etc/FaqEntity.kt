@@ -1,9 +1,7 @@
 package net.ambitious.android.sharebookmarks.data.remote.etc
 
-data class FaqEntity(
-  val faq: List<FaqDetailEntity>
-) {
-  data class FaqDetailEntity(
+data class FaqEntity(val faq: List<FaqDetail>) {
+  data class FaqDetail(
     val question: String,
     val answer: String
   )

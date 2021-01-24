@@ -14,9 +14,11 @@ import net.ambitious.android.sharebookmarks.data.remote.share.ShareApi
 import net.ambitious.android.sharebookmarks.data.remote.users.UsersApi
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
 import net.ambitious.android.sharebookmarks.data.source.impl.ShareBookmarksDataSourceImpl
+import net.ambitious.android.sharebookmarks.ui.faq.FaqViewModel
 import net.ambitious.android.sharebookmarks.ui.home.HomeViewModel
 import net.ambitious.android.sharebookmarks.ui.inquiry.InquiryViewModel
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationViewModel
+import net.ambitious.android.sharebookmarks.ui.others.DetailViewModel
 import net.ambitious.android.sharebookmarks.ui.share.ShareUserViewModel
 import net.ambitious.android.sharebookmarks.ui.shareadd.ShareAddViewModel
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
@@ -67,6 +69,12 @@ class ShareBookmarksApplication : Application() {
     }
     viewModel {
       ShareUserViewModel(get())
+    }
+    viewModel {
+      DetailViewModel(get())
+    }
+    viewModel {
+      FaqViewModel(get())
     }
   }
 

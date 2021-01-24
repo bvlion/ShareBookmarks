@@ -13,12 +13,14 @@ class NotificationViewModel(private val notificationApi: NotificationsApi) : Bas
     get() = _notifications
 
   fun getNotifications(isAuth: Boolean) {
-    launch {
+    launch({
       if (isAuth) {
         _notifications.postValue(notificationApi.getAuthNotifications())
       } else {
         _notifications.postValue(notificationApi.getNotifications())
       }
-    }
+    }, {
+      _notifications.postValue(NotificationsEntity(listOf()))
+    })
   }
 }

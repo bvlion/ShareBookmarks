@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<layout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
       android:id="@+id/scroll"
@@ -11,19 +12,19 @@
       android:layout_height="match_parent"
       android:fillViewport="true">
 
-        <LinearLayout
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_normal">
+
+        <TextView
+          android:id="@+id/others_detail_message"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:padding="@dimen/space_normal">
-
-            <TextView
-              android:id="@+id/others_detail_message"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/other_menu_terms_of_use"
-              android:textSize="@dimen/info_message_size"
-              android:visibility="gone" />
-        </LinearLayout>
+          android:text="@string/other_menu_terms_of_use"
+          android:textSize="@dimen/info_message_size"
+          android:visibility="gone" />
+      </LinearLayout>
     </ScrollView>
 
     <ProgressBar
@@ -35,4 +36,15 @@
       app:layout_anchor="@+id/scroll"
       app:layout_anchorGravity="center" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+      android:id="@+id/error_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/communication_error"
+      android:gravity="center"
+      app:layout_anchor="@+id/scroll"
+      app:layout_anchorGravity="center"
+      android:visibility="gone" />
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
