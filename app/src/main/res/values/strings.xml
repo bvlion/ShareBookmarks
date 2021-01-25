@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- 左メニュー -->
+    <string name="menu_search">Search</string>
+    <string name="menu_search_hint">Bookmark name search…</string>
     <string name="menu_notification">Notice</string>
     <string name="menu_login">Google Login</string>
     <string name="menu_logout">Logout</string>

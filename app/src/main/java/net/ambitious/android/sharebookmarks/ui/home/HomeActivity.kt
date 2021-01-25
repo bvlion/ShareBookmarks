@@ -1,19 +1,26 @@
 package net.ambitious.android.sharebookmarks.ui.home
 
+import android.app.SearchManager
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.AppLaunchChecker
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -117,7 +124,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       if (it == Const.SyncMessageType.ALL_SYNC_ERROR.value || it == Const.SyncMessageType.NORMAL_SYNC_ERROR.value) {
         showSnackbar(getString(R.string.sync_network_error))
       }
-      homeFragment.imageReload()
+      homeFragment.reloadItems(true)
     }
 
     imageBroadcastReceiver = ImageUploadEndBroadcastReceiver {
@@ -125,7 +132,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         showSnackbar(getString(R.string.sync_success))
         homeFragment.setLoadingShow(false)
       }
-      homeFragment.imageReload()
+      homeFragment.reloadItems(true)
     }
   }
 
@@ -143,6 +150,28 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   override fun onCreateOptionsMenu(menu: Menu) = true.apply {
     menuInflater.inflate(R.menu.main, menu)
+
+    (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+      setSearchableInfo(
+          (getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(
+              componentName
+          )
+      )
+      maxWidth = Integer.MAX_VALUE
+      setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?) = true
+
+        override fun onQueryTextChange(text: String?) = false.apply {
+          homeFragment.searchItems(text ?: "")
+        }
+      })
+
+      setOnSearchClickListener {
+        homeFragment.hideBreadcrumbs()
+        homeFragment.searchItems("")
+      }
+      setOnCloseListener { false.apply { homeFragment.reloadItems(false) } }
+    }
   }
 
   override fun onPrepareOptionsMenu(menu: Menu?) = true.apply {

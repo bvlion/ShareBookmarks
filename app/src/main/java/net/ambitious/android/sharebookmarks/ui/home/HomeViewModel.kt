@@ -127,6 +127,8 @@ class HomeViewModel(
       }
     }
 
+  fun hideBreadcrumbs() = launch { createBreadcrumbs(-1L) }
+
   private fun deleteChildItems(
     items: List<Item>,
     idAllList: ArrayList<Long>,
@@ -146,14 +148,16 @@ class HomeViewModel(
   }
 
   private suspend fun createBreadcrumbs(selfId: Long) {
-    if (selfId > 0) {
-      itemDao.getItem(selfId)?.let {
+    when (selfId) {
+      0L -> {
+        _breadcrumbsList.add(0, Pair(0, "Home"))
+        _breadcrumbs.postValue(_breadcrumbsList)
+      }
+      -1L -> _breadcrumbs.postValue(arrayListOf())
+      else -> itemDao.getItem(selfId)?.let {
         _breadcrumbsList.add(0, Pair(it.id!!, it.name))
         createBreadcrumbs(it.parentId)
       }
-    } else {
-      _breadcrumbsList.add(0, Pair(0, "Home"))
-      _breadcrumbs.postValue(_breadcrumbsList)
     }
   }
 
@@ -243,6 +247,17 @@ class HomeViewModel(
 
   fun setLoadingShow(isShow: Boolean) {
     _dialogShow.value = isShow
+  }
+
+  fun searchItems(text: String) = launch {
+    _ownerType.postValue(OwnerType.READONLY.value)
+    _items.postValue(
+        if (text.isEmpty()) {
+          listOf()
+        } else {
+          itemDao.getSearchItems("%$text%")
+        }
+    )
   }
 
   private fun deleteItems(childItems: List<Item>) {

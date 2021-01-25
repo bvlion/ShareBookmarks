@@ -37,9 +37,7 @@ import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter
 import net.ambitious.android.sharebookmarks.ui.home.adapter.ItemListAdapter.OnItemClickListener
 import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
-import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
-import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
@@ -62,7 +60,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? = FragmentHomeBinding.inflate(inflater, container, false).apply {
+  ) = FragmentHomeBinding.inflate(inflater, container, false).apply {
     binding = this
     homeViewModel.items.observe(
         viewLifecycleOwner,
@@ -75,7 +73,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.breadcrumbs.observe(
         viewLifecycleOwner,
         {
-          (activity as HomeActivity).title = it.last().second
+          (activity as HomeActivity).title = it.lastOrNull()?.second
           breadcrumbsAdapter.setBreadcrumbs(it)
         })
 
@@ -251,7 +249,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           .setTitle(getString(R.string.delete_title, itemName))
           .setMessage(
               getString(
-                  if (itemType == ITEM) {
+                  if (itemType == ItemType.ITEM) {
                     R.string.delete_item_message
                   } else {
                     R.string.delete_folder_message
@@ -369,9 +367,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     (activity as HomeActivity).setSortMode(start)
   }
 
-  fun imageReload() {
-    context?.let {
-      Glide.get(it).clearMemory()
+  fun reloadItems(isImageUpdate: Boolean) {
+    if (isImageUpdate) {
+      context?.let {
+        Glide.get(it).clearMemory()
+      }
     }
     homeViewModel.getItems()
   }
@@ -389,6 +389,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   fun initializeInsert() = homeViewModel.initializeInsert()
 
   fun setLoadingShow(isShow: Boolean) = homeViewModel.setLoadingShow(isShow)
+
+  fun hideBreadcrumbs() = homeViewModel.hideBreadcrumbs()
+
+  fun searchItems(text: String) = homeViewModel.searchItems(text)
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

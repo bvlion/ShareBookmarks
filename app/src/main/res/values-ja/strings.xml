@@ -19,6 +19,8 @@
     <string name="menu_settings">設定</string>
 
     <!-- 右メニュー -->
+    <string name="menu_search">検索</string>
+    <string name="menu_search_hint">ブックマーク名で検索…</string>
     <string name="menu_folder_add">フォルダ追加</string>
     <string name="menu_item_add">ブックマーク追加</string>
     <string name="menu_sort">並び替え</string>
