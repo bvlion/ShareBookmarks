@@ -89,6 +89,10 @@ class HomeViewModel(
     }
   }
 
+  fun setSort() {
+    _sorting.value = false
+  }
+
   fun sortModeChange(start: Boolean) {
     if (_sorting.value == start) {
       return
@@ -126,6 +130,10 @@ class HomeViewModel(
         _tokenSave.postValue(it)
       }
     }
+
+  fun setTokenSaved() {
+    _tokenSave.value = null
+  }
 
   fun hideBreadcrumbs() = launch { createBreadcrumbs(-1L) }
 
@@ -209,6 +217,10 @@ class HomeViewModel(
     itemDao.delete(itemId)
     _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
     postItems()
+  }
+
+  fun itemUpdated() {
+    _itemUpdate.value = null
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")

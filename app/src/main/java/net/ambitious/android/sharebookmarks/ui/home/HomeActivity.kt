@@ -5,22 +5,18 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.AppLaunchChecker
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -39,6 +35,7 @@ import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.databinding.ActivityMainBinding
 import net.ambitious.android.sharebookmarks.receiver.ImageUploadEndBroadcastReceiver
 import net.ambitious.android.sharebookmarks.receiver.MessageBroadcastReceiver
+import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
@@ -85,6 +82,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     binding.navView.setNavigationItemSelectedListener(this)
 
     setNavigation()
+
+    if (savedInstanceState == null) {
+      DataUpdateService.startItemSync(this)
+    }
   }
 
   override fun onStart() {

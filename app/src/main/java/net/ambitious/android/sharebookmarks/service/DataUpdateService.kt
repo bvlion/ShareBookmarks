@@ -9,7 +9,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.Const

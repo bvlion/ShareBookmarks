@@ -3,7 +3,6 @@ package net.ambitious.android.sharebookmarks.ui.share
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +31,7 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? = FragmentShareBinding.inflate(inflater, container, false).apply {
+  ) = FragmentShareBinding.inflate(inflater, container, false).apply {
     binding = this
     viewModel.share.observe(
         viewLifecycleOwner,

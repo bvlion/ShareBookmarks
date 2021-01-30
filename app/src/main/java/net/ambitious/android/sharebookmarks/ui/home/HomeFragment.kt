@@ -104,6 +104,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.tokenSave.observe(
         viewLifecycleOwner,
         {
+          if (it == null) {
+            return@observe
+          }
           preferences.userBearer = it.accessToken
           if (isFirstLoad) {
             setLoadingShow(true)
@@ -120,6 +123,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
             preferences.isPremium = it.premium
             (activity as HomeActivity).changeAdmob()
           }
+          homeViewModel.setTokenSaved()
         }
     )
 
@@ -141,9 +145,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.itemUpdate.observe(
         viewLifecycleOwner,
         {
+          if (it == null) {
+            return@observe
+          }
           context?.let { context ->
             DataUpdateService.startItemSync(context)
           }
+          homeViewModel.itemUpdated()
         }
     )
 
@@ -187,27 +195,30 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       itemListAdapter = ItemListAdapter(it, this)
       binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
       binding.itemsRecyclerView.adapter = itemListAdapter
+    }
 
-      breadcrumbsAdapter = BreadcrumbsAdapter(this)
-      binding.breadcrumbsRecyclerView.layoutManager =
-        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-      binding.breadcrumbsRecyclerView.adapter = breadcrumbsAdapter
+    breadcrumbsAdapter = BreadcrumbsAdapter(this)
+    binding.breadcrumbsRecyclerView.layoutManager =
+      LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    binding.breadcrumbsRecyclerView.adapter = breadcrumbsAdapter
 
-      binding.itemsRefresh.setOnRefreshListener {
-        if (homeViewModel.sorting.value == false) {
-          if (preferences.userUid.isNullOrEmpty()) {
-            homeViewModel.getItems()
-          } else {
-            context?.let { context ->
-              DataUpdateService.startItemSync(context)
-            }
-          }
+    binding.itemsRefresh.setOnRefreshListener {
+      if (homeViewModel.sorting.value == false) {
+        if (preferences.userUid.isNullOrEmpty()) {
+          homeViewModel.getItems()
         } else {
-          binding.itemsRefresh.isRefreshing = false
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+          }
         }
+      } else {
+        binding.itemsRefresh.isRefreshing = false
       }
+    }
 
-      sort(homeViewModel.sorting.value ?: false, false)
+    if (savedInstanceState == null) {
+      homeViewModel.getItems()
+      homeViewModel.setSort()
     }
   }
 

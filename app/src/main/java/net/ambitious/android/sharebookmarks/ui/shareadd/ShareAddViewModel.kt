@@ -7,7 +7,6 @@ import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType.OWNER
-import org.joda.time.DateTime
 
 class ShareAddViewModel(
   private val itemDao: ItemDao
