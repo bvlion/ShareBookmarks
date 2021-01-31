@@ -53,5 +53,6 @@ class FaqActivity : BaseActivity(), FaqListAdapter.FaqClickListener {
 
   override fun onInquiryClick() {
     startActivity(Intent(this, InquiryActivity::class.java))
+    finish()
   }
 }
