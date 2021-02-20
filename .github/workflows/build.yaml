@@ -18,7 +18,7 @@ jobs:
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.5.1
+          ruby-version: 2.5
 
       - name: set version
         run: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
