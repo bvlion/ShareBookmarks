@@ -1,13 +1,13 @@
 apply from: 'dependencies/ext.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.4.21'
-    ext.navigation_version = '2.3.2'
-    ext.room_version = '2.3.0-alpha04'
-    ext.analytics_version = '18.0.0'
-    ext.crashlytics_version = '17.3.0'
-    ext.ads_version = '19.6.0'
-    ext.remote_config_version = '20.0.2'
+    ext.kotlin_version = '1.4.30'
+    ext.navigation_version = '2.3.3'
+    ext.room_version = '2.3.0-beta02'
+    ext.analytics_version = '18.0.2'
+    ext.crashlytics_version = '17.3.1'
+    ext.ads_version = '19.7.0'
+    ext.remote_config_version = '20.0.3'
     ext.messaging_version = '21.0.1'
     ext.koin_version = '2.1.6'
     ext.firebase_ui_auth_version = '6.2.0'
@@ -25,8 +25,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.4'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.0'
         classpath 'com.google.android.gms:oss-licenses-plugin:0.10.2'
     }
 }
