@@ -20,11 +20,8 @@ jobs:
         with:
           ruby-version: 2.5
 
-      - name: get json
-        run: curl -L -o target_file "$VERSION_CODES_URL"
-
       - name: set version
-        run: ruby create-version.rb "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
+        run: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
 
       - name: Error Check
         run: |
