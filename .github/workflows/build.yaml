@@ -65,7 +65,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Unit Test
-        run: ./gradlew clean testStagingUnitTest
+        run: bash gradlew clean testStagingUnitTest
 
       - name: Test Report
         uses: JamesIves/github-pages-deploy-action@4.0.0
@@ -84,7 +84,7 @@ jobs:
           path: .
 
       - name: staging build
-        run: ./gradlew :app:assembleStaging
+        run: bash gradlew :app:assembleStaging
 
       - name: DeployGate Upload
         run: |
@@ -105,7 +105,7 @@ jobs:
           path: .
 
       - name: release build
-        run: ./gradlew :app:assembleRelease
+        run: bash gradlew :app:assembleRelease
 
       - name: bundler
         run: bundle install
