@@ -21,7 +21,7 @@ jobs:
           ruby-version: 2.5
 
       - name: set version
-        run: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
+        run: ruby create-version.rb "${{ secrets.VERSION_CODES_URL }}" "${{ secrets.ADMOB_KEY }}" "${{ secrets.ADMOB_BANNER_KEY }}" "${{ secrets.INQUIRY_URL }}" "${{ secrets.STAGING_DOMAIN }}" "${{ secrets.RELEASE_DOMAIN }}"
 
       - name: Error Check
         run: |
@@ -36,10 +36,10 @@ jobs:
     steps:
       - name: decrypt files
         run: |
-          openssl aes-256-cbc -k $STAGING_DECRYPT_KEY -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json -md md5
-          openssl aes-256-cbc -k $RELEASE_DECRYPT_KEY -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json -md md5
-          openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle -md md5
-          openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in encrypt-google-play-service.json -out google-play-service.json -md md5
+          openssl aes-256-cbc -k ${{ secrets.STAGING_DECRYPT_KEY }} -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json -md md5
+          openssl aes-256-cbc -k ${{ secrets.RELEASE_DECRYPT_KEY }} -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json -md md5
+          openssl aes-256-cbc -k ${{ secrets.FILES_DECRYPT_KEY }} -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle -md md5
+          openssl aes-256-cbc -k ${{ secrets.FILES_DECRYPT_KEY }} -d -in encrypt-google-play-service.json -out google-play-service.json -md md5
 
   test:
     runs-on: ubuntu-latest
@@ -78,7 +78,7 @@ jobs:
       - name: DeployGate Upload
         run: |
           curl \
-            -F "token=$DEPLOYGATE_TOKEN" \
+            -F "token=${{ secrets.DEPLOYGATE_TOKEN }}" \
             -F "file=@app/build/outputs/apk/staging/app-staging.apk" \
             -F "message=`git log -1`" \
             https://deploygate.com/api/users/bvlion/apps

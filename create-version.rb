@@ -3,7 +3,6 @@ require "uri"
 require "net/http"
 
 uri = URI.parse(ARGV[0])
-puts ARGV[0]
 redirect_url = Net::HTTP.get_response(uri)["location"]
 response = Net::HTTP.get_response(URI.parse(redirect_url))
 json = JSON.parse(response.body)
