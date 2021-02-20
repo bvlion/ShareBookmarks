@@ -1,11 +1,6 @@
 require "json"
-require "uri"
-require "net/http"
 
-uri = URI.parse(ARGV[0])
-redirect_url = Net::HTTP.get_response(uri)["location"]
-response = Net::HTTP.get_response(URI.parse(redirect_url))
-json = JSON.parse(response.body)
+json = JSON.parse(File.read("target_file"))
 
 if json["error"] then
   File.open("exit_message", mode = "w") {|f|
@@ -23,19 +18,19 @@ File.open("dependencies/ext.gradle", mode = "w") {|f|
   f.write(json["name"])
   f.write("'\n")
   f.write("  adMobCode = '")
-  f.write(ARGV[1])
+  f.write(ARGV[0])
   f.write("'\n")
   f.write("  adMobBannerKey = '")
-  f.write(ARGV[2])
+  f.write(ARGV[1])
   f.write("'\n")
   f.write("  inquiryUrl = '")
-  f.write(ARGV[3])
+  f.write(ARGV[2])
   f.write("'\n")
   f.write("  stagingDomain = '")
-  f.write(ARGV[4])
+  f.write(ARGV[3])
   f.write("'\n")
   f.write("  releaseDomain = '")
-  f.write(ARGV[5])
+  f.write(ARGV[4])
   f.write("'\n")
   f.write("}")
 }
