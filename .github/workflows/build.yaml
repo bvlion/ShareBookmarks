@@ -1,0 +1,132 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
+
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.5.1
+
+      - name: set version
+        run: ruby create-version.rb "$VERSION_CODES_URL" "$ADMOB_KEY" "$ADMOB_BANNER_KEY" "$INQUIRY_URL" "$STAGING_DOMAIN" "$RELEASE_DOMAIN"
+
+      - name: Error Check
+        run: |
+          if [ -f exit_message ]; then
+            echo `cat exit_message`
+            exit 1
+          fi
+
+  jsonset:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: decrypt files
+        run: |
+          openssl aes-256-cbc -k $STAGING_DECRYPT_KEY -d -in app/src/staging/encrypt-google-services.json -out app/src/staging/google-services.json -md md5
+          openssl aes-256-cbc -k $RELEASE_DECRYPT_KEY -d -in app/src/release/encrypt-google-services.json -out app/src/release/google-services.json -md md5
+          openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in dependencies/encrypt-signing.gradle -out dependencies/signing.gradle -md md5
+          openssl aes-256-cbc -k $FILES_DECRYPT_KEY -d -in encrypt-google-play-service.json -out google-play-service.json -md md5
+
+  test:
+    runs-on: ubuntu-latest
+    needs: jsonset
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Unit Test
+        run: ./gradlew clean testStagingUnitTest
+
+      - name: Test Report
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages
+          folder: app/build/reports/tests/testStagingUnitTest
+
+  staging:
+    runs-on: ubuntu-latest
+    needs: test
+    if: {{ github.ref == 'ref/head/master' }}
+    steps:
+      - name: staging build
+        run: ./gradlew :app:assembleStaging
+
+      - name: DeployGate Upload
+        run: |
+          curl \
+            -F "token=$DEPLOYGATE_TOKEN" \
+            -F "file=@app/build/outputs/apk/staging/app-staging.apk" \
+            -F "message=`git log -1`" \
+            https://deploygate.com/api/users/bvlion/apps
+
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    if: {{ github.ref == 'ref/head/v*' }}
+    steps:
+      - name: release build
+        run: ./gradlew :app:assembleRelease
+
+      - name: bundler
+        run: bundle install
+
+      - name: Cache Bundle packages
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bundle-
+
+      - name: up play store
+        run: bundle exec fastlane play_store
+
+  test-slack:
+    runs-on: ubuntu-latest
+    needs: test
+    if: failure()
+    steps:
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,action,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  build-slack:
+    runs-on: ubuntu-latest
+    needs: [staging, release]
+    if: always()
+    steps:
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,action,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
