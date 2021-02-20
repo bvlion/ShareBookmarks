@@ -44,7 +44,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: jsonset
+    needs: setup
     steps:
       - uses: actions/download-artifact@master
         with:
@@ -103,7 +103,7 @@ jobs:
         with:
           name: setuped
           path: .
-          
+
       - name: release build
         run: ./gradlew :app:assembleRelease
 
