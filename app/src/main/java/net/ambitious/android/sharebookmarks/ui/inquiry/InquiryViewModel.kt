@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.squareup.moshi.Moshi
 import net.ambitious.android.sharebookmarks.BuildConfig
 import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.data.remote.contact.ContactApi
@@ -14,7 +13,6 @@ import org.json.JSONObject
 import java.lang.Exception
 
 class InquiryViewModel(
-  private val context: Context,
   private val contactApi: ContactApi
 ) : BaseViewModel() {
 
@@ -79,17 +77,17 @@ class InquiryViewModel(
     _isMailEnabled.value = false
   }
 
-  fun mailAddressCheck(text: String) {
+  fun mailAddressCheck(text: String, context: Context) {
     _mailAddress.value = text
-    inputValidation()
+    inputValidation(context)
   }
 
-  fun inquiryCheck(text: String) {
+  fun inquiryCheck(text: String, context: Context) {
     _inquiry.value = text
-    inputValidation()
+    inputValidation(context)
   }
 
-  private fun inputValidation() {
+  private fun inputValidation(context: Context) {
     _inquiryError.value = inquiry.value?.let {
       if (it.isEmpty()) {
         context.getString(R.string.inquiry_validation)

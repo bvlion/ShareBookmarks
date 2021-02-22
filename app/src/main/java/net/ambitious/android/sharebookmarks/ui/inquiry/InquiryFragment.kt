@@ -2,8 +2,8 @@ package net.ambitious.android.sharebookmarks.ui.inquiry
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -25,13 +25,11 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding = FragmentInquiryBinding.inflate(inflater, container, false)
-    binding.vm = viewModel
-    binding.lifecycleOwner = this
-    binding.listener = this
-    return binding.root
-  }
+  ) = FragmentInquiryBinding.inflate(inflater, container, false).also {
+    it.vm = viewModel
+    it.lifecycleOwner = this
+    it.listener = this
+  }.root
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
@@ -49,15 +47,20 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
               }, Snackbar.LENGTH_LONG
               ).show()
             }
+            binding.loadingProgress.isVisible = false
           })
     }
 
     binding.inquiryText.addTextChangedListener { text ->
-      viewModel.inquiryCheck(text.toString())
+      context?.let {
+        viewModel.inquiryCheck(text.toString(), it)
+      }
     }
 
     binding.inquiryMail.addTextChangedListener { text ->
-      viewModel.mailAddressCheck(text.toString())
+      context?.let {
+        viewModel.mailAddressCheck(text.toString(), it)
+      }
     }
 
     viewModel.initializeView()
@@ -68,6 +71,7 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
 
   override fun onSendClick() {
     analyticsUtils.logOtherTap("Inquiry", "onSendClick")
+    binding.loadingProgress.isVisible = true
     viewModel.postMessage()
   }
 }
