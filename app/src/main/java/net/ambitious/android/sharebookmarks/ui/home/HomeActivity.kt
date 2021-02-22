@@ -152,7 +152,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   override fun onCreateOptionsMenu(menu: Menu) = true.apply {
     menuInflater.inflate(R.menu.main, menu)
 
-    (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+    (menu.findItem(R.id.menu_search).actionView as SearchView).run {
+      homeFragment.getSearchText()?.let {
+        isIconified = false
+        setQuery(it, true)
+      }
+
       setSearchableInfo(
           (getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(
               componentName

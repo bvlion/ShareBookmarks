@@ -383,6 +383,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       context?.let {
         Glide.get(it).clearMemory()
       }
+    } else {
+      homeViewModel.endSearch()
+      binding.itemsRefresh.isEnabled = true
     }
     homeViewModel.getItems()
   }
@@ -401,9 +404,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   fun setLoadingShow(isShow: Boolean) = homeViewModel.setLoadingShow(isShow)
 
-  fun hideBreadcrumbs() = homeViewModel.hideBreadcrumbs()
+  fun hideBreadcrumbs() {
+    binding.itemsRefresh.isEnabled = false
+    homeViewModel.hideBreadcrumbs()
+  }
 
   fun searchItems(text: String) = homeViewModel.searchItems(text)
+
+  fun getSearchText() = homeViewModel.searchText.value
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

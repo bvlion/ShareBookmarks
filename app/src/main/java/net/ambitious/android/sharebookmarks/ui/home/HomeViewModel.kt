@@ -67,6 +67,10 @@ class HomeViewModel(
   val dialogShow: LiveData<Boolean>
     get() = _dialogShow
 
+  private val _searchText = MutableLiveData<String>()
+  val searchText: LiveData<String>
+    get() = _searchText
+
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
   fun setInitialParentId(parentId: Long?) {
@@ -135,7 +139,13 @@ class HomeViewModel(
     _tokenSave.value = null
   }
 
-  fun hideBreadcrumbs() = launch { createBreadcrumbs(-1L) }
+  fun hideBreadcrumbs() = launch {
+    createBreadcrumbs(-1L)
+  }
+
+  fun endSearch() {
+    _searchText.value = null
+  }
 
   private fun deleteChildItems(
     items: List<Item>,
@@ -263,6 +273,7 @@ class HomeViewModel(
 
   fun searchItems(text: String) = launch {
     _ownerType.postValue(OwnerType.READONLY.value)
+    _searchText.postValue(text)
     _items.postValue(
         if (text.isEmpty()) {
           listOf()
