@@ -29,6 +29,7 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
     it.vm = viewModel
     it.lifecycleOwner = this
     it.listener = this
+    binding = it
   }.root
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {

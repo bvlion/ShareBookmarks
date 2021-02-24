@@ -35,7 +35,6 @@ import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.databinding.ActivityMainBinding
 import net.ambitious.android.sharebookmarks.receiver.ImageUploadEndBroadcastReceiver
 import net.ambitious.android.sharebookmarks.receiver.MessageBroadcastReceiver
-import net.ambitious.android.sharebookmarks.service.DataUpdateService
 import net.ambitious.android.sharebookmarks.service.UpdateImageService
 import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.ui.ItemEditDialogFragment
@@ -82,10 +81,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     binding.navView.setNavigationItemSelectedListener(this)
 
     setNavigation()
-
-    if (savedInstanceState == null) {
-      DataUpdateService.startItemSync(this)
-    }
   }
 
   override fun onStart() {
