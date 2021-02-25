@@ -57,6 +57,9 @@ jobs:
         with:
           java-version: 11
 
+      - name: Unit Test And Build
+        run: bash gradlew clean testStagingUnitTest :app:assembleStaging
+
       - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
@@ -64,9 +67,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Unit Test And Build
-        run: bash gradlew clean testStagingUnitTest :app:assembleStaging
 
       - name: Test Report
         uses: JamesIves/github-pages-deploy-action@4.0.0
@@ -97,6 +97,9 @@ jobs:
         with:
           java-version: 11
 
+      - name: release build
+        run: bash gradlew :app:bundleRelease
+
       - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
@@ -105,16 +108,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: release build
-        run: bash gradlew :app:bundleRelease
-
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.5
-
-      - name: bundler
-        run: bundle install
 
       - name: Cache Bundle packages
         uses: actions/cache@v1
@@ -123,6 +120,12 @@ jobs:
           key: ${{ runner.os }}-bundle-${{ hashFiles('Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
+
+      - name: bundler install
+        run: gem install bundler
+
+      - name: bundler
+        run: bundle install
 
       #- name: up play store
       #  run: bundle exec fastlane play_store
