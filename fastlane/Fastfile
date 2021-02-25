@@ -22,7 +22,8 @@ platform :android do
   lane :play_store do |options|
     upload_to_play_store(
         track: 'alpha',
-        apk: 'app/build/outputs/apk/release/app-release.apk'
+        aab: 'app/build/outputs/bundle/release/app-release.aab',
+        rollout: '0.2',
     )
   end
 end

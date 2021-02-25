@@ -106,7 +106,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: release build
-        run: bash gradlew :app:assembleRelease
+        run: bash gradlew :app:bundleRelease
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.5
 
       - name: bundler
         run: bundle install
@@ -119,8 +124,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-bundle-
 
-      - name: up play store
-        run: bundle exec fastlane play_store
+      #- name: up play store
+      #  run: bundle exec fastlane play_store
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: aab
+          path: app/build/outputs/bundle/release/app-release.aab
+
+  delete-artifact:
+    runs-on: ubuntu-latest
+    needs: [staging, release]
+    if: always()
+    steps:
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: setuped
 
   slack:
     runs-on: ubuntu-latest
