@@ -5,11 +5,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface EtcApi {
-  @GET("etc/{lang}/terms_of_use")
-  suspend fun getTermsOfUse(@Path("lang") lang: String): EtcEntity
+  @GET("etc/terms_of_use")
+  suspend fun getTermsOfUse(): EtcEntity
 
-  @GET("etc/{lang}/privacy_policy")
-  suspend fun getPrivacyPolicy(@Path("lang") lang: String): EtcEntity
+  @GET("etc/privacy_policy")
+  suspend fun getPrivacyPolicy(): EtcEntity
 
   @GET("etc/ogp")
   suspend fun getOgpImageUrl(@Query("url") url: String): OgpEntity

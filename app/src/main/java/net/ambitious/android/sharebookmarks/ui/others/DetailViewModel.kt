@@ -12,23 +12,15 @@ class DetailViewModel(private val etcApi: EtcApi) : BaseViewModel() {
   val message: LiveData<String>
     get() = _message
 
-  fun getDetailMessages(isTerm: Boolean) {
-    val lang = if (Locale.getDefault() == Locale.JAPAN) {
-      "ja"
-    } else {
-      "en"
-    }
-
-    launch({
-      _message.postValue(
-          if (isTerm) {
-            etcApi.getTermsOfUse(lang).message
-          } else {
-            etcApi.getPrivacyPolicy(lang).message
-          }
-      )
-    }, {
-      _message.postValue("")
-    })
-  }
+  fun getDetailMessages(isTerm: Boolean) = launch({
+    _message.postValue(
+        if (isTerm) {
+          etcApi.getTermsOfUse().message
+        } else {
+          etcApi.getPrivacyPolicy().message
+        }
+    )
+  }, {
+    _message.postValue("")
+  })
 }
