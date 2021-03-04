@@ -16,7 +16,7 @@
       style="@style/Widget.MaterialComponents.Button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space_normal"
+      android:layout_marginTop="@dimen/space_small"
       android:text="@string/inquiry_button"
       android:textAllCaps="false"
       app:cornerRadius="@dimen/space_very_small" />
@@ -27,7 +27,6 @@
       android:layout_width="wrap_content"
       android:gravity="center_vertical"
       android:textSize="@dimen/faq_header_text"
-      android:layout_marginBottom="@dimen/space_small"
       android:padding="@dimen/space_normal"
       android:text="@string/questions_text"
       tools:text="以下の内容でお困りではないですか？" />
@@ -38,10 +37,12 @@
       android:layout_width="match_parent"
       android:gravity="center_vertical"
       android:textSize="@dimen/items_text_size"
-      android:layout_marginBottom="@dimen/space_small"
+      android:paddingTop="@dimen/space_small"
+      android:paddingBottom="@dimen/space_small"
       app:drawableStartCompat="@drawable/ic_help"
       app:drawableEndCompat="@drawable/ic_arrow_forward"
       android:drawablePadding="@dimen/space_small"
+      android:background="?android:selectableItemBackground"
       tools:text="フォルダー" />
 
   </LinearLayout>

@@ -51,4 +51,23 @@ object Const {
 
   const val IMAGE_UPLOAD_BROADCAST_ACTION = "image_upload_broadcast_action"
   const val IMAGE_UPLOAD_BROADCAST_BUNDLE = "image_upload_broadcast_bundle"
+
+  const val HTML_BODY = """
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet" type="text/css" media="all" />
+  <style>.small { font-size: 86%% !important; }</style>
+</head>
+<body>
+  <div class="container">
+    <div class="markdown-body small">
+      %s
+    </div>
+  </div>
+</body>
+</html>
+  """
 }

@@ -2,9 +2,9 @@ package net.ambitious.android.sharebookmarks.ui.faq
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import android.webkit.WebView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -14,6 +14,7 @@ import net.ambitious.android.sharebookmarks.data.remote.etc.FaqEntity
 import net.ambitious.android.sharebookmarks.data.remote.etc.FaqEntity.FaqDetail
 import net.ambitious.android.sharebookmarks.databinding.RowFaqBinding
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
+import net.ambitious.android.sharebookmarks.util.Const
 
 class FaqListAdapter(
   private val analyticsUtils: AnalyticsUtils,
@@ -59,10 +60,15 @@ class FaqListAdapter(
         analyticsUtils.logOtherTap("faq", "onRowClick ${items[position - 1].question}")
         AlertDialog.Builder(row.root.context)
             .setTitle(items[position - 1].question)
-            .setView(TextView(row.root.context).apply {
-              setPadding(context.resources.getDimensionPixelSize(R.dimen.space_normal))
-              text =
-                HtmlCompat.fromHtml(items[position - 1].answer, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            .setView(LinearLayout(row.root.context).apply {
+              setPadding(context.resources.getDimensionPixelSize(R.dimen.space_small))
+              addView(WebView(row.root.context).apply {
+                loadData(
+                    String.format(Const.HTML_BODY, items[position - 1].answer),
+                    "text/html",
+                    "utf-8"
+                )
+              })
             })
             .setPositiveButton(android.R.string.ok, null)
             .create().show()

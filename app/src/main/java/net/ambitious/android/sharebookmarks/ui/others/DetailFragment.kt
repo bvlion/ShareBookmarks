@@ -3,10 +3,10 @@ package net.ambitious.android.sharebookmarks.ui.others
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import net.ambitious.android.sharebookmarks.databinding.FragmentOthersDetailBinding
+import net.ambitious.android.sharebookmarks.util.Const
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
@@ -35,8 +35,11 @@ class DetailFragment : Fragment() {
         binding.errorText.isVisible = true
       } else {
         binding.othersDetailMessage.isVisible = true
-        binding.othersDetailMessage.text =
-          HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        binding.othersDetailMessage.loadData(
+            String.format(Const.HTML_BODY, it),
+            "text/html",
+            "utf-8"
+        )
       }
       binding.loading.isVisible = false
     })
