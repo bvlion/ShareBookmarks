@@ -356,6 +356,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       return
     }
 
+    if (homeViewModel.searchText.value != null) {
+      (activity as HomeActivity).closeSearch()
+      return
+    }
+
     if (homeViewModel.breadcrumbs.value?.size == 1) {
       activity?.finish()
     } else {

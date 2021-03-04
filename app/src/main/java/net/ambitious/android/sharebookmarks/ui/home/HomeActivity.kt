@@ -63,6 +63,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private lateinit var imageBroadcastReceiver: ImageUploadEndBroadcastReceiver
   private lateinit var binding: ActivityMainBinding
 
+  private lateinit var searchView: SearchView
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     analyticsUtils.logStartActivity("MainActivity")
@@ -148,6 +150,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     menuInflater.inflate(R.menu.main, menu)
 
     (menu.findItem(R.id.menu_search).actionView as SearchView).run {
+      searchView = this
       homeFragment.getSearchText()?.let {
         isIconified = false
         setQuery(it, true)
@@ -433,6 +436,12 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     supportFragmentManager.findFragmentById(R.id.admob_fragment)?.let {
       (it as AdmobFragment).displayChange()
     }
+
+  fun closeSearch() {
+    if (!searchView.isIconified) {
+      searchView.isIconified = true
+    }
+  }
 
   private fun onCreateClick(type: ItemType) =
     ItemEditDialogFragment.newInstance(0, type, null, null)
