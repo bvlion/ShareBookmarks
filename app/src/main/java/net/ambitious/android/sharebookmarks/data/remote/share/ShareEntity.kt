@@ -1,8 +1,11 @@
 package net.ambitious.android.sharebookmarks.data.remote.share
 
 import com.squareup.moshi.Json
+import androidx.annotation.Keep
 
+@Keep
 object ShareEntity {
+  @Keep
   data class ShareList(val shares: List<Share>) {
     data class Share(
       @Json(name = "remote_id") val remoteId: Long,
@@ -13,6 +16,7 @@ object ShareEntity {
     )
   }
 
+  @Keep
   data class PostShare(
     @Json(name = "local_id") val id: Long,
     @Json(name = "remote_id") val remoteId: Long?,
@@ -22,6 +26,7 @@ object ShareEntity {
     val updated: String
   )
 
+  @Keep
   data class PostResponse(val shares: List<Share>) {
     data class Share(
       @Json(name = "local_id") val id: Long,
@@ -29,7 +34,9 @@ object ShareEntity {
     )
   }
 
+  @Keep
   data class DeleteShare(@Json(name = "delete_id") val remoteId: Long)
 
+  @Keep
   data class DeleteResponse(@Json(name = "delete_count") val count: Int)
 }
