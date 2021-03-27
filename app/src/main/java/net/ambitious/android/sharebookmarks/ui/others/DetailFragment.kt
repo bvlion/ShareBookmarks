@@ -13,7 +13,8 @@ class DetailFragment : Fragment() {
 
   private val viewModel by viewModel<DetailViewModel>()
   private var isTerm = false
-  private lateinit var binding: FragmentOthersDetailBinding
+  private var _binding: FragmentOthersDetailBinding? = null
+  private val binding get() = _binding!!
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -24,13 +25,17 @@ class DetailFragment : Fragment() {
         arguments?.let { bundle ->
           isTerm = bundle.getBoolean(ARGS_IS_TERM)
         }
-        binding = it
+        _binding = it
       }.root
 
-  override fun onStart() {
-    super.onStart()
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
 
-    viewModel.message.observe(this, {
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+    viewModel.message.observe(viewLifecycleOwner, {
       if (it.isEmpty()) {
         binding.errorText.isVisible = true
       } else {

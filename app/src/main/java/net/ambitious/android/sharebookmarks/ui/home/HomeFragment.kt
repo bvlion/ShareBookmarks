@@ -51,7 +51,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private lateinit var itemListAdapter: ItemListAdapter
   private lateinit var breadcrumbsAdapter: BreadcrumbsAdapter
-  private lateinit var binding: FragmentHomeBinding
+  private var _binding: FragmentHomeBinding? = null
+  private val binding get() = _binding!!
 
   private var loading: AlertDialog? = null
   private var isFirstLoad = false
@@ -61,7 +62,49 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ) = FragmentHomeBinding.inflate(inflater, container, false).apply {
-    binding = this
+    _binding = this
+  }.root
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+    initObserve(savedInstanceState == null)
+    context?.let {
+      itemListAdapter = ItemListAdapter(it, this)
+      binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+      binding.itemsRecyclerView.adapter = itemListAdapter
+    }
+
+    breadcrumbsAdapter = BreadcrumbsAdapter(this)
+    binding.breadcrumbsRecyclerView.layoutManager =
+      LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    binding.breadcrumbsRecyclerView.adapter = breadcrumbsAdapter
+
+    binding.itemsRefresh.setOnRefreshListener {
+      if (homeViewModel.sorting.value == false) {
+        if (preferences.userUid.isNullOrEmpty()) {
+          homeViewModel.getItems()
+        } else {
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+          }
+        }
+      } else {
+        binding.itemsRefresh.isRefreshing = false
+      }
+    }
+
+    if (savedInstanceState == null) {
+      homeViewModel.getItems()
+      homeViewModel.setSort()
+    }
+  }
+
+  private fun initObserve(isInitialize: Boolean) {
     homeViewModel.items.observe(
         viewLifecycleOwner,
         {
@@ -177,7 +220,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         }
     )
 
-    if (savedInstanceState == null) {
+    if (isInitialize) {
       preferences.userEmail?.let { email ->
         homeViewModel.sendUserData(
             email,
@@ -186,39 +229,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         )
       }
       homeViewModel.setInitialParentId(preferences.startFolderId)
-    }
-  }.root
-
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-    context?.let {
-      itemListAdapter = ItemListAdapter(it, this)
-      binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
-      binding.itemsRecyclerView.adapter = itemListAdapter
-    }
-
-    breadcrumbsAdapter = BreadcrumbsAdapter(this)
-    binding.breadcrumbsRecyclerView.layoutManager =
-      LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-    binding.breadcrumbsRecyclerView.adapter = breadcrumbsAdapter
-
-    binding.itemsRefresh.setOnRefreshListener {
-      if (homeViewModel.sorting.value == false) {
-        if (preferences.userUid.isNullOrEmpty()) {
-          homeViewModel.getItems()
-        } else {
-          context?.let { context ->
-            DataUpdateService.startItemSync(context)
-          }
-        }
-      } else {
-        binding.itemsRefresh.isRefreshing = false
-      }
-    }
-
-    if (savedInstanceState == null) {
-      homeViewModel.getItems()
-      homeViewModel.setSort()
     }
   }
 

@@ -25,14 +25,18 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
   private val analyticsUtils: AnalyticsUtils by inject()
 
   private lateinit var shareListAdapter: ShareUserListAdapter
-  private lateinit var binding: FragmentShareBinding
+  private var _binding: FragmentShareBinding? = null
+  private val binding get() = _binding!!
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ) = FragmentShareBinding.inflate(inflater, container, false).apply {
-    binding = this
+    _binding = this
+  }.root
+
+  private fun initObserve() {
     viewModel.share.observe(
         viewLifecycleOwner,
         { shareListAdapter.setShares(it) })
@@ -46,10 +50,16 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
           activity?.finish()
         }
     )
-  }.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
+    initObserve()
     context?.let {
       shareListAdapter = ShareUserListAdapter(it, preferences, this)
       binding.usersRecyclerView.layoutManager = LinearLayoutManager(context)

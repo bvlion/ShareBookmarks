@@ -19,7 +19,8 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
   private val viewModel by viewModel<InquiryViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
   private val analyticsUtils: AnalyticsUtils by inject()
-  private lateinit var binding: FragmentInquiryBinding
+  private var _binding: FragmentInquiryBinding? = null
+  private val binding get() = _binding!!
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -29,8 +30,13 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
     it.vm = viewModel
     it.lifecycleOwner = this
     it.listener = this
-    binding = it
+    _binding = it
   }.root
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
