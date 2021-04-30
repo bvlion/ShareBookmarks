@@ -15,7 +15,7 @@
     <dimen name="icon_image_size">24dp</dimen>
     <dimen name="selectable_icon_image_size">40dp</dimen>
     <dimen name="loading_progress">50dp</dimen>
-    <dimen name="thumbnail_size">70sp</dimen>
+    <dimen name="thumbnail_size">80sp</dimen>
 
     <dimen name="faq_header_text">17sp</dimen>
     <dimen name="items_text_size">15sp</dimen>

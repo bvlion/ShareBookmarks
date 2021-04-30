@@ -14,10 +14,14 @@
       android:layout_marginBottom="@dimen/space_normal"
       android:text="@string/sync_title" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-      android:id="@+id/loading_gif"
-      android:layout_width="match_parent"
-      android:layout_height="30dp"
+    <com.airbnb.lottie.LottieAnimationView
+      android:layout_width="300dp"
+      android:layout_height="120dp"
+      android:paddingStart="@dimen/space_normal"
+      android:paddingEnd="@dimen/space_normal"
+      app:lottie_rawRes="@raw/loading"
+      app:lottie_autoPlay="true"
+      app:lottie_loop="true"
       android:layout_gravity="center"
-      app:srcCompat="@mipmap/loading" />
+      android:scaleType="centerCrop" />
 </LinearLayout>

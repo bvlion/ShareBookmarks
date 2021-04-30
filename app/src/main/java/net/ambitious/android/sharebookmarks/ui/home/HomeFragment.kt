@@ -204,9 +204,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           if (it) {
             context?.let { context ->
               loading = AlertDialog.Builder(context)
-                  .setView(View.inflate(context, R.layout.dialog_loading, null).apply {
-                    Glide.with(context).load(R.mipmap.loading).into(findViewById(R.id.loading_gif))
-                  })
+                  .setView(View.inflate(context, R.layout.dialog_loading, null))
                   .setCancelable(false)
                   .create()
               loading?.show()
