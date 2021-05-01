@@ -1,38 +1,37 @@
 package net.ambitious.android.sharebookmarks.ui.home.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.item.Item
+import net.ambitious.android.sharebookmarks.databinding.RowItemBinding
 import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.OperationUtils
 
-class ItemListAdapter(private val context: Context, private val listener: OnItemClickListener) :
+class ItemListAdapter(private val listener: OnItemClickListener) :
     Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
   private var sortMode = false
   private var _isParentSelf = false
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
-      LayoutInflater.from(parent.context)
-          .inflate(layout.row_item, parent, false)
+      RowItemBinding.inflate(
+          LayoutInflater.from(parent.context),
+          parent,
+          false
+      )
   )
 
   override fun getItemCount() = _items.size
@@ -40,15 +39,16 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
   @SuppressLint("ClickableViewAccessibility")
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     (holder as ItemViewHolder).apply {
+      val context = binding.root.context
       _items[position].let { item ->
-        titleTextView.text = item.name
-        ogpImage.isVisible = false
+        binding.title.text = item.name
+        binding.ogpImage.isVisible = false
         if (item.url == null) {
           when (item.ownerType) {
-            Const.OwnerType.OWNER.value -> titleImageView.setImageResource(
+            Const.OwnerType.OWNER.value -> binding.titleImage.setImageResource(
                 R.drawable.ic_item_folder
             )
-            Const.OwnerType.EDITABLE.value, Const.OwnerType.READONLY.value -> titleImageView.setImageResource(
+            Const.OwnerType.EDITABLE.value, Const.OwnerType.READONLY.value -> binding.titleImage.setImageResource(
                 R.drawable.ic_item_folder_shared
             )
             else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
@@ -57,18 +57,18 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
           Glide.with(context)
               .load(OperationUtils.createThumbnailUrl(item.url))
               .placeholder(R.drawable.ic_item_internet)
-              .into(titleImageView)
+              .into(binding.titleImage)
 
           if (!item.ogpUrl.isNullOrEmpty()) {
             Glide.with(context)
                 .load(item.ogpUrl)
                 .centerCrop()
-                .into(ogpImage)
-            ogpImage.isVisible = true
+                .into(binding.ogpImage)
+            binding.ogpImage.isVisible = true
           }
         }
 
-        menuImage.setOnClickListener { v ->
+        binding.menuImage.setOnClickListener { v ->
           PopupMenu(context, v).apply {
             menuInflater.inflate(
                 if (item.url == null) {
@@ -102,7 +102,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
                     item.name
                 )
                 R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(
-                    ogpImage,
+                    binding.ogpImage,
                     item.url,
                     item.id!!
                 )
@@ -113,7 +113,7 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
         }
 
         if (sortMode) {
-          rowItem.setOnTouchListener { v, event ->
+          binding.rowItem.setOnTouchListener { v, event ->
             when (event.actionMasked) {
               MotionEvent.ACTION_DOWN -> listener.onStartDrag(holder)
               MotionEvent.ACTION_UP -> v.performClick()
@@ -121,28 +121,25 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
             v.onTouchEvent(event)
           }
         } else {
-          rowItem.setOnTouchListener(null)
-          rowItem.setOnLongClickListener {
+          binding.rowItem.setOnTouchListener(null)
+          binding.rowItem.setOnLongClickListener {
             listener.onSetSortMode()
             true
           }
           if (item.url.isNullOrEmpty()) {
-            rowItem.setOnClickListener { listener.onRowClick(item.id, null) }
+            binding.rowItem.setOnClickListener { listener.onRowClick(item.id, null) }
           } else {
-            rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
+            binding.rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
           }
         }
 
         if (sortMode) {
-          menuImage.visibility = View.GONE
-          sortImage.visibility = View.VISIBLE
+          binding.menuImage.visibility = View.GONE
+          binding.sortImage.visibility = View.VISIBLE
         } else {
-          menuImage.visibility = View.VISIBLE
-          sortImage.visibility = View.GONE
+          binding.menuImage.visibility = View.VISIBLE
+          binding.sortImage.visibility = View.GONE
         }
-      }
-      cardView.run {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
       }
     }
   }
@@ -179,14 +176,5 @@ class ItemListAdapter(private val context: Context, private val listener: OnItem
     _items.add(toPosition, item)
   }
 
-  class ItemViewHolder internal constructor(itemView: View) :
-      ViewHolder(itemView) {
-    val cardView = itemView.findViewById(R.id.row_card) as CardView
-    val titleImageView = itemView.findViewById(R.id.title_image) as ImageView
-    val titleTextView = itemView.findViewById(R.id.title) as TextView
-    val menuImage = itemView.findViewById(R.id.menu_image) as ImageView
-    val sortImage = itemView.findViewById(R.id.menu_sort) as ImageView
-    val ogpImage = itemView.findViewById(R.id.ogp_image) as ImageView
-    val rowItem = itemView.findViewById(R.id.row_item) as View
-  }
+  class ItemViewHolder(val binding: RowItemBinding) : ViewHolder(binding.root)
 }

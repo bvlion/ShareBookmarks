@@ -73,11 +73,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     initObserve(savedInstanceState == null)
-    context?.let {
-      itemListAdapter = ItemListAdapter(it, this)
-      binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
-      binding.itemsRecyclerView.adapter = itemListAdapter
-    }
+    itemListAdapter = ItemListAdapter(this)
+    binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+    binding.itemsRecyclerView.adapter = itemListAdapter
 
     breadcrumbsAdapter = BreadcrumbsAdapter(this)
     binding.breadcrumbsRecyclerView.layoutManager =

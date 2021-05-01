@@ -3,18 +3,19 @@ package net.ambitious.android.sharebookmarks.ui.home.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import net.ambitious.android.sharebookmarks.R
-import net.ambitious.android.sharebookmarks.R.layout
+import net.ambitious.android.sharebookmarks.databinding.RowBreadcrumbsBinding
 
 class BreadcrumbsAdapter(private val listener: OnBreadcrumbsClickListener) : Adapter<ViewHolder>() {
   private val _breadcrumbs = arrayListOf<Pair<Long, String>>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BreadcrumbsViewHolder(
-      LayoutInflater.from(parent.context)
-          .inflate(layout.row_breadcrumbs, parent, false)
+      RowBreadcrumbsBinding.inflate(
+          LayoutInflater.from(parent.context),
+          parent,
+          false
+      )
   )
 
   override fun getItemCount() = _breadcrumbs.size
@@ -22,16 +23,17 @@ class BreadcrumbsAdapter(private val listener: OnBreadcrumbsClickListener) : Ada
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     (holder as BreadcrumbsViewHolder).apply {
       _breadcrumbs[position].let { row ->
-        nameTextView.apply {
+        binding.folderName.apply {
           text = row.second
           setOnClickListener { listener.onRowClick(row.first) }
         }
       }
-      if (position == _breadcrumbs.size - 1) {
-        nextTextView.visibility = View.GONE
-      } else {
-        nextTextView.visibility = View.VISIBLE
-      }
+      binding.nextIcon.visibility =
+        if (position == _breadcrumbs.size - 1) {
+          View.GONE
+        } else {
+          View.VISIBLE
+        }
     }
   }
 
@@ -45,9 +47,5 @@ class BreadcrumbsAdapter(private val listener: OnBreadcrumbsClickListener) : Ada
     notifyDataSetChanged()
   }
 
-  class BreadcrumbsViewHolder internal constructor(itemView: View) :
-      ViewHolder(itemView) {
-    val nameTextView = itemView.findViewById(R.id.folder_name) as TextView
-    val nextTextView = itemView.findViewById(R.id.next_icon) as TextView
-  }
+  class BreadcrumbsViewHolder(val binding: RowBreadcrumbsBinding) : ViewHolder(binding.root)
 }
