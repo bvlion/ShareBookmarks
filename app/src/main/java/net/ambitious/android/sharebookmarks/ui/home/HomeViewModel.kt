@@ -29,7 +29,7 @@ class HomeViewModel(
   val items: LiveData<List<Item>>
     get() = _items
 
-  private val _parentId = MutableLiveData<Long>()
+  private var _parentId = 0L
 
   private val _ownerType = MutableLiveData<Int>()
   val ownerType: LiveData<Int>
@@ -74,11 +74,11 @@ class HomeViewModel(
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
   fun setInitialParentId(parentId: Long?) {
-    _parentId.value = parentId
+    _parentId = parentId ?: 0L
   }
 
   fun setParentId(parentId: Long, preferences: PreferencesUtils.Data) {
-    _parentId.value = parentId
+    _parentId = parentId
     getItems()
     if (preferences.startFolder == Const.StartFolderType.LAST.value) {
       preferences.startFolderId = parentId
@@ -88,7 +88,7 @@ class HomeViewModel(
   fun getItems() {
     launch {
       _breadcrumbsList.clear()
-      createBreadcrumbs(_parentId.value ?: 0L)
+      createBreadcrumbs(_parentId)
       postItems()
     }
   }
@@ -111,7 +111,7 @@ class HomeViewModel(
     }
     _sorting.postValue(false)
     _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
-    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+    _items.postValue(itemDao.getItems(_parentId))
     postItems()
   }
 
@@ -196,7 +196,7 @@ class HomeViewModel(
           Item(
               itemId,
               item.remoteId,
-              _parentId.value ?: 0,
+              _parentId,
               itemName,
               itemUrl,
               item.ogpUrl,
@@ -209,7 +209,7 @@ class HomeViewModel(
           Item(
               null,
               null,
-              _parentId.value ?: 0,
+              _parentId,
               itemName,
               itemUrl,
               itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
@@ -268,6 +268,9 @@ class HomeViewModel(
   }
 
   fun setLoadingShow(isShow: Boolean) {
+    if (isShow) { // 全同期になるので親フォルダを初期化
+      _parentId = 0L
+    }
     _dialogShow.value = isShow
   }
 
@@ -288,7 +291,7 @@ class HomeViewModel(
   }
 
   private suspend fun postItems() {
-    _ownerType.postValue(itemDao.getItem(_parentId.value ?: 0)?.ownerType ?: 0)
-    _items.postValue(itemDao.getItems(_parentId.value ?: 0))
+    _ownerType.postValue(itemDao.getItem(_parentId)?.ownerType ?: 0)
+    _items.postValue(itemDao.getItems(_parentId))
   }
 }
