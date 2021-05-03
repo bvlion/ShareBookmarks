@@ -35,14 +35,14 @@ class ShareBookmarksDataSourceImpl(
       }
     }
 
-    // 新規の場合はローカルの値を全て削除
-    if (latestSync == null) {
-      itemDao.deleteAllItems()
-    }
-
     // サーバーとローカルの対象データを取得する
     val remoteData = itemApi.getItems(latestSync)
-    val localAll = itemDao.getAllItems()
+    val localAll = if (latestSync == null) {
+      itemDao.deleteAllItems()
+      listOf()
+    } else {
+      itemDao.getAllItems()
+    }
 
     // 画像同期対象リスト
     val imageUpdates = mutableMapOf<Long, String>()
