@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">ブックマーク共有</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="app_name">シェブ！</string>
     <string name="nav_header_desc">User image</string>
     <string name="action_settings">設定</string>
     <string name="dialog_cancel">キャンセル</string>
