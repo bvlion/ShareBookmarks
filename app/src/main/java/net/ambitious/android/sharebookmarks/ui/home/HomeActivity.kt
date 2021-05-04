@@ -296,11 +296,14 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
               AuthUI.getInstance()
                   .signOut(this@HomeActivity)
                   .addOnCompleteListener {
+                    // ログアウトしたら全設定を削除
                     preferences.userName = null
                     preferences.userEmail = null
                     preferences.userUid = null
                     preferences.userIcon = null
                     preferences.userBearer = null
+                    preferences.startFolder = Const.StartFolderType.ROOT.value
+                    preferences.startFolderId = 0
                     setNavigation()
                     showSnackbar(getString(R.string.sign_out_complete))
                   }
