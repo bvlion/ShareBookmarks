@@ -24,7 +24,7 @@
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/usage_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:padding="@dimen/space_normal"
         android:maxLines="1"
         app:autoSizeMaxTextSize="@dimen/usage_title_max_size"
@@ -38,9 +38,11 @@
       <ImageView
         android:id="@+id/usage_image"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:paddingStart="@dimen/space_normal"
+        android:paddingEnd="@dimen/space_normal"
         app:srcCompat="@drawable/ic_how_to_use_1" />
 
       <TextView
