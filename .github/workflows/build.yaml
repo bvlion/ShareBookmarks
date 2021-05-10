@@ -127,8 +127,8 @@ jobs:
       - name: bundler
         run: bundle install
 
-      #- name: up play store
-      #  run: bundle exec fastlane play_store
+      - name: up play store
+        run: bundle exec fastlane play_store
 
       - uses: actions/upload-artifact@master
         with:

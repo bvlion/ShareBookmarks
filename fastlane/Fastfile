@@ -23,7 +23,7 @@ platform :android do
     upload_to_play_store(
         track: 'alpha',
         aab: 'app/build/outputs/bundle/release/app-release.aab',
-        rollout: '0.2',
+        rollout: '1.0',
     )
   end
 end
