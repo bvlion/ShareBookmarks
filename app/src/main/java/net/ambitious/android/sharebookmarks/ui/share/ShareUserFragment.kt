@@ -38,17 +38,17 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
 
   private fun initObserve() {
     viewModel.share.observe(
-        viewLifecycleOwner,
-        { shareListAdapter.setShares(it) })
+      viewLifecycleOwner,
+      { shareListAdapter.setShares(it) })
 
     viewModel.saved.observe(
-        viewLifecycleOwner,
-        {
-          Toast.makeText(context, R.string.share_end_done, Toast.LENGTH_LONG)
-              .show()
-          activity?.setResult(AppCompatActivity.RESULT_OK)
-          activity?.finish()
-        }
+      viewLifecycleOwner,
+      {
+        Toast.makeText(context, R.string.share_end_done, Toast.LENGTH_LONG)
+          .show()
+        activity?.setResult(AppCompatActivity.RESULT_OK)
+        activity?.finish()
+      }
     )
   }
 

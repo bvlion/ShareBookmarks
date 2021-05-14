@@ -32,17 +32,17 @@ object OperationUtils {
   suspend fun getOgpImage(url: String, etcApi: EtcApi) = try {
     getImageUrl(url)?.let { processUrl ->
       Jsoup.connect(processUrl).get().select("meta[property~=og:image]")
-          .map { it.attr("content") }.let { ogImage ->
-            if (ogImage.isEmpty()) {
-              null
+        .map { it.attr("content") }.let { ogImage ->
+          if (ogImage.isEmpty()) {
+            null
+          } else {
+            if (isHttpStatusOk(ogImage.first())) {
+              ogImage.first()
             } else {
-              if (isHttpStatusOk(ogImage.first())) {
-                ogImage.first()
-              } else {
-                null
-              }
+              null
             }
           }
+        }
     }
   } catch (e: Exception) {
     etcApi.getOgpImageUrl(url).url
@@ -86,15 +86,15 @@ object OperationUtils {
       while (it?.moveToNext() == true) {
         emailMap[it.getString(it.getColumnIndex(Data._ID))]?.let { email ->
           contactList.add(
-              Contact(
-                  it.getString(it.getColumnIndex(Data._ID)),
-                  email,
-                  it.getString(it.getColumnIndex(Data.DISPLAY_NAME)),
-                  getUserImage(
-                      contentResolver,
-                      it.getString(it.getColumnIndex(Data.CONTACT_ID)).toLong()
-                  )
+            Contact(
+              it.getString(it.getColumnIndex(Data._ID)),
+              email,
+              it.getString(it.getColumnIndex(Data.DISPLAY_NAME)),
+              getUserImage(
+                contentResolver,
+                it.getString(it.getColumnIndex(Data.CONTACT_ID)).toLong()
               )
+            )
           )
         }
       }
@@ -104,8 +104,8 @@ object OperationUtils {
 
   private fun getUserImage(contentResolver: ContentResolver, contactId: Long) =
     Contacts.openContactPhotoInputStream(
-        contentResolver,
-        ContentUris.withAppendedId(Contacts.CONTENT_URI, contactId)
+      contentResolver,
+      ContentUris.withAppendedId(Contacts.CONTENT_URI, contactId)
     )?.let {
       Base64.encodeToString(it.readBytes(), Base64.DEFAULT)
     }

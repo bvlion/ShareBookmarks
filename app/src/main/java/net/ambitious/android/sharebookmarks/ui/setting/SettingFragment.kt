@@ -10,7 +10,7 @@ import net.ambitious.android.sharebookmarks.util.Const
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class SettingFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+  SharedPreferences.OnSharedPreferenceChangeListener {
 
   var preferences: SharedPreferences? = null
 
@@ -40,7 +40,7 @@ class SettingFragment : PreferenceFragmentCompat(),
         Const.StartFolderType.TARGET.value -> {
           sharedPreferences.edit().putLong(PreferencesUtils.START_FOLDER_ID, 0).apply()
           Snackbar.make(view ?: return, R.string.configurable_first_folder, Snackbar.LENGTH_LONG)
-              .show()
+            .show()
         }
       }
     }

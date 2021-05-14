@@ -30,23 +30,23 @@ class ShareAddViewModel(
     _postResult.value = Triple(0, "", "")
     launch {
       val id = itemDao.insert(
-          Item(
-              null,
-              null,
-              folderId,
-              itemName,
-              itemUrl,
-              null,
-              0,
-              OWNER.value
-          )
+        Item(
+          null,
+          null,
+          folderId,
+          itemName,
+          itemUrl,
+          null,
+          0,
+          OWNER.value
+        )
       )
       _postResult.postValue(
-          Triple(
-              id,
-              itemName,
-              itemUrl
-          )
+        Triple(
+          id,
+          itemName,
+          itemUrl
+        )
       )
     }
   }

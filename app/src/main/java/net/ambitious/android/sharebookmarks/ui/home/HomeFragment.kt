@@ -104,124 +104,124 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   private fun initObserve(isInitialize: Boolean) {
     homeViewModel.items.observe(
-        viewLifecycleOwner,
-        {
-          itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
-          binding.itemsRefresh.isRefreshing = false
-          targetImageUpdate()
-        })
+      viewLifecycleOwner,
+      {
+        itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
+        binding.itemsRefresh.isRefreshing = false
+        targetImageUpdate()
+      })
 
     homeViewModel.breadcrumbs.observe(
-        viewLifecycleOwner,
-        {
-          (activity as HomeActivity).title = it.lastOrNull()?.second
-          breadcrumbsAdapter.setBreadcrumbs(it)
-        })
+      viewLifecycleOwner,
+      {
+        (activity as HomeActivity).title = it.lastOrNull()?.second
+        breadcrumbsAdapter.setBreadcrumbs(it)
+      })
 
     homeViewModel.folders.observe(
-        viewLifecycleOwner,
-        {
-          it?.run {
-            folderSelectDialogShow(first, second)
-            homeViewModel.setFolderNull()
-          }
-        })
+      viewLifecycleOwner,
+      {
+        it?.run {
+          folderSelectDialogShow(first, second)
+          homeViewModel.setFolderNull()
+        }
+      })
 
     homeViewModel.sorting.observe(
-        viewLifecycleOwner,
-        {
-          itemListAdapter.setSortable(it)
-          binding.itemsRecyclerView.post { itemListAdapter.notifyDataSetChanged() }
-          itemTouchHelper.attachToRecyclerView(
-              if (it) {
-                binding.itemsRecyclerView
-              } else {
-                null
-              }
-          )
-        }
+      viewLifecycleOwner,
+      {
+        itemListAdapter.setSortable(it)
+        binding.itemsRecyclerView.post { itemListAdapter.notifyDataSetChanged() }
+        itemTouchHelper.attachToRecyclerView(
+          if (it) {
+            binding.itemsRecyclerView
+          } else {
+            null
+          }
+        )
+      }
     )
 
     homeViewModel.tokenSave.observe(
-        viewLifecycleOwner,
-        {
-          if (it == null) {
-            return@observe
-          }
-          preferences.userBearer = it.accessToken
-          if (isFirstLoad) {
-            setLoadingShow(true)
-          } else {
-            context?.let { context ->
-              DataUpdateService.startItemSync(context)
-              if (!preferences.shareSynced) {
-                DataUpdateService.startShareSync(context)
-              }
+      viewLifecycleOwner,
+      {
+        if (it == null) {
+          return@observe
+        }
+        preferences.userBearer = it.accessToken
+        if (isFirstLoad) {
+          setLoadingShow(true)
+        } else {
+          context?.let { context ->
+            DataUpdateService.startItemSync(context)
+            if (!preferences.shareSynced) {
+              DataUpdateService.startShareSync(context)
             }
           }
-          isFirstLoad = false
-          if (preferences.isPremium != it.premium) {
-            preferences.isPremium = it.premium
-            (activity as HomeActivity).changeAdmob()
-          }
-          homeViewModel.setTokenSaved()
         }
+        isFirstLoad = false
+        if (preferences.isPremium != it.premium) {
+          preferences.isPremium = it.premium
+          (activity as HomeActivity).changeAdmob()
+        }
+        homeViewModel.setTokenSaved()
+      }
     )
 
     homeViewModel.ogpImage.observe(
-        viewLifecycleOwner,
-        { ogp ->
-          ogp.first.isVisible = ogp.second != null
-          if (ogp.second != null) {
-            context?.let {
-              Glide.with(it)
-                  .load(ogp.second)
-                  .centerCrop()
-                  .into(ogp.first)
-            }
+      viewLifecycleOwner,
+      { ogp ->
+        ogp.first.isVisible = ogp.second != null
+        if (ogp.second != null) {
+          context?.let {
+            Glide.with(it)
+              .load(ogp.second)
+              .centerCrop()
+              .into(ogp.first)
           }
         }
+      }
     )
 
     homeViewModel.itemUpdate.observe(
-        viewLifecycleOwner,
-        {
-          if (it == null) {
-            return@observe
-          }
-          context?.let { context ->
-            DataUpdateService.startItemSync(context)
-          }
-          homeViewModel.itemUpdated()
+      viewLifecycleOwner,
+      {
+        if (it == null) {
+          return@observe
         }
+        context?.let { context ->
+          DataUpdateService.startItemSync(context)
+        }
+        homeViewModel.itemUpdated()
+      }
     )
 
     homeViewModel.dialogShow.observe(
-        viewLifecycleOwner,
-        {
-          if (it) {
-            context?.let { context ->
-              loading = AlertDialog.Builder(context)
-                  .setView(View.inflate(context, R.layout.dialog_loading, null))
-                  .setCancelable(false)
-                  .create()
-              loading?.show()
-              activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
-              DataUpdateService.startAllSync(context)
-            }
-          } else {
-            loading?.dismiss()
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+      viewLifecycleOwner,
+      {
+        if (it) {
+          context?.let { context ->
+            loading = AlertDialog.Builder(context)
+              .setView(View.inflate(context, R.layout.dialog_loading, null))
+              .setCancelable(false)
+              .create()
+            loading?.show()
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+            DataUpdateService.startAllSync(context)
           }
+        } else {
+          loading?.dismiss()
+          activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
+      }
     )
 
     if (isInitialize) {
       preferences.userEmail?.let { email ->
         homeViewModel.sendUserData(
-            email,
-            preferences.userUid ?: return@let,
-            preferences.fcmToken ?: return@let
+          email,
+          preferences.userUid ?: return@let,
+          preferences.fcmToken ?: return@let
         )
       }
       homeViewModel.setInitialParentId(preferences.startFolderId)
@@ -263,21 +263,21 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     analyticsUtils.logHomeTap("delete")
     context?.let {
       AlertDialog.Builder(it)
-          .setTitle(getString(R.string.delete_title, itemName))
-          .setMessage(
-              getString(
-                  if (itemType == ItemType.ITEM) {
-                    R.string.delete_item_message
-                  } else {
-                    R.string.delete_folder_message
-                  }
-              )
+        .setTitle(getString(R.string.delete_title, itemName))
+        .setMessage(
+          getString(
+            if (itemType == ItemType.ITEM) {
+              R.string.delete_item_message
+            } else {
+              R.string.delete_folder_message
+            }
           )
-          .setNegativeButton(R.string.dialog_cancel_button, null)
-          .setPositiveButton(R.string.dialog_delete_button) { _, _ ->
-            analyticsUtils.logResult("delete", "success")
-            homeViewModel.deleteItem(itemId)
-          }.show()
+        )
+        .setNegativeButton(R.string.dialog_cancel_button, null)
+        .setPositiveButton(R.string.dialog_delete_button) { _, _ ->
+          analyticsUtils.logResult("delete", "success")
+          homeViewModel.deleteItem(itemId)
+        }.show()
     }
   }
 
@@ -294,14 +294,14 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         analyticsUtils.logHomeTap("share folder", "error")
         context?.let {
           AlertDialog.Builder(it).setMessage(R.string.share_login_warning)
-              .setPositiveButton(android.R.string.ok, null).create().show()
+            .setPositiveButton(android.R.string.ok, null).create().show()
         }
         return
       }
       analyticsUtils.logHomeTap("share folder", "success")
       startActivityForResult(
-          ShareUserActivity.createIntent(context ?: return, itemId),
-          SHARE_USER_ACTIVITY_REQUEST
+        ShareUserActivity.createIntent(context ?: return, itemId),
+        SHARE_USER_ACTIVITY_REQUEST
       )
       activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     } else {
@@ -316,25 +316,25 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   override fun onCreateShortcut(itemId: Long, url: String, name: String) {
     analyticsUtils.logHomeTap("create shortcut")
     homeViewModel.bitmap.observe(viewLifecycleOwner,
-        {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            (activity?.getSystemService(Context.SHORTCUT_SERVICE) as ShortcutManager).requestPinShortcut(
-                ShortcutInfo.Builder(activity, "shortcut-id-$itemId")
-                    .setShortLabel(name)
-                    .setIcon(Icon.createWithBitmap(it))
-                    .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                    .build(), null
-            )
-          } else {
-            @Suppress("DEPRECATION")
-            activity?.sendBroadcast(Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
-              putExtra(Intent.EXTRA_SHORTCUT_NAME, name)
-              putExtra(Intent.EXTRA_SHORTCUT_INTENT, Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-              putExtra(Intent.EXTRA_SHORTCUT_ICON, it)
-            })
-            Toast.makeText(context, R.string.shortcut_created, Toast.LENGTH_SHORT).show()
-          }
-        })
+      {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          (activity?.getSystemService(Context.SHORTCUT_SERVICE) as ShortcutManager).requestPinShortcut(
+            ShortcutInfo.Builder(activity, "shortcut-id-$itemId")
+              .setShortLabel(name)
+              .setIcon(Icon.createWithBitmap(it))
+              .setIntent(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+              .build(), null
+          )
+        } else {
+          @Suppress("DEPRECATION")
+          activity?.sendBroadcast(Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
+            putExtra(Intent.EXTRA_SHORTCUT_NAME, name)
+            putExtra(Intent.EXTRA_SHORTCUT_INTENT, Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            putExtra(Intent.EXTRA_SHORTCUT_ICON, it)
+          })
+          Toast.makeText(context, R.string.shortcut_created, Toast.LENGTH_SHORT).show()
+        }
+      })
     homeViewModel.getBitmapFromUrl(context ?: return, url)
   }
 
@@ -371,9 +371,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       activity?.finish()
     } else {
       homeViewModel.setParentId(
-          homeViewModel.breadcrumbs.value?.size?.minus(2)?.let {
-            homeViewModel.breadcrumbs.value?.get(it)?.first
-          } ?: 0, preferences
+        homeViewModel.breadcrumbs.value?.size?.minus(2)?.let {
+          homeViewModel.breadcrumbs.value?.get(it)?.first
+        } ?: 0, preferences
       )
     }
   }
@@ -433,11 +433,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       Moshi.Builder().build().adapter(Map::class.java).fromJson(syncTarget)?.forEach {
         context?.let { context ->
           ContextCompat.startForegroundService(
-              context,
-              Intent(context, UpdateImageService::class.java).apply {
-                putExtra(UpdateImageService.PARAM_ITEM_ID, it.key.toString().toLong())
-                putExtra(UpdateImageService.PARAM_ITEM_URL, it.value.toString())
-              })
+            context,
+            Intent(context, UpdateImageService::class.java).apply {
+              putExtra(UpdateImageService.PARAM_ITEM_ID, it.key.toString().toLong())
+              putExtra(UpdateImageService.PARAM_ITEM_URL, it.value.toString())
+            })
         }
       }
     }
@@ -447,8 +447,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   private val itemTouchHelper by lazy {
     val simpleItemTouchCallback =
       object : ItemTouchHelper.SimpleCallback(
-          ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
-          0
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
+        0
       ) {
 
         override fun onMove(
@@ -457,8 +457,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           target: ViewHolder
         ): Boolean {
           (recyclerView.adapter as ItemListAdapter).moveItem(
-              viewHolder.adapterPosition,
-              target.adapterPosition
+            viewHolder.adapterPosition,
+            target.adapterPosition
           )
           return false
         }

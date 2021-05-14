@@ -44,12 +44,12 @@ class ShareBookmarksApplication : Application() {
     startKoin {
       androidContext(this@ShareBookmarksApplication)
       modules(
-          viewModelModule,
-          databaseModule,
-          apiModule,
-          preferencesModule,
-          analyticsModule,
-          dataSourceModule
+        viewModelModule,
+        databaseModule,
+        apiModule,
+        preferencesModule,
+        analyticsModule,
+        dataSourceModule
       )
     }
   }

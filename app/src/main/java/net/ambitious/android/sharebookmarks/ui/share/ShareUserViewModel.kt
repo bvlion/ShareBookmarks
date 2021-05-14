@@ -40,15 +40,15 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
     } else {
       _share.value = ArrayList(_share.value!!).apply {
         add(
-            Share(
-                null,
-                null,
-                _folderId.value ?: 0,
-                contact.email,
-                contact.displayName,
-                contact.icon,
-                OwnerType.EDITABLE.value
-            )
+          Share(
+            null,
+            null,
+            _folderId.value ?: 0,
+            contact.email,
+            contact.displayName,
+            contact.icon,
+            OwnerType.EDITABLE.value
+          )
         )
       }
       _changed.value = true
@@ -64,22 +64,22 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
 
   fun updateUserContact(contacts: List<Contact>) = launch {
     shareDao.getAllShares()
-        .filter { it.userName == null }
-        .forEach { share ->
-          contacts.firstOrNull { it.email == share.userEmail }?.let {
-            shareDao.update(
-                Share(
-                    share.id,
-                    share.remoteId,
-                    share.folderId,
-                    share.userEmail,
-                    it.displayName,
-                    it.icon,
-                    share.ownerType
-                )
+      .filter { it.userName == null }
+      .forEach { share ->
+        contacts.firstOrNull { it.email == share.userEmail }?.let {
+          shareDao.update(
+            Share(
+              share.id,
+              share.remoteId,
+              share.folderId,
+              share.userEmail,
+              it.displayName,
+              it.icon,
+              share.ownerType
             )
-          }
+          )
         }
+      }
     _share.postValue(shareDao.getShares(_folderId.value!!))
   }
 
@@ -88,9 +88,9 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
 
     // DB にあって List にない値を削除
     shareDao.delete(
-        *dbData
-            .filter { db -> _share.value!!.none { db.userEmail == it.userEmail } }
-            .map { it.id!! }.toLongArray()
+      *dbData
+        .filter { db -> _share.value!!.none { db.userEmail == it.userEmail } }
+        .map { it.id!! }.toLongArray()
     )
 
     val shareList = ArrayList(_share.value!!)
@@ -101,22 +101,22 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
 
     // DB にも List にもある値は更新して List から削除
     _share.value!!
-        .filter { list -> dbData.any { list.userEmail == it.userEmail } }
-        .forEach {
-          val db = dbData.first { db -> db.userEmail == it.userEmail }
-          shareDao.update(
-              Share(
-                  db.id,
-                  db.remoteId,
-                  _folderId.value!!,
-                  it.userEmail,
-                  it.userName,
-                  it.userIcon,
-                  it.ownerType
-              )
+      .filter { list -> dbData.any { list.userEmail == it.userEmail } }
+      .forEach {
+        val db = dbData.first { db -> db.userEmail == it.userEmail }
+        shareDao.update(
+          Share(
+            db.id,
+            db.remoteId,
+            _folderId.value!!,
+            it.userEmail,
+            it.userName,
+            it.userIcon,
+            it.ownerType
           )
-          shareList.remove(it)
-        }
+        )
+        shareList.remove(it)
+      }
 
     // 登録
     shareDao.insertAll(*shareList.toTypedArray())

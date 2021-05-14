@@ -11,11 +11,11 @@ class BreadcrumbsAdapter(private val listener: OnBreadcrumbsClickListener) : Ada
   private val _breadcrumbs = arrayListOf<Pair<Long, String>>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BreadcrumbsViewHolder(
-      RowBreadcrumbsBinding.inflate(
-          LayoutInflater.from(parent.context),
-          parent,
-          false
-      )
+    RowBreadcrumbsBinding.inflate(
+      LayoutInflater.from(parent.context),
+      parent,
+      false
+    )
   )
 
   override fun getItemCount() = _breadcrumbs.size

@@ -30,11 +30,11 @@ class UpdateImageService : Service() {
     }
 
     startForeground(
-        Const.NotificationService.IMAGE_UPDATE_ID,
-        NotificationUtils.getHomeSituationNotification(
-            this@UpdateImageService,
-            R.string.notification_image_update_message
-        )
+      Const.NotificationService.IMAGE_UPDATE_ID,
+      NotificationUtils.getHomeSituationNotification(
+        this@UpdateImageService,
+        R.string.notification_image_update_message
+      )
     )
 
     GlobalScope.launch {
@@ -47,8 +47,8 @@ class UpdateImageService : Service() {
             updateThumbnail(this, false)
           } else {
             itemDao.updateOgpImages(
-                OperationUtils.getOgpImage(url, etcApi) ?: "",
-                it.getLong(PARAM_ITEM_ID)
+              OperationUtils.getOgpImage(url, etcApi) ?: "",
+              it.getLong(PARAM_ITEM_ID)
             )
           }
         }
@@ -75,8 +75,8 @@ class UpdateImageService : Service() {
           }
           withContext(Dispatchers.IO) {
             itemDao.updateOgpImages(
-                OperationUtils.getOgpImage(it.url, etcApi) ?: "",
-                it.id!!
+              OperationUtils.getOgpImage(it.url, etcApi) ?: "",
+              it.id!!
             )
           }
         }

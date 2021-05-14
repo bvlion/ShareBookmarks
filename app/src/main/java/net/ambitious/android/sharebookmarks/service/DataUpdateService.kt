@@ -28,8 +28,8 @@ class DataUpdateService : Service() {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int) = START_STICKY.apply {
     val start = System.currentTimeMillis()
     startForeground(
-        Const.NotificationService.DATA_UPDATE_ID,
-        NotificationUtils.getHomeSituationNotification(this@DataUpdateService)
+      Const.NotificationService.DATA_UPDATE_ID,
+      NotificationUtils.getHomeSituationNotification(this@DataUpdateService)
     )
 
     val param = intent?.getStringExtra(SYNC_KEY) ?: return@apply
@@ -93,10 +93,10 @@ class DataUpdateService : Service() {
         return
       }
       ContextCompat.startForegroundService(
-          context,
-          Intent(context, DataUpdateService::class.java).apply {
-            putExtra(SYNC_KEY, param)
-          })
+        context,
+        Intent(context, DataUpdateService::class.java).apply {
+          putExtra(SYNC_KEY, param)
+        })
     }
   }
 

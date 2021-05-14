@@ -20,18 +20,17 @@ import net.ambitious.android.sharebookmarks.util.Const.ItemType.FOLDER
 import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.OperationUtils
 
-class ItemListAdapter(private val listener: OnItemClickListener) :
-    Adapter<ViewHolder>() {
+class ItemListAdapter(private val listener: OnItemClickListener) : Adapter<ViewHolder>() {
   private val _items = arrayListOf<Item>()
   private var sortMode = false
   private var _isParentSelf = false
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
-      RowItemBinding.inflate(
-          LayoutInflater.from(parent.context),
-          parent,
-          false
-      )
+    RowItemBinding.inflate(
+      LayoutInflater.from(parent.context),
+      parent,
+      false
+    )
   )
 
   override fun getItemCount() = _items.size
@@ -46,24 +45,24 @@ class ItemListAdapter(private val listener: OnItemClickListener) :
         if (item.url == null) {
           when (item.ownerType) {
             Const.OwnerType.OWNER.value -> binding.titleImage.setImageResource(
-                R.drawable.ic_item_folder
+              R.drawable.ic_item_folder
             )
             Const.OwnerType.EDITABLE.value, Const.OwnerType.READONLY.value -> binding.titleImage.setImageResource(
-                R.drawable.ic_item_folder_shared
+              R.drawable.ic_item_folder_shared
             )
             else -> throw RuntimeException("Cannot parse owner type of ${item.ownerType}")
           }
         } else {
           Glide.with(context)
-              .load(OperationUtils.createThumbnailUrl(item.url))
-              .placeholder(R.drawable.ic_item_internet)
-              .into(binding.titleImage)
+            .load(OperationUtils.createThumbnailUrl(item.url))
+            .placeholder(R.drawable.ic_item_internet)
+            .into(binding.titleImage)
 
           if (!item.ogpUrl.isNullOrEmpty()) {
             Glide.with(context)
-                .load(item.ogpUrl)
-                .centerCrop()
-                .into(binding.ogpImage)
+              .load(item.ogpUrl)
+              .centerCrop()
+              .into(binding.ogpImage)
             binding.ogpImage.isVisible = true
           }
         }
@@ -71,40 +70,40 @@ class ItemListAdapter(private val listener: OnItemClickListener) :
         binding.menuImage.setOnClickListener { v ->
           PopupMenu(context, v).apply {
             menuInflater.inflate(
-                if (item.url == null) {
-                  if (item.ownerType == Const.OwnerType.OWNER.value) {
-                    R.menu.row_folder_popup
-                  } else {
-                    R.menu.row_folder_shared_popup
-                  }
+              if (item.url == null) {
+                if (item.ownerType == Const.OwnerType.OWNER.value) {
+                  R.menu.row_folder_popup
                 } else {
-                  R.menu.row_item_popup
-                }, menu
+                  R.menu.row_folder_shared_popup
+                }
+              } else {
+                R.menu.row_item_popup
+              }, menu
             )
             menu.findItem(R.id.row_move).isVisible = _isParentSelf
             setOnMenuItemClickListener { menu ->
               when (menu.itemId) {
                 R.id.row_delete -> listener.onDeleteClick(
-                    item.id!!,
-                    item.name,
-                    if (item.url.isNullOrEmpty()) {
-                      FOLDER
-                    } else {
-                      ITEM
-                    }
+                  item.id!!,
+                  item.name,
+                  if (item.url.isNullOrEmpty()) {
+                    FOLDER
+                  } else {
+                    ITEM
+                  }
                 )
                 R.id.row_edit -> listener.onEditClick(item)
                 R.id.row_move -> listener.onMoveClick(item.id!!)
                 R.id.row_share -> listener.onShareClick(item.id!!, item.url)
                 R.id.row_create_shortcut -> listener.onCreateShortcut(
-                    item.id!!,
-                    item.url!!,
-                    item.name
+                  item.id!!,
+                  item.url!!,
+                  item.name
                 )
                 R.id.row_update_thumbnail -> listener.onThumbnailUpdateClick(
-                    binding.ogpImage,
-                    item.url,
-                    item.id!!
+                  binding.ogpImage,
+                  item.url,
+                  item.id!!
                 )
               }
               return@setOnMenuItemClickListener true

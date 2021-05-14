@@ -33,9 +33,9 @@ object Const {
   }
 
   val INITIALIZE_DB = arrayOf(
-      arrayOf("Google", "https://www.google.com/"),
-      arrayOf("Yahoo", "https://www.yahoo.co.jp/"),
-      arrayOf("フォルダ", null)
+    arrayOf("Google", "https://www.google.com/"),
+    arrayOf("Yahoo", "https://www.yahoo.co.jp/"),
+    arrayOf("フォルダ", null)
   )
 
   object NotificationService {

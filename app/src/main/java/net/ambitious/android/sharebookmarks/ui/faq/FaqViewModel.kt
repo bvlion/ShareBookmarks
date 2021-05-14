@@ -16,13 +16,13 @@ class FaqViewModel(private val etcApi: EtcApi) : BaseViewModel() {
   fun getFaq() {
     launch({
       _faq.postValue(
-          etcApi.getFaq(
-              if (Locale.getDefault() == Locale.JAPAN) {
-                "ja"
-              } else {
-                "en"
-              }
-          )
+        etcApi.getFaq(
+          if (Locale.getDefault() == Locale.JAPAN) {
+            "ja"
+          } else {
+            "en"
+          }
+        )
       )
     }, {
       _faq.postValue(FaqEntity(listOf()))

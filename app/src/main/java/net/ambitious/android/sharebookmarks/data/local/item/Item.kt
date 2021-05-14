@@ -8,13 +8,13 @@ import org.joda.time.DateTime
 import java.io.Serializable
 
 @Entity(
-    tableName = "items",
-    indices = [
-      Index(
-          value = ["parent_id", "order"],
-          name = "index_items"
-      )
-    ]
+  tableName = "items",
+  indices = [
+    Index(
+      value = ["parent_id", "order"],
+      name = "index_items"
+    )
+  ]
 )
 data class Item(
   /** ローカル ID */

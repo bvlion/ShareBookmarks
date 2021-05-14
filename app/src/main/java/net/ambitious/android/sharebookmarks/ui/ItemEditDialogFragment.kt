@@ -65,8 +65,8 @@ class ItemEditDialogFragment : DialogFragment() {
       folderSpinner.visibility = View.VISIBLE
       context?.run {
         folderSpinner.adapter = ArrayAdapter<String>(
-            this,
-            android.R.layout.simple_spinner_dropdown_item
+          this,
+          android.R.layout.simple_spinner_dropdown_item
         ).apply {
           folders.forEach { add(it.name) }
         }
@@ -90,61 +90,61 @@ class ItemEditDialogFragment : DialogFragment() {
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
     AlertDialog.Builder(activity)
-        .setTitle(
-            if (itemId > 0) {
-              if (itemType == ItemType.ITEM) {
-                R.string.dialog_item_update_title
-              } else {
-                R.string.dialog_folder_update_title
-              }
-            } else {
-              if (itemType == ItemType.ITEM) {
-                R.string.dialog_item_add_title
-              } else {
-                R.string.dialog_folder_add_title
-              }
-            }
-        )
-        .setView(
-            View.inflate(activity, R.layout.dialog_item_edit, null).apply {
-              editTitleLayout = findViewById(R.id.edit_title_layout)
-              editTitleArea = findViewById(R.id.edit_title_area)
-              editUrlLayout = findViewById(R.id.edit_url_layout)
-              editUrlArea = findViewById(R.id.edit_url_area)
-              folderSpinner = findViewById(R.id.edit_folder)
-            })
-        .setNegativeButton(R.string.dialog_cancel_button, null)
-        .setPositiveButton(
-            if (itemId > 0) {
-              R.string.dialog_update_button
-            } else {
-              R.string.dialog_add_button
-            }, null
-        )
-        .setCancelable(dialogCancelable)
-        .create().apply {
-          setOnShowListener {
-            getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-              if (hasError()) {
-                return@setOnClickListener
-              }
-              listener.onEdited(
-                  itemId,
-                  editTitleArea.text.toString(),
-                  if (editUrlLayout.visibility == View.VISIBLE) {
-                    editUrlArea.text.toString()
-                  } else {
-                    null
-                  },
-                  folderList?.let {
-                    it[folderSpinner.selectedItemPosition].id
-                  }
-              )
-              dismiss()
-            }
-            setOnDismissListener { listener.onCancel() }
+      .setTitle(
+        if (itemId > 0) {
+          if (itemType == ItemType.ITEM) {
+            R.string.dialog_item_update_title
+          } else {
+            R.string.dialog_folder_update_title
+          }
+        } else {
+          if (itemType == ItemType.ITEM) {
+            R.string.dialog_item_add_title
+          } else {
+            R.string.dialog_folder_add_title
           }
         }
+      )
+      .setView(
+        View.inflate(activity, R.layout.dialog_item_edit, null).apply {
+          editTitleLayout = findViewById(R.id.edit_title_layout)
+          editTitleArea = findViewById(R.id.edit_title_area)
+          editUrlLayout = findViewById(R.id.edit_url_layout)
+          editUrlArea = findViewById(R.id.edit_url_area)
+          folderSpinner = findViewById(R.id.edit_folder)
+        })
+      .setNegativeButton(R.string.dialog_cancel_button, null)
+      .setPositiveButton(
+        if (itemId > 0) {
+          R.string.dialog_update_button
+        } else {
+          R.string.dialog_add_button
+        }, null
+      )
+      .setCancelable(dialogCancelable)
+      .create().apply {
+        setOnShowListener {
+          getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+            if (hasError()) {
+              return@setOnClickListener
+            }
+            listener.onEdited(
+              itemId,
+              editTitleArea.text.toString(),
+              if (editUrlLayout.visibility == View.VISIBLE) {
+                editUrlArea.text.toString()
+              } else {
+                null
+              },
+              folderList?.let {
+                it[folderSpinner.selectedItemPosition].id
+              }
+            )
+            dismiss()
+          }
+          setOnDismissListener { listener.onCancel() }
+        }
+      }
 
   private fun hasError(): Boolean {
     var error = false

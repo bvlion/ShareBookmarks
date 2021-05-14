@@ -44,20 +44,20 @@ class FolderListDialogFragment : DialogFragment() {
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
     AlertDialog.Builder(activity)
-        .setSingleChoiceItems(folderItemNameList, 0) { _, which ->
-          selectedId = folderList[which].id!!
-        }
-        .setTitle(R.string.dialog_move_title)
-        .setNegativeButton(R.string.dialog_cancel_button, null)
-        .setPositiveButton(R.string.dialog_move_button) { _, _ ->
-          listener.onSet(itemId, selectedId)
-        }.create().apply {
-          setOnShowListener {
-            setOnDismissListener {
-              listener.onCancel()
-            }
+      .setSingleChoiceItems(folderItemNameList, 0) { _, which ->
+        selectedId = folderList[which].id!!
+      }
+      .setTitle(R.string.dialog_move_title)
+      .setNegativeButton(R.string.dialog_cancel_button, null)
+      .setPositiveButton(R.string.dialog_move_button) { _, _ ->
+        listener.onSet(itemId, selectedId)
+      }.create().apply {
+        setOnShowListener {
+          setOnDismissListener {
+            listener.onCancel()
           }
         }
+      }
 
   interface OnSetListener {
     fun onSet(selfId: Long, parentId: Long)

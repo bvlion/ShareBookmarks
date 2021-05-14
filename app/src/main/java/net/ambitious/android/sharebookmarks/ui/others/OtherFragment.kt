@@ -30,15 +30,15 @@ class OtherFragment : PreferenceFragmentCompat() {
         count++
         if (count == 10 && !preferences.userUid.isNullOrEmpty()) {
           AlertDialog.Builder(it)
-              .setTitle(R.string.all_sync_dialog_title)
-              .setMessage(R.string.all_sync_dialog_subject)
-              .setPositiveButton(R.string.all_sync_dialog_exec) { _, _ ->
-                activity?.setResult(AppCompatActivity.RESULT_OK)
-                activity?.finish()
-              }
-              .setNegativeButton(R.string.dialog_cancel, null)
-              .setCancelable(false)
-              .create().show()
+            .setTitle(R.string.all_sync_dialog_title)
+            .setMessage(R.string.all_sync_dialog_subject)
+            .setPositiveButton(R.string.all_sync_dialog_exec) { _, _ ->
+              activity?.setResult(AppCompatActivity.RESULT_OK)
+              activity?.finish()
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .setCancelable(false)
+            .create().show()
         }
       }
       true

@@ -22,11 +22,11 @@ class UsageAdapter : Adapter<ViewHolder>() {
       Space(parent)
     } else {
       ItemViewHolder(
-          RowUsageBinding.inflate(
-              LayoutInflater.from(parent.context),
-              parent,
-              false
-          )
+        RowUsageBinding.inflate(
+          LayoutInflater.from(parent.context),
+          parent,
+          false
+        )
       )
     }
 
@@ -55,30 +55,30 @@ class UsageAdapter : Adapter<ViewHolder>() {
       val resources = context.resources
 
       binding.usageTitle.setText(
-          resources.getIdentifier(
-              "ic_how_to_use_text_main_${position}", "string",
-              context.packageName
-          )
+        resources.getIdentifier(
+          "ic_how_to_use_text_main_${position}", "string",
+          context.packageName
+        )
       )
 
       binding.usageImage.setImageResource(
-          resources.getIdentifier(
-              "ic_how_to_use_${position}", "drawable",
-              context.packageName
-          )
+        resources.getIdentifier(
+          "ic_how_to_use_${position}", "drawable",
+          context.packageName
+        )
       )
 
       binding.usageText.setText(
-          resources.getIdentifier(
-              "ic_how_to_use_text_sub_${position}", "string",
-              context.packageName
-          )
+        resources.getIdentifier(
+          "ic_how_to_use_text_sub_${position}", "string",
+          context.packageName
+        )
       )
     }
   }
 
   class Space(parent: ViewGroup) : RecyclerView.ViewHolder(
-      LayoutInflater.from(parent.context)
-          .inflate(R.layout.row_usage_space, parent, false)
+    LayoutInflater.from(parent.context)
+      .inflate(R.layout.row_usage_space, parent, false)
   )
 }

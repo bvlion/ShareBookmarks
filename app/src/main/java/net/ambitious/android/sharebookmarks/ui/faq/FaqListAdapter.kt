@@ -59,19 +59,19 @@ class FaqListAdapter(
       row.title.setOnClickListener {
         analyticsUtils.logOtherTap("faq", "onRowClick ${items[position - 1].question}")
         AlertDialog.Builder(row.root.context)
-            .setTitle(items[position - 1].question)
-            .setView(LinearLayout(row.root.context).apply {
-              setPadding(context.resources.getDimensionPixelSize(R.dimen.space_small))
-              addView(WebView(row.root.context).apply {
-                loadData(
-                    String.format(Const.HTML_BODY, items[position - 1].answer),
-                    "text/html",
-                    "utf-8"
-                )
-              })
+          .setTitle(items[position - 1].question)
+          .setView(LinearLayout(row.root.context).apply {
+            setPadding(context.resources.getDimensionPixelSize(R.dimen.space_small))
+            addView(WebView(row.root.context).apply {
+              loadData(
+                String.format(Const.HTML_BODY, items[position - 1].answer),
+                "text/html",
+                "utf-8"
+              )
             })
-            .setPositiveButton(android.R.string.ok, null)
-            .create().show()
+          })
+          .setPositiveButton(android.R.string.ok, null)
+          .create().show()
       }
       if (row.title.isVisible) {
         row.title.text = items[position - 1].question

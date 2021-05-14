@@ -53,8 +53,7 @@ import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.NotificationUtils
 
 class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
-    ItemEditDialogFragment.OnClickListener,
-    FolderListDialogFragment.OnSetListener {
+    ItemEditDialogFragment.OnClickListener, FolderListDialogFragment.OnSetListener {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
 

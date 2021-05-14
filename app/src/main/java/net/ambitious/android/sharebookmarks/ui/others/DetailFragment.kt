@@ -21,12 +21,12 @@ class DetailFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ) = FragmentOthersDetailBinding.inflate(inflater, container, false)
-      .also {
-        arguments?.let { bundle ->
-          isTerm = bundle.getBoolean(ARGS_IS_TERM)
-        }
-        _binding = it
-      }.root
+    .also {
+      arguments?.let { bundle ->
+        isTerm = bundle.getBoolean(ARGS_IS_TERM)
+      }
+      _binding = it
+    }.root
 
   override fun onDestroyView() {
     super.onDestroyView()
@@ -41,9 +41,9 @@ class DetailFragment : Fragment() {
       } else {
         binding.othersDetailMessage.isVisible = true
         binding.othersDetailMessage.loadData(
-            String.format(Const.HTML_BODY, it),
-            "text/html",
-            "utf-8"
+          String.format(Const.HTML_BODY, it),
+          "text/html",
+          "utf-8"
         )
       }
       binding.loading.isVisible = false

@@ -21,8 +21,8 @@ class NotificationListAdapter(
   private val _items = arrayListOf<Notification>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = NotificationViewHolder(
-      LayoutInflater.from(parent.context)
-          .inflate(layout.row_notification, parent, false)
+    LayoutInflater.from(parent.context)
+      .inflate(layout.row_notification, parent, false)
   )
 
   override fun getItemCount() = _items.size
@@ -54,7 +54,7 @@ class NotificationListAdapter(
   }
 
   class NotificationViewHolder internal constructor(itemView: View) :
-      ViewHolder(itemView) {
+    ViewHolder(itemView) {
     val tileView = itemView.findViewById(R.id.row_notification) as LinearLayout
     val titleTextView = itemView.findViewById(R.id.title) as TextView
     val subjectTextView = itemView.findViewById(R.id.subject) as TextView

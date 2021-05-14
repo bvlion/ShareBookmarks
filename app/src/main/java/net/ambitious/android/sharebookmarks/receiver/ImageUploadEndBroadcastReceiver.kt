@@ -6,7 +6,7 @@ import android.content.Intent
 import net.ambitious.android.sharebookmarks.util.Const
 
 class ImageUploadEndBroadcastReceiver(private val block: (isAll: Boolean) -> Unit) :
-    BroadcastReceiver() {
+  BroadcastReceiver() {
   override fun onReceive(context: Context?, intent: Intent?) {
     intent?.let {
       it.extras?.let { extras ->

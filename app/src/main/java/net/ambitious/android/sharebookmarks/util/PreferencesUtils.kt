@@ -66,11 +66,11 @@ object PreferencesUtils {
   class Preference(private val context: Context) {
     fun save(saveKey: String, saveValue: String?) =
       PreferenceManager.getDefaultSharedPreferences(context).edit()
-          .putString(saveKey, saveValue).apply()
+        .putString(saveKey, saveValue).apply()
 
     fun save(saveKey: String, saveValue: Boolean) =
       PreferenceManager.getDefaultSharedPreferences(context).edit()
-          .putBoolean(saveKey, saveValue).apply()
+        .putBoolean(saveKey, saveValue).apply()
 
     fun notSave() = Unit
 
@@ -88,7 +88,7 @@ object PreferencesUtils {
 
     fun saveStartFolderId(id: Long) =
       PreferenceManager.getDefaultSharedPreferences(context).edit()
-          .putLong(START_FOLDER_ID, id).apply()
+        .putLong(START_FOLDER_ID, id).apply()
   }
 
   // ユーザー情報

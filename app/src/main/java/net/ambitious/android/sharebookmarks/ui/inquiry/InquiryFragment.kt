@@ -43,19 +43,19 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
 
     if (viewModel.postResult.value == null) {
       viewModel.postResult.observe(
-          viewLifecycleOwner,
-          {
-            view?.run {
-              Snackbar.make(
-                  this, if (it) {
+        viewLifecycleOwner,
+        {
+          view?.run {
+            Snackbar.make(
+              this, if (it) {
                 R.string.send_complete
               } else {
                 R.string.send_error
               }, Snackbar.LENGTH_LONG
-              ).show()
-            }
-            binding.loadingProgress.isVisible = false
-          })
+            ).show()
+          }
+          binding.loadingProgress.isVisible = false
+        })
     }
 
     binding.inquiryText.addTextChangedListener { text ->

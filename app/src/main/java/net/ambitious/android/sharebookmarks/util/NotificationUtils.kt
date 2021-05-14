@@ -16,11 +16,11 @@ object NotificationUtils {
     messageId: Int = R.string.notification_update_message
   ): Notification =
     NotificationCompat.Builder(context, Const.NotificationService.DATA_UPDATE_CHANNEL)
-        .setSmallIcon(R.drawable.ic_bookmarks)
-        .setShowWhen(false)
-        .setContentText(context.getString(messageId))
-        .setAutoCancel(false)
-        .build()
+      .setSmallIcon(R.drawable.ic_bookmarks)
+      .setShowWhen(false)
+      .setContentText(context.getString(messageId))
+      .setAutoCancel(false)
+      .build()
 
   @RequiresApi(VERSION_CODES.O)
   fun createChannels(context: Context) {
@@ -28,9 +28,9 @@ object NotificationUtils {
       context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     val noticeChannel = NotificationChannel(
-        Const.NotificationService.NOTICE_CHANNEL,
-        context.getString(R.string.notification_channel_from_app),
-        NotificationManager.IMPORTANCE_DEFAULT
+      Const.NotificationService.NOTICE_CHANNEL,
+      context.getString(R.string.notification_channel_from_app),
+      NotificationManager.IMPORTANCE_DEFAULT
     )
     noticeChannel.setShowBadge(true)
     notificationManager.createNotificationChannel(noticeChannel)
@@ -39,9 +39,9 @@ object NotificationUtils {
     notificationManager.createNotificationChannel(noticeChannel)
 
     val updateChannel = NotificationChannel(
-        Const.NotificationService.DATA_UPDATE_CHANNEL,
-        context.getString(R.string.notification_channel_work_server),
-        NotificationManager.IMPORTANCE_LOW
+      Const.NotificationService.DATA_UPDATE_CHANNEL,
+      context.getString(R.string.notification_channel_work_server),
+      NotificationManager.IMPORTANCE_LOW
     )
     updateChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_SECRET
     notificationManager.createNotificationChannel(updateChannel)

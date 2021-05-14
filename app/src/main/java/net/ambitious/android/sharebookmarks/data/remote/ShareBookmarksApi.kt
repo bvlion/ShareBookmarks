@@ -18,24 +18,24 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
 
   fun <T : Any> create(kClass: KClass<T>): T =
     Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_DOMAIN)
-        .addConverterFactory(getFactory())
-        .client(client)
-        .build()
-        .create(kClass.java)
+      .baseUrl(BuildConfig.BASE_DOMAIN)
+      .addConverterFactory(getFactory())
+      .client(client)
+      .build()
+      .create(kClass.java)
 
   fun create4Inquiry(): ContactApi =
     Retrofit.Builder()
-        .baseUrl("https://script.google.com/")
-        .addConverterFactory(getFactory())
-        .client(client)
-        .build()
-        .create(ContactApi::class.java)
+      .baseUrl("https://script.google.com/")
+      .addConverterFactory(getFactory())
+      .client(client)
+      .build()
+      .create(ContactApi::class.java)
 
   private fun getFactory() = MoshiConverterFactory.create(
-      Moshi.Builder()
-          .add(KotlinJsonAdapterFactory())
-          .build()
+    Moshi.Builder()
+      .add(KotlinJsonAdapterFactory())
+      .build()
   )
 
   companion object {
@@ -44,33 +44,33 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
 
     private fun getClient(preferences: PreferencesUtils.Data) =
       OkHttpClient
-          .Builder()
-          .connectTimeout(20, TimeUnit.SECONDS)
-          .readTimeout(20, TimeUnit.SECONDS)
-          .addInterceptor(AuthorizationInterceptor(preferences))
-          .addInterceptor(
-              HttpLoggingInterceptor().apply {
-                level =
-                  if (BuildConfig.DEBUG) {
-                    HttpLoggingInterceptor.Level.BODY
-                  } else {
-                    HttpLoggingInterceptor.Level.NONE
-                  }
+        .Builder()
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .addInterceptor(AuthorizationInterceptor(preferences))
+        .addInterceptor(
+          HttpLoggingInterceptor().apply {
+            level =
+              if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+              } else {
+                HttpLoggingInterceptor.Level.NONE
               }
-          )
-          .build()
+          }
+        )
+        .build()
 
     private class AuthorizationInterceptor(
       private val preferences: PreferencesUtils.Data
     ) : Interceptor {
       override fun intercept(chain: Chain) = chain.proceed(
-          chain.request().newBuilder().apply {
-            preferences.userBearer?.let {
-              header("Authorization", "Bearer $it")
-            }
+        chain.request().newBuilder().apply {
+          preferences.userBearer?.let {
+            header("Authorization", "Bearer $it")
           }
-              .method(chain.request().method, chain.request().body)
-              .build()
+        }
+          .method(chain.request().method, chain.request().body)
+          .build()
       )
     }
   }

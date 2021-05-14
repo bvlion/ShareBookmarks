@@ -11,11 +11,11 @@ import net.ambitious.android.sharebookmarks.data.local.share.Share
 import net.ambitious.android.sharebookmarks.data.local.share.ShareDao
 
 @Database(
-    entities = [
-      Item::class,
-      Share::class
-    ],
-    version = 1
+  entities = [
+    Item::class,
+    Share::class
+  ],
+  version = 1
 )
 @TypeConverters(DateTimeConverter::class)
 abstract class ShareBookmarksDatabase : RoomDatabase() {
@@ -25,9 +25,9 @@ abstract class ShareBookmarksDatabase : RoomDatabase() {
 
     fun createInstance(context: Context) =
       Room.databaseBuilder(
-          context,
-          ShareBookmarksDatabase::class.java,
-          DB_NAME
+        context,
+        ShareBookmarksDatabase::class.java,
+        DB_NAME
       ).build()
   }
 

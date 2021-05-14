@@ -155,8 +155,8 @@ class HomeViewModel(
     val idNextList = arrayListOf<Long>()
     // チェック対象の配下のフォルダの ID を取得
     items.filter { idCheckList.contains(it.parentId) }
-        .map { it.id!! }
-        .forEach { idNextList.add(it) }
+      .map { it.id!! }
+      .forEach { idNextList.add(it) }
     // チェックが完了に伴い全件リストに格納
     idAllList.addAll(idCheckList)
     // まだ配下にフォルダがあればこの処理を再度呼び出す
@@ -193,29 +193,29 @@ class HomeViewModel(
     if (itemId > 0) {
       val item = itemDao.getItem(itemId)!!
       itemDao.update(
-          Item(
-              itemId,
-              item.remoteId,
-              _parentId,
-              itemName,
-              itemUrl,
-              item.ogpUrl,
-              item.order,
-              item.ownerType
-          )
+        Item(
+          itemId,
+          item.remoteId,
+          _parentId,
+          itemName,
+          itemUrl,
+          item.ogpUrl,
+          item.order,
+          item.ownerType
+        )
       )
     } else {
       itemDao.insert(
-          Item(
-              null,
-              null,
-              _parentId,
-              itemName,
-              itemUrl,
-              itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
-              0,
-              _ownerType.value ?: OwnerType.OWNER.value
-          )
+        Item(
+          null,
+          null,
+          _parentId,
+          itemName,
+          itemUrl,
+          itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
+          0,
+          _ownerType.value ?: OwnerType.OWNER.value
+        )
       )
     }
     _itemUpdate.postValue((_itemUpdate.value ?: 0) + 1)
@@ -236,25 +236,25 @@ class HomeViewModel(
   @Suppress("BlockingMethodInNonBlockingContext")
   fun getBitmapFromUrl(context: Context, url: String) = launch {
     _bitmap.postValue(
-        Glide.with(context).asBitmap()
-            .load(OperationUtils.createThumbnailUrl(url)).submit(100, 100).get()
+      Glide.with(context).asBitmap()
+        .load(OperationUtils.createThumbnailUrl(url)).submit(100, 100).get()
     )
   }
 
   fun initializeInsert() = launch {
     itemDao.insertAll(
-        *Const.INITIALIZE_DB.mapIndexed { index, it ->
-          Item(
-              null,
-              null,
-              0,
-              it[0]!!,
-              it[1],
-              it[1]?.let { url -> OperationUtils.getOgpImage(url, etcApi) },
-              index + 1,
-              OwnerType.OWNER.value
-          )
-        }.toTypedArray()
+      *Const.INITIALIZE_DB.mapIndexed { index, it ->
+        Item(
+          null,
+          null,
+          0,
+          it[0]!!,
+          it[1],
+          it[1]?.let { url -> OperationUtils.getOgpImage(url, etcApi) },
+          index + 1,
+          OwnerType.OWNER.value
+        )
+      }.toTypedArray()
     )
     postItems()
   }
@@ -278,11 +278,11 @@ class HomeViewModel(
     _ownerType.postValue(OwnerType.READONLY.value)
     _searchText.postValue(text)
     _items.postValue(
-        if (text.isEmpty()) {
-          listOf()
-        } else {
-          itemDao.getSearchItems("%$text%")
-        }
+      if (text.isEmpty()) {
+        listOf()
+      } else {
+        itemDao.getSearchItems("%$text%")
+      }
     )
   }
 

@@ -14,11 +14,11 @@ class DetailViewModel(private val etcApi: EtcApi) : BaseViewModel() {
 
   fun getDetailMessages(isTerm: Boolean) = launch({
     _message.postValue(
-        if (isTerm) {
-          etcApi.getTermsOfUse().message
-        } else {
-          etcApi.getPrivacyPolicy().message
-        }
+      if (isTerm) {
+        etcApi.getTermsOfUse().message
+      } else {
+        etcApi.getPrivacyPolicy().message
+      }
     )
   }, {
     _message.postValue("")

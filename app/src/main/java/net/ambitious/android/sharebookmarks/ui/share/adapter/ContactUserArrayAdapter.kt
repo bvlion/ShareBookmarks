@@ -17,9 +17,9 @@ class ContactUserArrayAdapter constructor(
   private val allContacts: List<Contact>,
   private val listener: OnUserCompleteListener
 ) : ArrayAdapter<Contact>(
-    context,
-    android.R.layout.simple_list_item_2,
-    allContacts
+  context,
+  android.R.layout.simple_list_item_2,
+  allContacts
 ) {
 
   private val _contacts = arrayListOf<Contact>()
@@ -37,9 +37,9 @@ class ContactUserArrayAdapter constructor(
 
   override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
     (convertView ?: inflater.inflate(
-        R.layout.row_contact_candidate,
-        parent,
-        false
+      R.layout.row_contact_candidate,
+      parent,
+      false
     )).apply {
       findViewById<TextView>(R.id.name).text = _contacts[position].displayName
       findViewById<TextView>(R.id.email).text = _contacts[position].email

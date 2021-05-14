@@ -8,13 +8,13 @@ import org.joda.time.DateTime
 import java.io.Serializable
 
 @Entity(
-    tableName = "shares",
-    indices = [
-      Index(
-          value = ["folder_id"],
-          name = "index_shares"
-      )
-    ]
+  tableName = "shares",
+  indices = [
+    Index(
+      value = ["folder_id"],
+      name = "index_shares"
+    )
+  ]
 )
 data class Share(
   /** ローカル ID */

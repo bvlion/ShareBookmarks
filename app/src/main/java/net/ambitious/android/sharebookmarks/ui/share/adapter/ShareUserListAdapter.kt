@@ -37,13 +37,13 @@ class ShareUserListAdapter(
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     if (viewType == VIEW_TYPE_BANNER) {
       InfoViewHolder(
-          LayoutInflater.from(parent.context)
-              .inflate(layout.row_info_banner, parent, false)
+        LayoutInflater.from(parent.context)
+          .inflate(layout.row_info_banner, parent, false)
       )
     } else {
       UserViewHolder(
-          LayoutInflater.from(parent.context)
-              .inflate(layout.row_share_user, parent, false)
+        LayoutInflater.from(parent.context)
+          .inflate(layout.row_share_user, parent, false)
       )
     }
 
@@ -66,9 +66,9 @@ class ShareUserListAdapter(
         1 -> {
           userImage.isVisible = true
           Glide.with(context)
-              .load(preferences.userIcon)
-              .circleCrop()
-              .into(userImage)
+            .load(preferences.userIcon)
+            .circleCrop()
+            .into(userImage)
           addUserImage.isVisible = false
           userNameEdit.isVisible = false
           userNameArea.isVisible = true
@@ -81,11 +81,11 @@ class ShareUserListAdapter(
           addUserImage.isVisible = true
           userNameEdit.isVisible = true
           userNameEdit.setAdapter(
-              ContactUserArrayAdapter(
-                  context,
-                  _contacts,
-                  listener
-              )
+            ContactUserArrayAdapter(
+              context,
+              _contacts,
+              listener
+            )
           )
           userNameEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -103,9 +103,9 @@ class ShareUserListAdapter(
           val setImage = _shares[position - HEADER_COUNT].userIcon?.let {
             try {
               Glide.with(context)
-                  .load(Base64.decode(it, Base64.DEFAULT))
-                  .circleCrop()
-                  .into(userImage)
+                .load(Base64.decode(it, Base64.DEFAULT))
+                .circleCrop()
+                .into(userImage)
               return@let true
             } catch (e: Exception) {
               FirebaseCrashlytics.getInstance().recordException(e)
@@ -114,29 +114,29 @@ class ShareUserListAdapter(
           } ?: false
           if (!setImage) {
             Glide.with(context)
-                .load(R.drawable.ic_account_circle)
-                .circleCrop()
-                .into(userImage)
+              .load(R.drawable.ic_account_circle)
+              .circleCrop()
+              .into(userImage)
           }
           addUserImage.isVisible = false
           userNameEdit.isVisible = false
           userNameArea.isVisible = true
           userName.text = _shares[position - HEADER_COUNT].userName
-              ?: _shares[position - HEADER_COUNT].userEmail
+            ?: _shares[position - HEADER_COUNT].userEmail
           userEmail.text = _shares[position - HEADER_COUNT].userEmail
           if (!Patterns.EMAIL_ADDRESS.matcher(
-                  _shares[position - HEADER_COUNT].userEmail
-              ).matches()
+              _shares[position - HEADER_COUNT].userEmail
+            ).matches()
           ) {
             userEmail.setTextColor(Color.RED)
             userEmail.setText(R.string.share_email_invalid)
             userEmail.isVisible = true
           } else {
             userEmail.setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    android.R.color.tab_indicator_text
-                )
+              ContextCompat.getColor(
+                context,
+                android.R.color.tab_indicator_text
+              )
             )
             userEmail.isVisible = _shares[position - HEADER_COUNT].userName != null
           }
