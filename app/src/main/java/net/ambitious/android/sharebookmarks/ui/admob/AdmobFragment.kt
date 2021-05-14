@@ -62,7 +62,7 @@ class AdmobFragment : Fragment() {
   }
 
   private fun showAdmobBanner() {
-    admobView = AdView(context).apply {
+    admobView = AdView(requireContext()).apply {
       adSize = getAdaptiveAdSize()
       adUnitId = BuildConfig.AD_MOB_BANNER_KEY
     }
@@ -93,7 +93,7 @@ class AdmobFragment : Fragment() {
 
     val adWidth = (adWidthPixels?.div(density))?.toInt()
     return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-        context,
+        requireContext(),
         adWidth ?: return AdSize.BANNER
     )
   }

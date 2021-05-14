@@ -8,6 +8,8 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -96,15 +98,18 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         NotificationUtils.createChannels(this)
       }
-      AlertDialog.Builder(this)
-          .setView(View.inflate(this, R.layout.dialog_first_message, null))
-          .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
-            analyticsUtils.logMenuTap("first dialog how to use")
-            d.dismiss()
-            startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
-          }
-          .setNegativeButton(R.string.first_dialog_cancel, null)
-          .create().show()
+      val view = View.inflate(this, R.layout.dialog_first_message, null)
+      Handler(Looper.getMainLooper()).postDelayed({
+        AlertDialog.Builder(this)
+            .setView(view)
+            .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
+              analyticsUtils.logMenuTap("first dialog how to use")
+              d.dismiss()
+              startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+            }
+            .setNegativeButton(R.string.first_dialog_cancel, null)
+            .create().show()
+      }, 600)
     }
     AppLaunchChecker.onActivityCreate(this)
     messageBroadcastReceiver = MessageBroadcastReceiver {

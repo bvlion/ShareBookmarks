@@ -246,7 +246,7 @@ class HomeViewModel(
         *Const.INITIALIZE_DB.mapIndexed { index, it ->
           Item(
               null,
-              0,
+              null,
               0,
               it[0]!!,
               it[1],

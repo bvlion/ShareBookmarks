@@ -38,8 +38,12 @@ class ShareBookmarksDataSourceImpl(
     // サーバーとローカルの対象データを取得する
     val remoteData = itemApi.getItems(latestSync)
     val localAll = if (latestSync == null) {
-      itemDao.deleteAllItems()
-      listOf()
+      if (remoteData.items.isNotEmpty()) {
+        itemDao.deleteAllItems()
+        listOf()
+      } else {
+        itemDao.getAllItems()
+      }
     } else {
       itemDao.getAllItems()
     }
@@ -129,7 +133,7 @@ class ShareBookmarksDataSourceImpl(
     }
 
     // ローカルの値をサーバーに送信
-    if (latestSync != null) {
+    if (latestSync != null || remoteData.items.isEmpty()) {
       getLocalItems(latestSync).map {
         ItemEntity.PostItem(
             it.id!!,
