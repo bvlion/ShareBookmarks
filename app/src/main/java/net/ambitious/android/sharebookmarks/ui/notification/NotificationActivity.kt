@@ -43,20 +43,11 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
     binding.recyclerView.adapter = notificationListAdapter
 
     binding.refresh.setOnRefreshListener {
-      getNotifications()
+      viewModel.refresh()
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    getNotifications()
   }
 
   override fun onRowClick(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-  }
-
-  private fun getNotifications() {
-    viewModel.getNotifications(preferences.userBearer != null)
   }
 }

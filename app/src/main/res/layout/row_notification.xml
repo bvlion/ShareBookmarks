@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:card="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_marginStart="@dimen/space_small"
-  android:layout_marginEnd="@dimen/space_small"
-  android:layout_marginTop="@dimen/space_small"
-  card:cardCornerRadius="2dp"
-  card:cardElevation="0dp">
+<layout>
+
+  <data>
+    <variable
+      name="notification"
+      type="net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity.Notification" />
+  </data>
+
+  <androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_small"
+    android:layout_marginEnd="@dimen/space_small"
+    android:layout_marginTop="@dimen/space_small"
+    card:cardElevation="0dp">
 
     <LinearLayout
       android:id="@+id/row_notification"
@@ -21,7 +28,7 @@
       android:clickable="true"
       android:focusable="true"
       android:orientation="vertical">
-      
+
       <TextView
         android:id="@+id/title"
         android:layout_height="wrap_content"
@@ -30,8 +37,9 @@
         android:textStyle="bold"
         android:textSize="@dimen/notification_title_size"
         android:layout_marginBottom="@dimen/space_small"
+        android:text="@{notification.title}"
         tools:text="フォルダー" />
-      
+
       <TextView
         android:id="@+id/subject"
         android:layout_height="wrap_content"
@@ -39,6 +47,7 @@
         android:gravity="center_vertical"
         android:textSize="@dimen/notification_subject_size"
         android:layout_marginBottom="@dimen/space_small"
+        android:text="@{notification.subject}"
         tools:text="フォルダー" />
 
       <TextView
@@ -48,12 +57,14 @@
         android:gravity="center_vertical"
         android:textSize="@dimen/notification_date_size"
         android:layout_marginBottom="@dimen/space_normal"
+        android:text="@{notification.targetDate.replace('-', '/')}"
         tools:text="フォルダー" />
-      
+
       <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/underLine" />
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+  </androidx.cardview.widget.CardView>
+</layout>

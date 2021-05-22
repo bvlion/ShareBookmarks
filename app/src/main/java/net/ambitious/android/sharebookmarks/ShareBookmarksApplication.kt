@@ -65,7 +65,7 @@ class ShareBookmarksApplication : Application() {
       ShareAddViewModel(get())
     }
     viewModel {
-      NotificationViewModel(get())
+      NotificationViewModel(get(), get())
     }
     viewModel {
       ShareUserViewModel(get())

@@ -1,26 +1,39 @@
 package net.ambitious.android.sharebookmarks.ui.notification
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsApi
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
+import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
-class NotificationViewModel(private val notificationApi: NotificationsApi) : BaseViewModel() {
+class NotificationViewModel(
+  private val notificationApi: NotificationsApi,
+  private val preferences: PreferencesUtils.Data
+) : BaseViewModel() {
 
-  private val _notifications = MutableLiveData<NotificationsEntity>()
-  val notifications: LiveData<NotificationsEntity>
-    get() = _notifications
+  private val _refresh = MutableLiveData<Boolean>()
 
-  fun getNotifications(isAuth: Boolean) {
-    launch({
-      if (isAuth) {
-        _notifications.postValue(notificationApi.getAuthNotifications())
-      } else {
-        _notifications.postValue(notificationApi.getNotifications())
+  init {
+    refresh()
+  }
+
+  val notifications = _refresh.switchMap {
+    liveData {
+      runCatching {
+        if (preferences.userBearer != null) {
+          notificationApi.getAuthNotifications()
+        } else {
+          notificationApi.getNotifications()
+        }
       }
-    }, {
-      _notifications.postValue(NotificationsEntity(listOf()))
-    })
+        .onSuccess { emit(it) }
+        .onFailure { emit(NotificationsEntity(listOf())) }
+    }
+  }
+
+  fun refresh() {
+    _refresh.value = !(_refresh.value ?: true)
   }
 }
