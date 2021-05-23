@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.inquiry
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -38,14 +39,14 @@ class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
     _binding = null
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     if (viewModel.postResult.value == null) {
       viewModel.postResult.observe(
         viewLifecycleOwner,
         {
-          view?.run {
+          view.run {
             Snackbar.make(
               this, if (it) {
                 R.string.send_complete

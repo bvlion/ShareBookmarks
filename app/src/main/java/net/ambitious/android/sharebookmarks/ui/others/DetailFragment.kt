@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.others
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -33,8 +34,8 @@ class DetailFragment : Fragment() {
     _binding = null
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     viewModel.message.observe(viewLifecycleOwner, {
       if (it.isEmpty()) {
         binding.errorText.isVisible = true

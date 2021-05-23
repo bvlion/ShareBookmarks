@@ -30,8 +30,8 @@ class AdmobFragment : Fragment() {
     admobContainer = findViewById(R.id.admob_container)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     if (!preferences.isPremium) {
       showAdmobBanner()
     }

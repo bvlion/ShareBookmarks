@@ -3,6 +3,7 @@ package net.ambitious.android.sharebookmarks.ui.share
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -57,8 +58,8 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
     _binding = null
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     initObserve()
     context?.let {
       shareListAdapter = ShareUserListAdapter(it, preferences, this)

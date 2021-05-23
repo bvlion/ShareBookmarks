@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -57,6 +59,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
   private var loading: AlertDialog? = null
   private var isFirstLoad = false
 
+  private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -70,8 +74,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     _binding = null
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     initObserve(savedInstanceState == null)
     itemListAdapter = ItemListAdapter(this)
     binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -100,6 +104,16 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       homeViewModel.getItems()
       homeViewModel.setSort()
     }
+
+    activityResultLauncher =
+      requireActivity().registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
+          context?.let {
+            preferences.shareSynced = false
+            DataUpdateService.startShareSync(it)
+          }
+        }
+      }
   }
 
   private fun initObserve(isInitialize: Boolean) {
@@ -228,18 +242,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     }
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (resultCode == AppCompatActivity.RESULT_OK) {
-      when (requestCode) {
-        SHARE_USER_ACTIVITY_REQUEST -> context?.let {
-          preferences.shareSynced = false
-          DataUpdateService.startShareSync(it)
-        }
-      }
-    }
-  }
-
   override fun onRowClick(item: Long?, url: String?) {
     item?.let {
       analyticsUtils.logHomeTap("folder")
@@ -299,10 +301,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         return
       }
       analyticsUtils.logHomeTap("share folder", "success")
-      startActivityForResult(
-        ShareUserActivity.createIntent(context ?: return, itemId),
-        SHARE_USER_ACTIVITY_REQUEST
-      )
+      activityResultLauncher.launch(ShareUserActivity.createIntent(context ?: return, itemId))
       activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     } else {
       analyticsUtils.logHomeTap("share bookmark")
@@ -467,9 +466,5 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       }
 
     ItemTouchHelper(simpleItemTouchCallback)
-  }
-
-  companion object {
-    const val SHARE_USER_ACTIVITY_REQUEST = 2001
   }
 }
