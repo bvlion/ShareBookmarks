@@ -33,9 +33,10 @@ object Const {
   }
 
   val INITIALIZE_DB = arrayOf(
-    arrayOf("Google", "https://www.google.com/"),
+    arrayOf("サクサク天ぷらの衣", "https://cookpad.com/recipe/5835988"),
+    arrayOf("何にでも使える辛味噌", "https://cookpad.com/recipe/6506630"),
     arrayOf("Yahoo", "https://www.yahoo.co.jp/"),
-    arrayOf("フォルダ", null)
+    arrayOf("グループワーク用フォルダ（サンプル）", null)
   )
 
   object NotificationService {

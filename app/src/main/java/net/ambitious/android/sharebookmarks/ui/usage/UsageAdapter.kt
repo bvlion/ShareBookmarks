@@ -2,6 +2,7 @@ package net.ambitious.android.sharebookmarks.ui.usage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -18,10 +19,9 @@ class UsageAdapter : Adapter<ViewHolder>() {
     }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    if (viewType == ViewType.SPACE.type) {
-      Space(parent)
-    } else {
-      ItemViewHolder(
+    when (viewType) {
+      ViewType.SPACE.type -> Space(parent)
+      else -> ItemViewHolder(
         RowUsageBinding.inflate(
           LayoutInflater.from(parent.context),
           parent,
@@ -41,7 +41,7 @@ class UsageAdapter : Adapter<ViewHolder>() {
   override fun getItemCount() = items.size
 
   companion object {
-    const val IMAGES_COUNT = 6
+    const val IMAGES_COUNT = 7
   }
 
   enum class ViewType(val type: Int) {
@@ -56,28 +56,35 @@ class UsageAdapter : Adapter<ViewHolder>() {
 
       binding.usageTitle.setText(
         resources.getIdentifier(
-          "ic_how_to_use_text_main_${position}", "string",
+          "how_to_use_text_main_${position}", "string",
           context.packageName
         )
       )
 
-      binding.usageImage.setImageResource(
-        resources.getIdentifier(
-          "ic_how_to_use_${position}", "drawable",
-          context.packageName
-        )
-      )
+      binding.usageImage.run {
+        if (position == 1) {
+          isVisible = false
+        } else {
+          isVisible = true
+          setImageResource(
+            resources.getIdentifier(
+              "ic_how_to_use_${position - 1}", "drawable",
+              context.packageName
+            )
+          )
+        }
+      }
 
       binding.usageText.setText(
         resources.getIdentifier(
-          "ic_how_to_use_text_sub_${position}", "string",
+          "how_to_use_text_sub_${position}", "string",
           context.packageName
         )
       )
     }
   }
 
-  class Space(parent: ViewGroup) : RecyclerView.ViewHolder(
+  private class Space(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context)
       .inflate(R.layout.row_usage_space, parent, false)
   )

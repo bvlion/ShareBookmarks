@@ -143,18 +143,20 @@
     <string name="communication_error">読み込みに失敗しました。\n通信化環境をご確認ください。</string>
 
     <!-- 使い方 -->
-    <string name="ic_how_to_use_text_main_1">共有をタップ！</string>
-    <string name="ic_how_to_use_text_sub_1">ブラウザの右上をタップしてメニューを開き、共有を選択します。</string>
-    <string name="ic_how_to_use_text_main_2">ブックマーク共有を選択！</string>
-    <string name="ic_how_to_use_text_sub_2">共有メニューから当アプリ「ブックマーク共有」を選択します。</string>
-    <string name="ic_how_to_use_text_main_3">URL を追加！</string>
-    <string name="ic_how_to_use_text_sub_3">タイトルと URL を確認して追加をタップします。</string>
-    <string name="ic_how_to_use_text_main_4">追加完了！</string>
-    <string name="ic_how_to_use_text_sub_4">矢印のようにブックマークが追加されます。（画像はサイトによって設定されない場合があります。）</string>
-    <string name="ic_how_to_use_text_main_5">フォルダを共有する！</string>
-    <string name="ic_how_to_use_text_sub_5">フォルダのメニューから「フォルダを共有」を選択します。</string>
-    <string name="ic_how_to_use_text_main_6">共有先を設定！</string>
-    <string name="ic_how_to_use_text_sub_6">共有するお相手の Google メールアドレスを入力、右上のチェックをタップすればフォルダ内のブックマークが共有されます。（メールアドレスはアドレス帳からも検索できます。）</string>
+    <string name="how_to_use_text_main_1">このアプリがあれば、いつも使っているレシピもお気に入りのサイトも画像付きで自由に保存してシェア（共有）できます！</string>
+    <string name="how_to_use_text_sub_1">「いつも使っているあのレシピを夫婦でいつでも閲覧したい」「このサイトを一緒に見ながら話したい」そんな時は、このアプリを通して共有しましょう。\nやり方は簡単！</string>
+    <string name="how_to_use_text_main_2">普段お使いのブラウザの共有をタップ！</string>
+    <string name="how_to_use_text_sub_2">Google Chrome など普段お使いのブラウザの右上をタップしてメニューを開き、共有を選択します。</string>
+    <string name="how_to_use_text_main_3">ブックマーク共有を選択！</string>
+    <string name="how_to_use_text_sub_3">共有メニューから当アプリ「ブックマーク共有」を選択します。</string>
+    <string name="how_to_use_text_main_4">URL を追加！</string>
+    <string name="how_to_use_text_sub_4">タイトルと URL を確認して追加をタップします。</string>
+    <string name="how_to_use_text_main_5">追加完了！</string>
+    <string name="how_to_use_text_sub_5">矢印のようにブックマークが追加されます。（画像はサイトによって設定されない場合があります。）</string>
+    <string name="how_to_use_text_main_6">フォルダを共有する！</string>
+    <string name="how_to_use_text_sub_6">フォルダのメニューから「フォルダを共有」を選択します。</string>
+    <string name="how_to_use_text_main_7">共有先を設定！</string>
+    <string name="how_to_use_text_sub_7">共有するお相手の Google メールアドレスを入力、右上のチェックをタップすればフォルダ内のブックマークが共有されます。（メールアドレスはアドレス帳からも検索できます。）</string>
 
     <!-- 良くある質問 -->
     <string name="questions_title">よくある質問</string>

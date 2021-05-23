@@ -24,14 +24,12 @@
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/usage_title"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:padding="@dimen/space_normal"
-        android:maxLines="1"
-        app:autoSizeMaxTextSize="@dimen/usage_title_max_size"
-        app:autoSizeMinTextSize="@dimen/usage_title_min_size"
-        app:autoSizeTextType="uniform"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/space_normal"
+        android:paddingStart="@dimen/space_normal"
+        android:paddingEnd="@dimen/space_normal"
+        android:textSize="@dimen/usage_title_size"
         android:textStyle="bold"
-        app:autoSizeStepGranularity="1sp"
         android:textColor="@android:color/black"
         tools:text="使い方" />
 
@@ -41,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
+        android:paddingTop="@dimen/space_normal"
         android:paddingStart="@dimen/space_normal"
         android:paddingEnd="@dimen/space_normal"
         app:srcCompat="@drawable/ic_how_to_use_1" />
