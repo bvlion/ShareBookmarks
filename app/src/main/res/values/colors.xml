@@ -4,6 +4,7 @@
     <color name="info">#deffebee</color>
     <color name="items_background">#DEF0F0F0</color>
     <color name="tool_bar_white">#DDFFFFFF</color>
+    <color name="splash_background">#3C48A5</color>
 
     <!-- Red -->
     <color name="RedSidebar">#99ff6f60</color>
