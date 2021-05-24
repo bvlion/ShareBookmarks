@@ -5,12 +5,14 @@ import net.ambitious.android.sharebookmarks.data.remote.notifications.Notificati
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity
 import net.ambitious.android.sharebookmarks.data.remote.notifications.NotificationsEntity.Notification
 import net.ambitious.android.sharebookmarks.ui.notification.NotificationViewModel
+import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
 class NotificationViewModelTest {
@@ -20,14 +22,14 @@ class NotificationViewModelTest {
   private lateinit var viewModel: NotificationViewModel
 
   private val entity = NotificationsEntity(
-      listOf(
-          Notification(
-              "target date",
-              "title",
-              "subject",
-              "url"
-          )
+    listOf(
+      Notification(
+        "target date",
+        "title",
+        "subject",
+        "url"
       )
+    )
   )
 
   @Before
@@ -36,21 +38,25 @@ class NotificationViewModelTest {
       object : NotificationsApi by mock(NotificationsApi::class.java) {
         override suspend fun getNotifications() = entity
       }
-    viewModel = NotificationViewModel(notificationApiMock)
+    val prefDataMock = mock(PreferencesUtils.Data::class.java)
+    `when`(prefDataMock.userBearer).thenReturn(null)
+    viewModel = NotificationViewModel(
+      notificationApiMock,
+      prefDataMock
+    )
   }
 
   @Test
   fun fetchNotification() {
     val observer = TestObserver<NotificationsEntity>()
     viewModel.notifications.observeForever(observer)
-    viewModel.getNotifications(false)
     observer.await()
 
     val notifications = observer.get()!!
 
     assertThat(
-        notifications.notifications.size,
-        `is`(1)
+      notifications.notifications.size,
+      `is`(1)
     )
 
     val notification = entity.notifications[0]
