@@ -53,7 +53,7 @@ import net.ambitious.android.sharebookmarks.util.Const.ItemType.ITEM
 import net.ambitious.android.sharebookmarks.util.NotificationUtils
 
 class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
-    ItemEditDialogFragment.OnClickListener, FolderListDialogFragment.OnSetListener {
+  ItemEditDialogFragment.OnClickListener, FolderListDialogFragment.OnSetListener {
 
   private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -89,7 +89,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   override fun onStart() {
     super.onStart()
     homeFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        ?.childFragmentManager?.fragments?.get(0) as HomeFragment
+      ?.childFragmentManager?.fragments?.get(0) as HomeFragment
 
     // 初回起動時に初期値 DB を設定
     if (!AppLaunchChecker.hasStartedFromLauncher(this)) {
@@ -100,14 +100,14 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       val view = View.inflate(this, R.layout.dialog_first_message, null)
       Handler(Looper.getMainLooper()).postDelayed({
         AlertDialog.Builder(this)
-            .setView(view)
-            .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
-              analyticsUtils.logMenuTap("first dialog how to use")
-              d.dismiss()
-              startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
-            }
-            .setNegativeButton(R.string.first_dialog_cancel, null)
-            .create().show()
+          .setView(view)
+          .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
+            analyticsUtils.logMenuTap("first dialog how to use")
+            d.dismiss()
+            startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+          }
+          .setNegativeButton(R.string.first_dialog_cancel, null)
+          .create().show()
       }, 600)
     }
     AppLaunchChecker.onActivityCreate(this)
@@ -118,10 +118,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       if (it == Const.SyncMessageType.ALL_SYNC_SUCCESS.value) {
         ContextCompat.startForegroundService(
-            this,
-            Intent(this, UpdateImageService::class.java).apply {
-              putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
-            })
+          this,
+          Intent(this, UpdateImageService::class.java).apply {
+            putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+          })
       }
       if (it == Const.SyncMessageType.ALL_SYNC_ERROR.value || it == Const.SyncMessageType.NORMAL_SYNC_ERROR.value) {
         showSnackbar(getString(R.string.sync_network_error))
@@ -161,9 +161,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
 
       setSearchableInfo(
-          (getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(
-              componentName
-          )
+        (getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(
+          componentName
+        )
       )
       maxWidth = Integer.MAX_VALUE
       setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -198,13 +198,13 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     when (item.itemId) {
       R.id.menu_folder_add, R.id.menu_item_add ->
         onCreateClick(
-            if (item.itemId == R.id.menu_folder_add) {
-              analyticsUtils.logMenuTap("folder add")
-              FOLDER
-            } else {
-              analyticsUtils.logMenuTap("item add")
-              ITEM
-            }
+          if (item.itemId == R.id.menu_folder_add) {
+            analyticsUtils.logMenuTap("folder add")
+            FOLDER
+          } else {
+            analyticsUtils.logMenuTap("item add")
+            ITEM
+          }
         )
       R.id.menu_sort_start -> {
         analyticsUtils.logMenuTap("sort start")
@@ -217,10 +217,10 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       R.id.menu_image_reacquisition -> {
         analyticsUtils.logMenuTap("image reacquisition")
         ContextCompat.startForegroundService(
-            this@HomeActivity,
-            Intent(this@HomeActivity, UpdateImageService::class.java).apply {
-              putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
-            })
+          this@HomeActivity,
+          Intent(this@HomeActivity, UpdateImageService::class.java).apply {
+            putExtra(UpdateImageService.PARAM_ITEM_ALL, true)
+          })
         showSnackbar(getString(R.string.snackbar_all_thumbnail_reload))
       }
       R.id.menu_set_start_folder -> {
@@ -274,85 +274,85 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       R.id.menu_notification -> {
         analyticsUtils.logMenuTap("notification")
         startActivity(
-            Intent(
-                this@HomeActivity,
-                NotificationActivity::class.java
-            )
+          Intent(
+            this@HomeActivity,
+            NotificationActivity::class.java
+          )
         )
       }
       R.id.menu_login -> {
         analyticsUtils.logMenuTap("login")
         startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build()))
-                .build(),
-            SIGN_IN_REQUEST_CODE
+          AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build()))
+            .build(),
+          SIGN_IN_REQUEST_CODE
         )
       }
       R.id.menu_logout -> {
         analyticsUtils.logMenuTap("logout")
         AlertDialog.Builder(this@HomeActivity)
-            .setTitle(R.string.menu_logout)
-            .setMessage(R.string.sign_out_confirm)
-            .setNegativeButton(R.string.fui_cancel, null)
-            .setPositiveButton(R.string.menu_logout) { _, _ ->
-              AuthUI.getInstance()
-                  .signOut(this@HomeActivity)
-                  .addOnCompleteListener {
-                    // ログアウトしたら全設定を削除
-                    preferences.userName = null
-                    preferences.userEmail = null
-                    preferences.userUid = null
-                    preferences.userIcon = null
-                    preferences.userBearer = null
-                    preferences.startFolder = Const.StartFolderType.ROOT.value
-                    preferences.startFolderId = 0
-                    setNavigation()
-                    showSnackbar(getString(R.string.sign_out_complete))
-                  }
-            }.show()
+          .setTitle(R.string.menu_logout)
+          .setMessage(R.string.sign_out_confirm)
+          .setNegativeButton(R.string.fui_cancel, null)
+          .setPositiveButton(R.string.menu_logout) { _, _ ->
+            AuthUI.getInstance()
+              .signOut(this@HomeActivity)
+              .addOnCompleteListener {
+                // ログアウトしたら全設定を削除
+                preferences.userName = null
+                preferences.userEmail = null
+                preferences.userUid = null
+                preferences.userIcon = null
+                preferences.userBearer = null
+                preferences.startFolder = Const.StartFolderType.ROOT.value
+                preferences.startFolderId = 0
+                setNavigation()
+                showSnackbar(getString(R.string.sign_out_complete))
+              }
+          }.show()
       }
       R.id.menu_oss_license -> {
         analyticsUtils.logMenuTap("oss license")
         startActivity(
-            Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
-              putExtra("title", getString(R.string.menu_oss_license))
-            }
+          Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
+            putExtra("title", getString(R.string.menu_oss_license))
+          }
         )
       }
       R.id.menu_other -> {
         analyticsUtils.logMenuTap("other")
         startActivityForResult(
-            Intent(this@HomeActivity, OtherActivity::class.java),
-            UPDATE_REQUEST_CODE
+          Intent(this@HomeActivity, OtherActivity::class.java),
+          UPDATE_REQUEST_CODE
         )
       }
       R.id.menu_app_rating -> {
         analyticsUtils.logMenuTap("app rating")
         try {
           startActivity(
-              Intent(
-                  Intent.ACTION_VIEW,
-                  Uri.parse("market://details?id=${Const.STORE_URL}")
-              )
+            Intent(
+              Intent.ACTION_VIEW,
+              Uri.parse("market://details?id=${Const.STORE_URL}")
+            )
           )
         } catch (_: ActivityNotFoundException) {
           startActivity(
-              Intent(
-                  Intent.ACTION_VIEW,
-                  Uri.parse("https://play.google.com/store/apps/details?id=${Const.STORE_URL}")
-              )
+            Intent(
+              Intent.ACTION_VIEW,
+              Uri.parse("https://play.google.com/store/apps/details?id=${Const.STORE_URL}")
+            )
           )
         }
       }
       R.id.menu_settings -> {
         analyticsUtils.logMenuTap("settings")
         startActivityForResult(
-            Intent(
-                this@HomeActivity,
-                SettingActivity::class.java
-            ), SETTING_REQUEST_CODE
+          Intent(
+            this@HomeActivity,
+            SettingActivity::class.java
+          ), SETTING_REQUEST_CODE
         )
       }
       R.id.menu_how_to_use -> {
@@ -373,28 +373,28 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       "bookmark"
     }
     showSnackbar(
-        if (itemId > 0) {
-          analyticsUtils.logResult("item update", target)
-          getString(R.string.snackbar_update_message)
+      if (itemId > 0) {
+        analyticsUtils.logResult("item update", target)
+        getString(R.string.snackbar_update_message)
+      } else {
+        analyticsUtils.logResult("item create", target)
+        getString(R.string.snackbar_create_message)
+      }.format(
+        if (itemUrl.isNullOrEmpty()) {
+          getString(R.string.snackbar_target_folder)
         } else {
-          analyticsUtils.logResult("item create", target)
-          getString(R.string.snackbar_create_message)
-        }.format(
-            if (itemUrl.isNullOrEmpty()) {
-              getString(R.string.snackbar_target_folder)
-            } else {
-              getString(R.string.snackbar_target_item)
-            }
-        )
+          getString(R.string.snackbar_target_item)
+        }
+      )
     )
   }
 
   override fun onCancel() =
     supportFragmentManager.fragments
-        .filter { it is ItemEditDialogFragment || it is FolderListDialogFragment }
-        .forEach {
-          supportFragmentManager.beginTransaction().remove(it).commit()
-        }
+      .filter { it is ItemEditDialogFragment || it is FolderListDialogFragment }
+      .forEach {
+        supportFragmentManager.beginTransaction().remove(it).commit()
+      }
 
   override fun onSet(selfId: Long, parentId: Long) {
     analyticsUtils.logResult("item move", "done")
@@ -404,26 +404,26 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   fun onMove(selfId: Long, folderList: List<Item>) =
     FolderListDialogFragment.newInstance(selfId, ArrayList(folderList))
-        .show(supportFragmentManager, FolderListDialogFragment.TAG)
+      .show(supportFragmentManager, FolderListDialogFragment.TAG)
 
   fun onEdit(item: Item) {
     analyticsUtils.logHomeTap(
-        "edit",
-        if (item.url.isNullOrEmpty()) {
-          "folder"
-        } else {
-          "bookmark"
-        }
+      "edit",
+      if (item.url.isNullOrEmpty()) {
+        "folder"
+      } else {
+        "bookmark"
+      }
     )
     ItemEditDialogFragment.newInstance(
-        item.id!!,
-        if (item.url.isNullOrEmpty()) {
-          FOLDER
-        } else {
-          ITEM
-        },
-        item.name,
-        item.url
+      item.id!!,
+      if (item.url.isNullOrEmpty()) {
+        FOLDER
+      } else {
+        ITEM
+      },
+      item.name,
+      item.url
     ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
   }
 
@@ -434,9 +434,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   }
 
   fun showSnackbar(message: String) = Snackbar.make(
-      findViewById<FragmentContainerView>(R.id.nav_host_fragment),
-      message,
-      Snackbar.LENGTH_LONG
+    findViewById<FragmentContainerView>(R.id.nav_host_fragment),
+    message,
+    Snackbar.LENGTH_LONG
   ).show()
 
   fun changeAdmob() =
@@ -452,7 +452,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
 
   private fun onCreateClick(type: ItemType) =
     ItemEditDialogFragment.newInstance(0, type, null, null)
-        .show(supportFragmentManager, ItemEditDialogFragment.TAG)
+      .show(supportFragmentManager, ItemEditDialogFragment.TAG)
 
   private fun setNavigation() {
     binding.navView.menu.findItem(R.id.menu_login).isVisible = preferences.userEmail == null
@@ -460,9 +460,9 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     binding.navView.menu.findItem(R.id.menu_billing).isVisible = false
     val header = binding.navView.getHeaderView(0)
     Glide.with(this)
-        .load(preferences.userIcon ?: R.mipmap.ic_launcher_round)
-        .circleCrop()
-        .into(header.findViewById(R.id.user_image))
+      .load(preferences.userIcon ?: R.mipmap.ic_launcher_round)
+      .circleCrop()
+      .into(header.findViewById(R.id.user_image))
     header.findViewById<TextView>(R.id.user_name).text =
       preferences.userName ?: getString(R.string.app_name)
     header.findViewById<TextView>(R.id.user_mail).run {
