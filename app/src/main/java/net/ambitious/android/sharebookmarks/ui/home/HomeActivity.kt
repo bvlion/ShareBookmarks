@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.AppLaunchChecker
@@ -65,6 +66,38 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private lateinit var binding: ActivityMainBinding
 
   private lateinit var searchView: SearchView
+
+  private val forceUpdateActivityResult =
+    registerForActivityResult(StartActivityForResult()) { result ->
+      if (result.resultCode == RESULT_OK) {
+        homeFragment.setLoadingShow(true)
+      }
+    }
+
+  private val settingCloseActivityResult =
+    registerForActivityResult(StartActivityForResult()) {
+      setNavigation()
+    }
+
+  private val loginActivityResult =
+    registerForActivityResult(StartActivityForResult()) { result ->
+      if (result.resultCode == RESULT_OK) {
+        FirebaseAuth.getInstance().currentUser?.also {
+          preferences.userName = it.displayName
+          preferences.userEmail = it.email
+          preferences.userUid = it.uid
+          preferences.userIcon = it.photoUrl?.toString()
+          setNavigation()
+          preferences.fcmToken?.let { token ->
+            homeFragment.saveUserData(it.email ?: return@registerForActivityResult, it.uid, token)
+          }
+          analyticsUtils.logResult("login", "success")
+          showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
+        } ?: errorSnackbar()
+      } else {
+        errorSnackbar()
+      }
+    }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -242,33 +275,6 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     }
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    when (requestCode) {
-      SIGN_IN_REQUEST_CODE ->
-        if (resultCode == RESULT_OK) {
-          FirebaseAuth.getInstance().currentUser?.also {
-            preferences.userName = it.displayName
-            preferences.userEmail = it.email
-            preferences.userUid = it.uid
-            preferences.userIcon = it.photoUrl?.toString()
-            setNavigation()
-            preferences.fcmToken?.let { token ->
-              homeFragment.saveUserData(it.email ?: return, it.uid, token)
-            }
-            analyticsUtils.logResult("login", "success")
-            showSnackbar(String.format(getString(R.string.sign_in_success), it.displayName))
-          } ?: errorSnackbar()
-        } else {
-          errorSnackbar()
-        }
-      SETTING_REQUEST_CODE -> setNavigation()
-      UPDATE_REQUEST_CODE -> if (resultCode == RESULT_OK) {
-        homeFragment.setLoadingShow(true)
-      }
-    }
-  }
-
   override fun onNavigationItemSelected(item: MenuItem) = false.apply {
     when (item.itemId) {
       R.id.menu_notification -> {
@@ -282,12 +288,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_login -> {
         analyticsUtils.logMenuTap("login")
-        startActivityForResult(
+        loginActivityResult.launch(
           AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build()))
-            .build(),
-          SIGN_IN_REQUEST_CODE
+            .build()
         )
       }
       R.id.menu_logout -> {
@@ -323,10 +328,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_other -> {
         analyticsUtils.logMenuTap("other")
-        startActivityForResult(
-          Intent(this@HomeActivity, OtherActivity::class.java),
-          UPDATE_REQUEST_CODE
-        )
+        forceUpdateActivityResult.launch(Intent(this@HomeActivity, OtherActivity::class.java))
       }
       R.id.menu_app_rating -> {
         analyticsUtils.logMenuTap("app rating")
@@ -348,11 +350,11 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_settings -> {
         analyticsUtils.logMenuTap("settings")
-        startActivityForResult(
+        settingCloseActivityResult.launch(
           Intent(
             this@HomeActivity,
             SettingActivity::class.java
-          ), SETTING_REQUEST_CODE
+          )
         )
       }
       R.id.menu_how_to_use -> {
@@ -478,11 +480,5 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
   private fun errorSnackbar() {
     analyticsUtils.logResult("login", "failed")
     showSnackbar(getString(R.string.sign_in_failure))
-  }
-
-  companion object {
-    const val SIGN_IN_REQUEST_CODE = 1001
-    const val SETTING_REQUEST_CODE = 1002
-    const val UPDATE_REQUEST_CODE = 1003
   }
 }
