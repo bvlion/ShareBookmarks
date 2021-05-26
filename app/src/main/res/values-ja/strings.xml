@@ -148,7 +148,7 @@
     <string name="how_to_use_text_main_2">普段お使いのブラウザの共有をタップ！</string>
     <string name="how_to_use_text_sub_2">Google Chrome など普段お使いのブラウザの右上をタップしてメニューを開き、共有を選択します。</string>
     <string name="how_to_use_text_main_3">シェブ！を選択！</string>
-    <string name="how_to_use_text_sub_3">共有メニューから当アプリ「シェブ！」を選択します。\n（この一覧になく「もっと見る」でひょうじされるばあいがあります。）</string>
+    <string name="how_to_use_text_sub_3">共有メニューから当アプリ「シェブ！」を選択します。\n（この一覧になく「もっと見る」で表示される場合があります。）</string>
     <string name="how_to_use_text_main_4">URL を追加！</string>
     <string name="how_to_use_text_sub_4">タイトルと URL を確認して追加をタップします。</string>
     <string name="how_to_use_text_main_5">追加完了！</string>
