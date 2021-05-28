@@ -1,26 +1,30 @@
 package net.ambitious.android.sharebookmarks.ui.others
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
 import net.ambitious.android.sharebookmarks.ui.BaseViewModel
-import java.util.Locale
 
 class DetailViewModel(private val etcApi: EtcApi) : BaseViewModel() {
 
-  private val _message = MutableLiveData<String>()
-  val message: LiveData<String>
-    get() = _message
+  private val _isTerm = MutableLiveData<Boolean>()
 
-  fun getDetailMessages(isTerm: Boolean) = launch({
-    _message.postValue(
-      if (isTerm) {
-        etcApi.getTermsOfUse().message
-      } else {
-        etcApi.getPrivacyPolicy().message
+  val message = _isTerm.switchMap {
+    liveData {
+      runCatching {
+        if (it) {
+          etcApi.getTermsOfUse().message
+        } else {
+          etcApi.getPrivacyPolicy().message
+        }
       }
-    )
-  }, {
-    _message.postValue("")
-  })
+        .onSuccess { emit(it) }
+        .onFailure { emit("") }
+    }
+  }
+
+  fun getDetailMessages(isTerm: Boolean) {
+    _isTerm.value = isTerm
+  }
 }
