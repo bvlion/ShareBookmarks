@@ -42,13 +42,8 @@ class FaqActivity : BaseActivity(), FaqListAdapter.FaqClickListener {
     binding.recyclerView.adapter = adapter
 
     binding.refresh.setOnRefreshListener {
-      viewModel.getFaq()
+      viewModel.refresh()
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    viewModel.getFaq()
   }
 
   override fun onInquiryClick() {
