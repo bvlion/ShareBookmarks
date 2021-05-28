@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
+import com.ibm.icu.text.Transliterator
 import net.ambitious.android.sharebookmarks.data.local.item.Item
 import net.ambitious.android.sharebookmarks.data.local.item.ItemDao
 import net.ambitious.android.sharebookmarks.data.remote.etc.EtcApi
@@ -72,6 +73,9 @@ class HomeViewModel(
     get() = _searchText
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
+
+  private val transFH = Transliterator.getInstance("Fullwidth-Halfwidth")
+  private val transHK = Transliterator.getInstance("Hiragana-Katakana")
 
   fun setInitialParentId(parentId: Long?) {
     _parentId = parentId ?: 0L
@@ -281,7 +285,12 @@ class HomeViewModel(
       if (text.isEmpty()) {
         listOf()
       } else {
-        itemDao.getSearchItems("%$text%")
+        itemDao.getSearchItems(
+          "%$text%",
+          "%${transHK.transliterate(text)}%",
+          "%${transFH.transliterate(text)}%",
+          "%${transFH.transliterate(transHK.transliterate(text))}%",
+        )
       }
     )
   }
