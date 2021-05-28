@@ -61,6 +61,16 @@ object PreferencesUtils {
     var imageSyncTarget: String?
       get() = pref.getString(IMAGE_SYNC_TARGET)
       set(value) = pref.save(IMAGE_SYNC_TARGET, value)
+
+    fun logout() {
+      userName = null
+      userEmail = null
+      userUid = null
+      userIcon = null
+      userBearer = null
+      startFolder = Const.StartFolderType.ROOT.value
+      startFolderId = 0
+    }
   }
 
   class Preference(private val context: Context) {
