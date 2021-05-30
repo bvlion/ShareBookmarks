@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,9 +18,26 @@ import net.ambitious.android.sharebookmarks.ui.BaseActivity
 import net.ambitious.android.sharebookmarks.util.OperationUtils
 
 class ShareUserActivity : BaseActivity() {
-
   private lateinit var shareUserFragment: ShareUserFragment
   private var isFromMenu = false
+
+  private val contactPermission =
+    registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+      if (result) {
+        analyticsUtils.logResult("Share", "contact access permission granted")
+        sendContactData()
+        invalidateOptionsMenu()
+      } else {
+        if (isFromMenu) {
+          analyticsUtils.logResult("Share", "contact access permission not granted")
+          AlertDialog.Builder(this)
+            .setMessage(R.string.share_permission_dialog)
+            .setPositiveButton(android.R.string.ok, null)
+            .create()
+            .show()
+        }
+      }
+    }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -56,22 +74,11 @@ class ShareUserActivity : BaseActivity() {
     }
   }
 
+  override fun onBackPressed() = changeDestroyConfirm { super.onBackPressed() }
+
   override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).apply {
     when (item.itemId) {
-      android.R.id.home -> {
-        analyticsUtils.logOtherTap("Share", "back")
-        if (shareUserFragment.isChanged()) {
-          AlertDialog.Builder(this@ShareUserActivity)
-            .setMessage(R.string.share_end_warning)
-            .setPositiveButton(R.string.share_end_warning_ok) { _, _ ->
-              finish()
-            }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create().show()
-        } else {
-          finish()
-        }
-      }
+      android.R.id.home -> changeDestroyConfirm { finish() }
       R.id.menu_contact_permission -> {
         analyticsUtils.logOtherTap("Share", "permission")
         isFromMenu = true
@@ -96,35 +103,27 @@ class ShareUserActivity : BaseActivity() {
     }
   }
 
-  override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<out String>,
-    grantResults: IntArray
-  ) {
-    when (requestCode) {
-      PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        analyticsUtils.logResult("Share", "contact access permission granted")
-        sendContactData()
-        invalidateOptionsMenu()
-      } else {
-        if (isFromMenu) {
-          analyticsUtils.logResult("Share", "contact access permission not granted")
-          AlertDialog.Builder(this)
-            .setMessage(R.string.share_permission_dialog)
-            .setPositiveButton(android.R.string.ok, null)
-            .create()
-            .show()
-        }
-      }
-    }
-  }
-
   override fun finish() {
     super.finish()
     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
   }
 
   override fun isBackShowOnly() = false
+
+  private fun changeDestroyConfirm(finish: () -> Unit) {
+    analyticsUtils.logOtherTap("Share", "back")
+    if (shareUserFragment.isChanged()) {
+      AlertDialog.Builder(this@ShareUserActivity)
+        .setMessage(R.string.share_end_warning)
+        .setPositiveButton(R.string.share_end_warning_ok) { _, _ ->
+          finish()
+        }
+        .setNegativeButton(R.string.dialog_cancel, null)
+        .create().show()
+    } else {
+      finish()
+    }
+  }
 
   private fun sendContactData() {
     shareUserFragment.setContactList(OperationUtils.getContactList(contentResolver))
@@ -140,11 +139,7 @@ class ShareUserActivity : BaseActivity() {
         Manifest.permission.READ_CONTACTS
       )
     ) {
-      ActivityCompat.requestPermissions(
-        this,
-        arrayOf(Manifest.permission.READ_CONTACTS),
-        PERMISSION_REQUEST_CODE
-      )
+      contactPermission.launch(Manifest.permission.READ_CONTACTS)
     } else {
       if (isFromMenu) {
         analyticsUtils.logResult("Share", "contact access permission setting dialog")
@@ -165,11 +160,7 @@ class ShareUserActivity : BaseActivity() {
           .create().show()
         isFromMenu = false
       } else {
-        ActivityCompat.requestPermissions(
-          this,
-          arrayOf(Manifest.permission.READ_CONTACTS),
-          PERMISSION_REQUEST_CODE
-        )
+        contactPermission.launch(Manifest.permission.READ_CONTACTS)
       }
     }
   }
@@ -177,7 +168,6 @@ class ShareUserActivity : BaseActivity() {
   companion object {
 
     private const val PARAM_FOLDER_ID = "param_folder_id"
-    private const val PERMISSION_REQUEST_CODE = 1005
 
     fun createIntent(context: Context, folderId: Long) =
       Intent(context, ShareUserActivity::class.java).apply {

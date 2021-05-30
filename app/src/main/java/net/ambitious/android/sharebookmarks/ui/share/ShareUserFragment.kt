@@ -89,7 +89,7 @@ class ShareUserFragment : Fragment(), OnUserCompleteListener {
     viewModel.updateUserContact(contacts)
   }
 
-  fun isChanged() = viewModel.changed.value ?: false
+  fun isChanged() = viewModel.changed
 
   fun getInvalidMails() = ArrayList(viewModel.share.value!!).filter {
     !Patterns.EMAIL_ADDRESS.matcher(it.userEmail).matches()
