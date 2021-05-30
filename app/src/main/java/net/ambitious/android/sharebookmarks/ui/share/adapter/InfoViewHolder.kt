@@ -1,4 +1,4 @@
-package net.ambitious.android.sharebookmarks.ui
+package net.ambitious.android.sharebookmarks.ui.share.adapter
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView

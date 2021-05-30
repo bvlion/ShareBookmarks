@@ -22,7 +22,6 @@ import net.ambitious.android.sharebookmarks.R
 import net.ambitious.android.sharebookmarks.R.layout
 import net.ambitious.android.sharebookmarks.data.local.contact.Contact
 import net.ambitious.android.sharebookmarks.data.local.share.Share
-import net.ambitious.android.sharebookmarks.ui.InfoViewHolder
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 
 class ShareUserListAdapter(
