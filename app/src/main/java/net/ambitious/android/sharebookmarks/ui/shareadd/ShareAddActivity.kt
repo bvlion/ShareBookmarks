@@ -26,39 +26,33 @@ class ShareAddActivity : AppCompatActivity(), ItemEditDialogFragment.OnClickList
       return
     }
 
-    viewModel.folders.observe(
-      this,
-      {
-        ItemEditDialogFragment.newInstance(
-          intent.getStringExtra(Intent.EXTRA_SUBJECT) ?: "",
-          intent.getStringExtra(Intent.EXTRA_TEXT) ?: "",
-          ArrayList(it)
-        ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
-      }
-    )
-
     viewModel.postResult.observe(
       this,
       {
-        if (it.first > 0) {
-          Toast.makeText(
-            this,
-            getString(R.string.snackbar_create_message, it.second),
-            Toast.LENGTH_SHORT
-          ).show()
-          DataUpdateService.startItemSync(this)
-          ContextCompat.startForegroundService(
-            this,
-            Intent(this, UpdateImageService::class.java).apply {
-              putExtra(UpdateImageService.PARAM_ITEM_ID, it.first)
-              putExtra(UpdateImageService.PARAM_ITEM_URL, it.third)
-            })
-          finish()
-        }
+        Toast.makeText(
+          this,
+          getString(R.string.snackbar_create_message, it.second),
+          Toast.LENGTH_SHORT
+        ).show()
+        DataUpdateService.startItemSync(this)
+        ContextCompat.startForegroundService(
+          this,
+          Intent(this, UpdateImageService::class.java).apply {
+            putExtra(UpdateImageService.PARAM_ITEM_ID, it.first)
+            putExtra(UpdateImageService.PARAM_ITEM_URL, it.third)
+          })
+        finish()
       }
     )
+  }
 
-    viewModel.getFolders()
+  override fun onStart() {
+    super.onStart()
+    ItemEditDialogFragment.newInstance(
+      intent.getStringExtra(Intent.EXTRA_SUBJECT) ?: "",
+      intent.getStringExtra(Intent.EXTRA_TEXT) ?: "",
+      viewModel.folders
+    ).show(supportFragmentManager, ItemEditDialogFragment.TAG)
   }
 
   override fun onEdited(itemId: Long, itemName: String, itemUrl: String?, folderId: Long?) {
