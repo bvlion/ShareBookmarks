@@ -120,7 +120,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.items.observe(
       viewLifecycleOwner,
       {
-        itemListAdapter.setItems(it, homeViewModel.ownerType.value == OwnerType.OWNER.value)
+        itemListAdapter.setItems(it, homeViewModel.ownerType == OwnerType.OWNER.value)
         binding.itemsRefresh.isRefreshing = false
         targetImageUpdate()
       })
@@ -135,10 +135,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.folders.observe(
       viewLifecycleOwner,
       {
-        it?.run {
-          folderSelectDialogShow(first, second)
-          homeViewModel.setFolderNull()
+        if (it.second.isEmpty()) {
+          return@observe
         }
+        folderSelectDialogShow(it.first, it.second)
+        homeViewModel.setFolderNull()
       })
 
     homeViewModel.sorting.observe(
@@ -159,7 +160,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.tokenSave.observe(
       viewLifecycleOwner,
       {
-        if (it == null) {
+        if (it.accessToken.isEmpty()) {
           return@observe
         }
         preferences.userBearer = it.accessToken
@@ -200,7 +201,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     homeViewModel.itemUpdate.observe(
       viewLifecycleOwner,
       {
-        if (it == null) {
+        if (it == 0) {
           return@observe
         }
         context?.let { context ->
@@ -361,7 +362,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
       return
     }
 
-    if (homeViewModel.searchText.value != null) {
+    if (homeViewModel.searchText != null) {
       (activity as HomeActivity).closeSearch()
       return
     }
@@ -394,7 +395,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
         Glide.get(it).clearMemory()
       }
     } else {
-      homeViewModel.endSearch()
+      homeViewModel.searchText = null
       binding.itemsRefresh.isEnabled = true
     }
     homeViewModel.getItems()
@@ -421,7 +422,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
 
   fun searchItems(text: String) = homeViewModel.searchItems(text)
 
-  fun getSearchText() = homeViewModel.searchText.value
+  fun getSearchText() = homeViewModel.searchText
 
   private fun folderSelectDialogShow(selfId: Long, folderList: List<Item>) =
     (activity as HomeActivity).onMove(selfId, folderList)

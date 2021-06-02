@@ -20,12 +20,12 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
     get() = _saved
 
   var changed = false
-  private var _folderId = 0L
+  private var _folderId = INITIAL_FOLDER_ID
 
   fun getShares(folderId: Long) {
-    if (_folderId.value == null) {
+    if (_folderId == INITIAL_FOLDER_ID) {
       launch {
-        _folderId.postValue(folderId)
+        _folderId = folderId
         _share.postValue(shareDao.getShares(folderId))
       }
     }
@@ -117,5 +117,9 @@ class ShareUserViewModel(private val shareDao: ShareDao) : BaseViewModel() {
     shareDao.insertAll(*shareList.toTypedArray())
 
     _saved.postValue(true)
+  }
+
+  companion object {
+    private const val INITIAL_FOLDER_ID = -1L
   }
 }

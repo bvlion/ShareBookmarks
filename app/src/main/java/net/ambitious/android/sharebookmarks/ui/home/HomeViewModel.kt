@@ -32,12 +32,8 @@ class HomeViewModel(
 
   private var _parentId = 0L
 
-  private val _ownerType = MutableLiveData<Int>()
-  val ownerType: LiveData<Int>
-    get() = _ownerType
-
-  private val _breadcrumbs = MutableLiveData<MutableList<Pair<Long, String>>>()
-  val breadcrumbs: LiveData<MutableList<Pair<Long, String>>>
+  private val _breadcrumbs = MutableLiveData<List<Pair<Long, String>>>()
+  val breadcrumbs: LiveData<List<Pair<Long, String>>>
     get() = _breadcrumbs
 
   private val _folders = MutableLiveData<Pair<Long, List<Item>>>()
@@ -68,9 +64,8 @@ class HomeViewModel(
   val dialogShow: LiveData<Boolean>
     get() = _dialogShow
 
-  private val _searchText = MutableLiveData<String>()
-  val searchText: LiveData<String>
-    get() = _searchText
+  var searchText: String? = null
+  var ownerType = OwnerType.OWNER.value
 
   private val _breadcrumbsList = arrayListOf<Pair<Long, String>>()
 
@@ -130,7 +125,7 @@ class HomeViewModel(
     _folders.postValue(Pair(selfId, folders.filter { !idList.contains(it.id) }))
   }
 
-  fun setFolderNull() = _folders.postValue(null)
+  fun setFolderNull() = _folders.postValue(Pair(0, listOf()))
 
   fun sendUserData(email: String, uid: String, token: String) =
     launch {
@@ -140,15 +135,11 @@ class HomeViewModel(
     }
 
   fun setTokenSaved() {
-    _tokenSave.value = null
+    _tokenSave.value = AuthTokenResponse(false, "")
   }
 
   fun hideBreadcrumbs() = launch {
     createBreadcrumbs(-1L)
-  }
-
-  fun endSearch() {
-    _searchText.value = null
   }
 
   private fun deleteChildItems(
@@ -175,7 +166,7 @@ class HomeViewModel(
         _breadcrumbsList.add(0, Pair(0, "Home"))
         _breadcrumbs.postValue(_breadcrumbsList)
       }
-      -1L -> _breadcrumbs.postValue(arrayListOf())
+      -1L -> _breadcrumbs.postValue(listOf())
       else -> itemDao.getItem(selfId)?.let {
         _breadcrumbsList.add(0, Pair(it.id!!, it.name))
         createBreadcrumbs(it.parentId)
@@ -218,7 +209,7 @@ class HomeViewModel(
           itemUrl,
           itemUrl?.let { OperationUtils.getOgpImage(it, etcApi) },
           0,
-          _ownerType.value ?: OwnerType.OWNER.value
+          ownerType
         )
       )
     }
@@ -234,7 +225,7 @@ class HomeViewModel(
   }
 
   fun itemUpdated() {
-    _itemUpdate.value = null
+    _itemUpdate.value = 0
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")
@@ -279,8 +270,8 @@ class HomeViewModel(
   }
 
   fun searchItems(text: String) = launch {
-    _ownerType.postValue(OwnerType.READONLY.value)
-    _searchText.postValue(text)
+    ownerType = OwnerType.READONLY.value
+    searchText = text
     _items.postValue(
       if (text.isEmpty()) {
         listOf()
@@ -300,7 +291,7 @@ class HomeViewModel(
   }
 
   private suspend fun postItems() {
-    _ownerType.postValue(itemDao.getItem(_parentId)?.ownerType ?: 0)
+    ownerType = itemDao.getItem(_parentId)?.ownerType ?: 0
     _items.postValue(itemDao.getItems(_parentId))
   }
 }
