@@ -137,7 +137,8 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
           .setPositiveButton(R.string.first_dialog_ok) { d, _ ->
             analyticsUtils.logMenuTap("first dialog how to use")
             d.dismiss()
-            startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+            startActivity(UsageActivity.createFromDialogIntent(this@HomeActivity))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
           }
           .setNegativeButton(R.string.first_dialog_cancel, null)
           .create().show()
@@ -279,12 +280,15 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
     when (item.itemId) {
       R.id.menu_notification -> {
         analyticsUtils.logMenuTap("notification")
-        startActivity(
-          Intent(
-            this@HomeActivity,
-            NotificationActivity::class.java
+        Handler(Looper.getMainLooper()).postDelayed({
+          startActivity(
+            Intent(
+              this@HomeActivity,
+              NotificationActivity::class.java
+            )
           )
-        )
+          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+        }, 110)
       }
       R.id.menu_login -> {
         analyticsUtils.logMenuTap("login")
@@ -313,15 +317,21 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_oss_license -> {
         analyticsUtils.logMenuTap("oss license")
-        startActivity(
-          Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
-            putExtra("title", getString(R.string.menu_oss_license))
-          }
-        )
+        Handler(Looper.getMainLooper()).postDelayed({
+          startActivity(
+            Intent(this@HomeActivity, OssLicensesMenuActivity::class.java).apply {
+              putExtra("title", getString(R.string.menu_oss_license))
+            }
+          )
+          overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }, 110)
       }
       R.id.menu_other -> {
         analyticsUtils.logMenuTap("other")
-        forceUpdateActivityResult.launch(Intent(this@HomeActivity, OtherActivity::class.java))
+        Handler(Looper.getMainLooper()).postDelayed({
+          forceUpdateActivityResult.launch(Intent(this@HomeActivity, OtherActivity::class.java))
+          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+        }, 110)
       }
       R.id.menu_app_rating -> {
         analyticsUtils.logMenuTap("app rating")
@@ -343,16 +353,22 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
       }
       R.id.menu_settings -> {
         analyticsUtils.logMenuTap("settings")
-        settingCloseActivityResult.launch(
-          Intent(
-            this@HomeActivity,
-            SettingActivity::class.java
+        Handler(Looper.getMainLooper()).postDelayed({
+          settingCloseActivityResult.launch(
+            Intent(
+              this@HomeActivity,
+              SettingActivity::class.java
+            )
           )
-        )
+          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+        }, 110)
       }
       R.id.menu_how_to_use -> {
         analyticsUtils.logMenuTap("how to use")
-        startActivity(Intent(this@HomeActivity, UsageActivity::class.java))
+        Handler(Looper.getMainLooper()).postDelayed({
+          startActivity(UsageActivity.createIntent(this@HomeActivity))
+          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+        }, 110)
       }
     }
     binding.drawerLayout.closeDrawer(GravityCompat.START)

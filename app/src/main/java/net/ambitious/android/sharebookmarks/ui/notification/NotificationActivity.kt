@@ -47,6 +47,11 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
     }
   }
 
+  override fun finish() {
+    super.finish()
+    overridePendingTransition(R.anim.slide_out_right, R.anim.slide_out_left)
+  }
+
   override fun onRowClick(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
   }

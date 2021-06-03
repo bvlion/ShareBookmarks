@@ -25,6 +25,11 @@ class FaqActivity : BaseActivity(), FaqListAdapter.FaqClickListener {
     setContentView(binding.root)
 
     setTitle(R.string.questions_title)
+
+    supportActionBar?.run {
+      setDisplayHomeAsUpEnabled(true)
+      setHomeAsUpIndicator(R.drawable.ic_clear_white)
+    }
   }
 
   override fun onStart() {
@@ -47,7 +52,13 @@ class FaqActivity : BaseActivity(), FaqListAdapter.FaqClickListener {
   }
 
   override fun onInquiryClick() {
-    startActivity(Intent(this, InquiryActivity::class.java))
     finish()
+    startActivity(Intent(this, InquiryActivity::class.java))
+    overridePendingTransition(R.anim.fade_in_top, android.R.anim.fade_out)
+  }
+
+  override fun finish() {
+    super.finish()
+    overridePendingTransition(android.R.anim.fade_in, R.anim.fade_out_bottom)
   }
 }

@@ -12,4 +12,9 @@ class SettingActivity : BaseActivity() {
     setContentView(R.layout.activity_setting)
     setTitle(R.string.menu_settings)
   }
+
+  override fun finish() {
+    super.finish()
+    overridePendingTransition(R.anim.slide_out_right, R.anim.slide_out_left)
+  }
 }
