@@ -485,7 +485,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         View.GONE
       }
     }
-    
+
     binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
       override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
 
