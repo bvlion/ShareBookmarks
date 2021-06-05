@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.AppLaunchChecker
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -484,6 +485,18 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         View.GONE
       }
     }
+    
+    binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+      override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+      override fun onDrawerOpened(drawerView: View) {}
+
+      override fun onDrawerClosed(drawerView: View) {}
+
+      override fun onDrawerStateChanged(newState: Int) {
+        closeSearch()
+      }
+    })
   }
 
   private fun errorSnackbar() {
