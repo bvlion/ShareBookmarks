@@ -288,7 +288,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
               NotificationActivity::class.java
             )
           )
-          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+          overridePendingTransition(android.R.anim.fade_in, R.anim.slide_in_left)
         }, 110)
       }
       R.id.menu_login -> {
@@ -331,7 +331,7 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
         analyticsUtils.logMenuTap("other")
         Handler(Looper.getMainLooper()).postDelayed({
           forceUpdateActivityResult.launch(Intent(this@HomeActivity, OtherActivity::class.java))
-          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+          overridePendingTransition(android.R.anim.fade_in, R.anim.slide_in_left)
         }, 110)
       }
       R.id.menu_app_rating -> {
@@ -361,14 +361,14 @@ class HomeActivity : BaseActivity(), OnNavigationItemSelectedListener,
               SettingActivity::class.java
             )
           )
-          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+          overridePendingTransition(android.R.anim.fade_in, R.anim.slide_in_left)
         }, 110)
       }
       R.id.menu_how_to_use -> {
         analyticsUtils.logMenuTap("how to use")
         Handler(Looper.getMainLooper()).postDelayed({
           startActivity(UsageActivity.createIntent(this@HomeActivity))
-          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right)
+          overridePendingTransition(android.R.anim.fade_in, R.anim.slide_in_left)
         }, 110)
       }
     }

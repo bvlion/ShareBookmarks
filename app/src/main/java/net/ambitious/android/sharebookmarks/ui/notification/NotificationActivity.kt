@@ -49,7 +49,7 @@ class NotificationActivity : BaseActivity(), NotificationListAdapter.OnNotificat
 
   override fun finish() {
     super.finish()
-    overridePendingTransition(R.anim.slide_out_right, R.anim.slide_out_left)
+    overridePendingTransition(R.anim.slide_out_right, android.R.anim.fade_out)
   }
 
   override fun onRowClick(url: String) {

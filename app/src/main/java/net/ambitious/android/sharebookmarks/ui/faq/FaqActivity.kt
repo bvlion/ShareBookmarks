@@ -54,7 +54,7 @@ class FaqActivity : BaseActivity(), FaqListAdapter.FaqClickListener {
   override fun onInquiryClick() {
     finish()
     startActivity(Intent(this, InquiryActivity::class.java))
-    overridePendingTransition(R.anim.fade_in_top, android.R.anim.fade_out)
+    overridePendingTransition(android.R.anim.fade_in, R.anim.fade_in_top)
   }
 
   override fun finish() {

@@ -43,7 +43,7 @@ class UsageActivity : BaseActivity() {
     if (fromDialog) {
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     } else {
-      overridePendingTransition(R.anim.slide_out_right, R.anim.slide_out_left)
+      overridePendingTransition(R.anim.slide_out_right, android.R.anim.fade_out)
     }
   }
 

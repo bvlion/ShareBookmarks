@@ -55,7 +55,7 @@ class OtherActivity : BaseActivity() {
 
   override fun finish() {
     super.finish()
-    overridePendingTransition(R.anim.slide_out_right, R.anim.slide_out_left)
+    overridePendingTransition(R.anim.slide_out_right, android.R.anim.fade_out)
   }
 
   fun termsOfUseShow() = true.apply {
@@ -65,7 +65,12 @@ class OtherActivity : BaseActivity() {
       setHomeAsUpIndicator(R.drawable.ic_clear_white)
     }
     supportFragmentManager.beginTransaction()
-      .setCustomAnimations(R.anim.fade_in_top, android.R.anim.fade_out, android.R.anim.fade_in, R.anim.fade_out_bottom_fragment)
+      .setCustomAnimations(
+        android.R.anim.fade_in,
+        R.anim.fade_in_top,
+        android.R.anim.fade_in,
+        R.anim.fade_out_bottom_fragment
+      )
       .replace(R.id.nav_host_fragment, DetailFragment.newInstance(true))
       .addToBackStack(null)
       .commit()
@@ -78,7 +83,12 @@ class OtherActivity : BaseActivity() {
       setHomeAsUpIndicator(R.drawable.ic_clear_white)
     }
     supportFragmentManager.beginTransaction()
-      .setCustomAnimations(R.anim.fade_in_top, android.R.anim.fade_out, android.R.anim.fade_in, R.anim.fade_out_bottom_fragment)
+      .setCustomAnimations(
+        android.R.anim.fade_in,
+        R.anim.fade_in_top,
+        android.R.anim.fade_in,
+        R.anim.fade_out_bottom_fragment
+      )
       .replace(R.id.nav_host_fragment, DetailFragment.newInstance(false))
       .addToBackStack(null)
       .commit()
