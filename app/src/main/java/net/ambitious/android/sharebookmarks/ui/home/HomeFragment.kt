@@ -41,6 +41,7 @@ import net.ambitious.android.sharebookmarks.ui.share.ShareUserActivity
 import net.ambitious.android.sharebookmarks.util.AnalyticsUtils
 import net.ambitious.android.sharebookmarks.util.Const.ItemType
 import net.ambitious.android.sharebookmarks.util.Const.OwnerType
+import net.ambitious.android.sharebookmarks.util.DisplayCompat
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,7 +79,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
     super.onViewCreated(view, savedInstanceState)
     initObserve(savedInstanceState == null)
     itemListAdapter = ItemListAdapter(this)
-    binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+    val outMetrics = DisplayCompat.getOutMetrics(activity)
+    val widthDp = outMetrics.widthPixels / resources.displayMetrics.density
+    binding.itemsRecyclerView.layoutManager = GridLayoutManager(context, widthDp.toInt() / 300 + 1)
     binding.itemsRecyclerView.adapter = itemListAdapter
 
     breadcrumbsAdapter = BreadcrumbsAdapter(this)
@@ -114,6 +117,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnBreadcrumbsClickListener
           }
         }
       }
+  }
+
+  override fun onStart() {
+    super.onStart()
+    reloadItems(false)
   }
 
   private fun initObserve(isInitialize: Boolean) {
