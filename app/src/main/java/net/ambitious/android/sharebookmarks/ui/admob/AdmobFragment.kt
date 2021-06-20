@@ -1,7 +1,6 @@
 package net.ambitious.android.sharebookmarks.ui.admob
 
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import net.ambitious.android.sharebookmarks.BuildConfig
 import net.ambitious.android.sharebookmarks.R
+import net.ambitious.android.sharebookmarks.util.DisplayCompat
 import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 
@@ -80,9 +80,7 @@ class AdmobFragment : Fragment() {
   }
 
   private fun getAdaptiveAdSize(): AdSize {
-    val outMetrics = DisplayMetrics()
-    @Suppress("DEPRECATION")
-    activity?.windowManager?.defaultDisplay?.getMetrics(outMetrics)
+    val outMetrics = DisplayCompat.getOutMetrics(activity)
 
     val density = outMetrics.density
 
