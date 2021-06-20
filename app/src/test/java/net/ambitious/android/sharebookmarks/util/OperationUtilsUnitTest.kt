@@ -32,8 +32,8 @@ class OperationUtilsUnitTest {
   fun createThumbnailUrlTest() {
     // favicon 取得 URL 生成
     assertThat(
-        OperationUtils.createThumbnailUrl("https://bvlion-app.firebaseapp.com"),
-        `is`("${Const.GOOGLE_FAVICON_URL}bvlion-app.firebaseapp.com")
+      OperationUtils.createThumbnailUrl("https://bvlion-app.firebaseapp.com"),
+      `is`("${Const.GOOGLE_FAVICON_URL}bvlion-app.firebaseapp.com")
     )
 
     // null
@@ -54,8 +54,8 @@ class OperationUtilsUnitTest {
     runBlocking {
       // OGP 取得
       assertThat(
-          OperationUtils.getOgpImage("https://www.ambitious-i.net", etcApi),
-          `is`("https://www.ambitious-i.net/img/main.jpg")
+        OperationUtils.getOgpImage("https://www.ambitious-i.net", etcApi),
+        `is`("https://www.ambitious-i.net/img/main.jpg")
       )
 
       // URL 形式でない

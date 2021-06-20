@@ -140,7 +140,7 @@
     <string name="all_sync_dialog_title">Update all data</string>
     <string name="all_sync_dialog_subject">This feature is for emergency use only.\nPlease refrain from using it unless you are informed by the administrator.\n\nDo you want to delete all data on the device and get all data from the server?</string>
     <string name="all_sync_dialog_exec">Execute with understanding</string>
-    <string name="communication_error">Failed to load.\nPlease check your communication environment.</string>
+    <string name="communication_error">Failed to load.\nPlease check the status of your Wi-Fi and mobile communications.</string>
 
     <!-- 使い方 -->
     <string name="how_to_use_text_main_1">With this app, you\'re free to save and share both your regular recipes and your favorite sites, complete with images!</string>

@@ -57,7 +57,7 @@ class OtherFragment : PreferenceFragmentCompat() {
     preferenceScreen.findPreference<Preference>(QUESTIONS)?.setOnPreferenceClickListener {
       analyticsUtils.logOtherTap("Other", "inquiry")
       startActivity(Intent(context, FaqActivity::class.java))
-      activity?.overridePendingTransition(R.anim.fade_in_top, android.R.anim.fade_out)
+      activity?.overridePendingTransition(android.R.anim.fade_in, R.anim.fade_in_top)
       true
     }
   }

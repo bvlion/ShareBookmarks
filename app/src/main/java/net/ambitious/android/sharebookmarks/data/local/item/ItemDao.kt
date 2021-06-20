@@ -23,8 +23,12 @@ interface ItemDao {
   @Query("SELECT * FROM items WHERE parent_id = :parentId AND active = 1 ORDER BY `order`, upserted DESC")
   suspend fun getItems(parentId: Long): List<Item>
 
-  @Query("SELECT * FROM items WHERE url IS NOT NULL AND active = 1 AND (name LIKE :textH OR name LIKE :textK OR name LIKE :textKH OR name LIKE :textHKH) ORDER BY upserted DESC")
-  suspend fun getSearchItems(textH: String, textK: String, textKH: String, textHKH: String): List<Item>
+  @Query("SELECT * FROM items WHERE url IS NOT NULL AND active = 1 AND (name LIKE :textH OR name LIKE :textK OR name LIKE :textKH) ORDER BY upserted DESC")
+  suspend fun getSearchItems(
+    textH: String,
+    textK: String,
+    textKH: String
+  ): List<Item>
 
   @Query("SELECT * FROM items WHERE url IS NULL AND id != :selfId AND active = 1 AND owner_type IN (0, 1) ORDER BY `order`")
   suspend fun getFolderItems(selfId: Long): List<Item>

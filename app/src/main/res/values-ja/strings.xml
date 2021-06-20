@@ -140,7 +140,7 @@
     <string name="all_sync_dialog_title">全データ更新を行います</string>
     <string name="all_sync_dialog_subject">この機能は緊急用です。\n管理者より案内がない場合は使用をお控えください。\n\n端末のデータを全て削除し、サーバーから全データを取得しますか？</string>
     <string name="all_sync_dialog_exec">理解のうえで実行</string>
-    <string name="communication_error">読み込みに失敗しました。\n通信化環境をご確認ください。</string>
+    <string name="communication_error">読み込みに失敗しました。\nWi-Fi やモバイル通信の状況をご確認下さい。</string>
 
     <!-- 使い方 -->
     <string name="how_to_use_text_main_1">このアプリがあれば、いつも使っているレシピもお気に入りのサイトも画像付きで自由に保存してシェア（共有）できます！</string>
