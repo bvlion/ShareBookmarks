@@ -45,8 +45,8 @@ class ShareBookmarksApi private constructor(private val client: OkHttpClient) {
     private fun getClient(preferences: PreferencesUtils.Data) =
       OkHttpClient
         .Builder()
-        .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(6, TimeUnit.SECONDS)
+        .readTimeout(6, TimeUnit.SECONDS)
         .addInterceptor(AuthorizationInterceptor(preferences))
         .addInterceptor(
           HttpLoggingInterceptor().apply {

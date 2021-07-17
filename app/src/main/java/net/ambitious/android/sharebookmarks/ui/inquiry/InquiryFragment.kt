@@ -15,7 +15,7 @@ import net.ambitious.android.sharebookmarks.util.PreferencesUtils
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class InquiryFragment() : Fragment(), InquiryViewModel.OnClickListener {
+class InquiryFragment : Fragment(), InquiryViewModel.OnClickListener {
 
   private val viewModel by viewModel<InquiryViewModel>()
   private val preferences: PreferencesUtils.Data by inject()
