@@ -89,7 +89,14 @@ class AdmobFragment : Fragment() {
       adWidthPixels = outMetrics.widthPixels.toFloat()
     }
 
-    val adWidth = (adWidthPixels?.div(density))?.toInt()
+    val adWidth = (adWidthPixels?.div(density))?.toInt()?.let {
+      val adMaxWidth = 800
+      if (it > adMaxWidth) {
+        adMaxWidth
+      } else {
+        it
+      }
+    }
     return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
       requireContext(),
       adWidth ?: return AdSize.BANNER
