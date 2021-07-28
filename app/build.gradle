@@ -79,9 +79,13 @@ android {
     }
 }
 
+static String captureVersion(Dependency dependency) {
+    return dependency.version
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    def kotlin_version = captureVersion(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21"))
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "androidx.core:core-ktx:1.6.0"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -91,34 +95,34 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    def navigation_version = captureVersion(implementation("androidx.navigation:navigation-fragment-ktx:2.3.5"))
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "androidx.room:room-runtime:$room_version"
+    def room_version = captureVersion(implementation("androidx.room:room-runtime:2.3.0"))
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
-    implementation "com.google.android.gms:play-services-ads:$ads_version"
-    implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
-    implementation "com.google.firebase:firebase-analytics:$analytics_version"
-    implementation "com.google.firebase:firebase-config:$remote_config_version"
-    implementation "com.google.firebase:firebase-messaging:$messaging_version"
+    implementation "com.google.android.gms:play-services-ads:20.2.0"
+    implementation "com.google.firebase:firebase-crashlytics:18.1.0"
+    implementation "com.google.firebase:firebase-analytics:19.0.0"
+    implementation "com.google.firebase:firebase-config:21.0.0"
+    implementation "com.google.firebase:firebase-messaging:22.0.0"
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
-    implementation "org.koin:koin-androidx-scope:$koin_version"
+    def koin_version = captureVersion(implementation("org.koin:koin-androidx-scope:2.1.6"))
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-androidx-fragment:$koin_version"
     implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_auth_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "com.firebaseui:firebase-ui-auth:6.2.0"
+    implementation "com.github.bumptech.glide:glide:4.11.0"
+    def coroutines_version = captureVersion(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"))
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    def okhttp_version = captureVersion(implementation("com.squareup.okhttp3:okhttp:4.8.1"))
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.squareup.moshi:moshi:$moshi_version"
+    def moshi_version = captureVersion(implementation("com.squareup.moshi:moshi:1.9.3"))
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    def retrofit_version = captureVersion(implementation("com.squareup.retrofit2:retrofit:2.9.0"))
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "joda-time:joda-time:2.10.6"
     implementation "org.jsoup:jsoup:1.13.1"
