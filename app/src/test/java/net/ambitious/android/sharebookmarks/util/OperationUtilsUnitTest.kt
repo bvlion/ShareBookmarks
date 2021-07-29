@@ -62,7 +62,7 @@ class OperationUtilsUnitTest {
       assertNull(OperationUtils.getOgpImage("test", etcApi))
 
       // OGP がない
-      assertNull(OperationUtils.getOgpImage("https://bvlion-app.firebaseapp.com", etcApi))
+      assertNull(OperationUtils.getOgpImage("https://twitter.com/", etcApi))
 
       // URL スキーム
       OperationUtils.getOgpImage("slack://channel?team=T12345&id=Cabcde", etcApi)?.let {
