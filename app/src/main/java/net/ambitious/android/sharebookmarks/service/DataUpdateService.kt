@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Binder
 import androidx.core.content.ContextCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import net.ambitious.android.sharebookmarks.data.source.ShareBookmarksDataSource
@@ -23,6 +25,9 @@ class DataUpdateService : Service() {
   private val analyticsUtils: AnalyticsUtils by inject()
   private val preferences: PreferencesUtils.Data by inject()
 
+  private val job = SupervisorJob()
+  private val scope = CoroutineScope(Dispatchers.Main + job)
+
   override fun onBind(intent: Intent?) = Binder()
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int) = START_STICKY.apply {
@@ -34,7 +39,7 @@ class DataUpdateService : Service() {
 
     val param = intent?.getStringExtra(SYNC_KEY) ?: return@apply
 
-    GlobalScope.launch {
+    scope.launch {
       coroutineScope {
         try {
           when (param) {
@@ -73,6 +78,11 @@ class DataUpdateService : Service() {
         analyticsUtils.logDataUpdateTime(System.currentTimeMillis() - start)
       }
     }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    job.cancel()
   }
 
   companion object {

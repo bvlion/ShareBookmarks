@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,6 +22,9 @@ class UpdateImageService : Service() {
   private val itemDao: ItemDao by inject()
   private val etcApi: EtcApi by inject()
 
+  private val job = SupervisorJob()
+  private val scope = CoroutineScope(Dispatchers.Main + job)
+
   override fun onBind(intent: Intent?) = Binder()
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int) = START_STICKY.apply {
@@ -36,8 +39,7 @@ class UpdateImageService : Service() {
         R.string.notification_image_update_message
       )
     )
-
-    GlobalScope.launch {
+    scope.launch {
       intent.extras?.let {
         if (it.getBoolean(PARAM_ITEM_ALL)) {
           updateThumbnail(this, true)
@@ -58,6 +60,11 @@ class UpdateImageService : Service() {
       }
       stopSelf()
     }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    job.cancel()
   }
 
   private suspend fun updateThumbnail(coroutineScope: CoroutineScope, isAll: Boolean) {
