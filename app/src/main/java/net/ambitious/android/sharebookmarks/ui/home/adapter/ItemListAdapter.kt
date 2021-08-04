@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -119,6 +121,16 @@ class ItemListAdapter(private val listener: OnItemClickListener) : Adapter<ViewH
             }
             v.onTouchEvent(event)
           }
+          binding.root.animation = RotateAnimation(
+            DEGREE,
+            DEGREE * -1,
+            (binding.root.width / 2).toFloat(),
+            (binding.root.height / 2).toFloat()
+          ).apply {
+            duration = 350
+            repeatMode = Animation.REVERSE
+            repeatCount = Animation.INFINITE
+          }
         } else {
           binding.rowItem.setOnTouchListener(null)
           binding.rowItem.setOnLongClickListener {
@@ -130,6 +142,7 @@ class ItemListAdapter(private val listener: OnItemClickListener) : Adapter<ViewH
           } else {
             binding.rowItem.setOnClickListener { listener.onRowClick(null, item.url) }
           }
+          binding.root.clearAnimation()
         }
 
         if (sortMode) {
@@ -176,4 +189,8 @@ class ItemListAdapter(private val listener: OnItemClickListener) : Adapter<ViewH
   }
 
   class ItemViewHolder(val binding: RowItemBinding) : ViewHolder(binding.root)
+
+  companion object {
+    const val DEGREE = 2f
+  }
 }
