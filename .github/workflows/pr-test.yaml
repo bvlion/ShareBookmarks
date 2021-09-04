@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - 'master'
+  pull_request_target:
+    branches:
+      - 'master'
 
 jobs:
   test:
@@ -12,12 +15,22 @@ jobs:
       DEBUG_SIGNING_GRADLE: ${{ secrets.DEBUG_SIGNING_GRADLE }}
       DEBUG_SED_COMMAND: ${{ secrets.DEBUG_SED_COMMAND }}
     runs-on: macos-latest
+    if: |
+      (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+      (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     strategy:
       matrix:
         api-level: [21, 24, 29]
     steps:
       - name: checkout
+        if: ${{ github.event_name != 'pull_request_target' }}
         uses: actions/checkout@v2
+        
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: decrypt debug files
         run: |
