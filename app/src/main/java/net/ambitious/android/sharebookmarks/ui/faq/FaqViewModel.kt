@@ -1,5 +1,6 @@
 package net.ambitious.android.sharebookmarks.ui.faq
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
@@ -16,7 +17,7 @@ class FaqViewModel(private val etcApi: EtcApi) : BaseViewModel() {
     refresh()
   }
 
-  val faq = _refresh.switchMap {
+  val faq: LiveData<FaqEntity> = _refresh.switchMap {
     liveData {
       runCatching {
         etcApi.getFaq(

@@ -1,5 +1,6 @@
 package net.ambitious.android.sharebookmarks.ui.notification
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
@@ -19,7 +20,7 @@ class NotificationViewModel(
     refresh()
   }
 
-  val notifications = _refresh.switchMap {
+  val notifications: LiveData<NotificationsEntity> = _refresh.switchMap {
     liveData {
       runCatching {
         if (preferences.userBearer != null) {

@@ -1,5 +1,6 @@
 package net.ambitious.android.sharebookmarks.ui.others
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
@@ -10,7 +11,7 @@ class DetailViewModel(private val etcApi: EtcApi) : BaseViewModel() {
 
   private val _isTerm = MutableLiveData<Boolean>()
 
-  val message = _isTerm.switchMap {
+  val message: LiveData<String> = _isTerm.switchMap {
     liveData {
       runCatching {
         if (it) {

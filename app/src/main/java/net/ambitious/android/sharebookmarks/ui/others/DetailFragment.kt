@@ -37,7 +37,7 @@ class DetailFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       if (it.isEmpty()) {
         binding.errorText.isVisible = true
       } else {
@@ -56,7 +56,7 @@ class DetailFragment : Fragment() {
           R.string.other_menu_privacy_policy
         }
       )
-    })
+    }
 
     viewModel.getDetailMessages(isTerm)
   }
