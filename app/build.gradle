@@ -85,7 +85,7 @@ static String captureVersion(Dependency dependency) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    def kotlin_version = captureVersion(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21"))
+    def kotlin_version = captureVersion(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"))
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "androidx.core:core-ktx:1.6.0"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
@@ -125,7 +125,7 @@ dependencies {
     def retrofit_version = captureVersion(implementation("com.squareup.retrofit2:retrofit:2.9.0"))
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "joda-time:joda-time:2.10.6"
-    implementation "org.jsoup:jsoup:1.13.1"
+    implementation "org.jsoup:jsoup:1.14.3"
     implementation "com.airbnb.android:lottie:3.7.0"
 
     testImplementation 'junit:junit:4.13.2'
