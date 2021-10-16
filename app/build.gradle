@@ -120,7 +120,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     def okhttp_version = captureVersion(implementation("com.squareup.okhttp3:okhttp:4.9.2"))
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    def moshi_version = captureVersion(implementation("com.squareup.moshi:moshi:1.9.3"))
+    def moshi_version = captureVersion(implementation("com.squareup.moshi:moshi:1.12.0"))
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     def retrofit_version = captureVersion(implementation("com.squareup.retrofit2:retrofit:2.9.0"))
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
