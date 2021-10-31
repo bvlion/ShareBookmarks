@@ -107,7 +107,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics:18.2.3"
     implementation "com.google.firebase:firebase-analytics:19.0.2"
     implementation "com.google.firebase:firebase-config:21.0.1"
-    implementation "com.google.firebase:firebase-messaging:22.0.0"
+    implementation "com.google.firebase:firebase-messaging:23.0.0"
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     def koin_version = captureVersion(implementation("org.koin:koin-androidx-scope:2.1.6"))
@@ -116,7 +116,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "com.firebaseui:firebase-ui-auth:6.2.0"
     implementation "com.github.bumptech.glide:glide:4.12.0"
-    def coroutines_version = captureVersion(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"))
+    def coroutines_version = captureVersion(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"))
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     def okhttp_version = captureVersion(implementation("com.squareup.okhttp3:okhttp:4.9.2"))
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
@@ -124,7 +124,7 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     def retrofit_version = captureVersion(implementation("com.squareup.retrofit2:retrofit:2.9.0"))
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "joda-time:joda-time:2.10.6"
+    implementation "joda-time:joda-time:2.10.13"
     implementation "org.jsoup:jsoup:1.14.3"
     implementation "com.airbnb.android:lottie:3.7.0"
     implementation "jp.wasabeef:recyclerview-animators:4.0.2"
