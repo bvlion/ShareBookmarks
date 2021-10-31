@@ -116,7 +116,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "com.firebaseui:firebase-ui-auth:6.2.0"
     implementation "com.github.bumptech.glide:glide:4.12.0"
-    def coroutines_version = captureVersion(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"))
+    def coroutines_version = captureVersion(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"))
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     def okhttp_version = captureVersion(implementation("com.squareup.okhttp3:okhttp:4.9.2"))
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
